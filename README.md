@@ -27,15 +27,41 @@
 
 The project will be implemented with the following technologies:
 
-    * Vanilla Javascipt
-    * `HTML5 Canvas` for rendering on to the DOM
-    * `Paper.js` for drawing with the mouse as well as rendering
-    * Webpack to bundle and serve up various scripts
+    * Vanilla Javascipt.
+    * `HTML5 Canvas` for rendering on to the DOM.
+    * `Paper.js` for drawing with the mouse as well as rendering.
+    * Webpack to bundle and serve up various scripts.
 
 ## Implementation Timeline
 
-    * Most important category
-    * Daily breakdown
-    * Aim to be done by Friday
+**Day 1** 
+
+    [] Complete basic skeleton and game functionality.
+    [] Review documentation on `Paper.js`.
+    [] Complete player's ability to draw on map.
+
+**Day 2**
+
+    [] Complete player avatar movements, appearance, and basic attacks.
+    [] Complete player spell casting through mouse drawings.
+    [] Start creating enemy designs and AI.
+
+**Day 3** 
+
+    [] Allow enemies to pick up and move with crystal.
+    [] Complete at least 2 enemy types and their functionality.
+    [] Have the game run several rounds with increasing enemies.
+
+**Day 4** 
+
+    [] Add flair to magic that is cast
+    [] Finish styling page
+    [] Finish any outstanding MVPS
 
 ## Bonus Features
+
+    * Add more shapes & spells as rewards from completing levels
+    * Add more enemy types.
+    * Add different level designs to accomdate new enemies.
+    * Player can only have 4 spells at a time. Have a spell manager interface.
+    * Add boss enemy types for final round of each stage.
