@@ -16,7 +16,7 @@ The game ends when a bandit successfully escapes with the treasure or the player
 
 ### Wireframes
 
-    ![](https://wireframe.cc/OzQuLF)
+![](https://wireframe.cc/OzQuLF)
 
 ## MVPs
 [] Basic visuals and designs for the player and enemies.
