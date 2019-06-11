@@ -16,14 +16,14 @@ The game ends when a bandit successfully escapes with the treasure or the player
 
 ### Wireframes
 
-![](https://wireframe.cc/OzQuLF)
+[Wireframe layout](https://wireframe.cc/OzQuLF)
 
 ## MVPs
-[] Basic visuals and designs for the player and enemies.
-[] Player cast spells by drawing shapes.
-[] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
-[] Enemies that succeed in leaving causes a 'Game Over'.
-[] The map re-centers when an enemy that is carrying a crystal is defeated.
+- [ ] Basic visuals and designs for the player and enemies.
+- [ ] Player cast spells by drawing shapes.
+- [ ] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
+- [ ] Enemies that succeed in leaving causes a 'Game Over'.
+- [ ] The map re-centers when an enemy that is carrying a crystal is defeated.
 
 ## Architecture and Technologies
 
@@ -37,28 +37,28 @@ The project will be implemented with the following technologies:
 
 **Day 1** 
 
-[] Complete basic skeleton and game functionality.
-[] Review documentation on `Paper.js`.
-[] Complete player's ability to draw on map.
+- [ ] Complete basic skeleton and game functionality.
+- [ ] Review documentation on `Paper.js`.
+- [ ] Complete player's ability to draw on map.
 
 **Day 2**
 
-[] Complete player avatar movements, appearance, and basic attacks.
-[] Complete player spell casting through mouse drawings.
-[] Start creating enemy designs and AI.
+- [ ] Complete player avatar movements, appearance, and basic attacks.
+- [ ] Complete player spell casting through mouse drawings.
+- [ ] Start creating enemy designs and AI.
 
 **Day 3** 
 
-[] Allow enemies to pick up and move with crystal.
-[] Have the map re-orient when crystal is dropped
-[] Complete at least 2 enemy types and their functionality.
-[] Have the game run several rounds with increasing enemies.
+- [ ] Allow enemies to pick up and move with crystal.
+- [ ] Have the map re-orient when crystal is dropped
+- [ ] Complete at least 2 enemy types and their functionality.
+- [ ] Have the game run several rounds with increasing enemies.
 
 **Day 4** 
 
-[] Add flair to magic that is cast.
-[] Finish styling page.
-[] Finish any outstanding MVPS.
+- [ ] Add flair to magic that is cast.
+- [ ] Finish styling page.
+- [ ] Finish any outstanding MVPS.
 
 ## Bonus Features
 
