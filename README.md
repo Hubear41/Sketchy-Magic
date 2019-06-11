@@ -7,6 +7,7 @@ Powerful spells can be cast by drawing shapes with the mouse. Triangles and circ
 
 The game ends when a bandit successfully escapes with the treasure or the player defeats all the enemies in that round. If a bandit is defeated while carrying the treasure, it will drop and the map will re-orient itself with the treasure's new position as the center.
 
+Sketchy Magic is inspired by [Magicka](https://en.wikipedia.org/wiki/Magicka) where a wizard casts different magic based on the current element
 
 ## Functionality
 * Players will be able to cast spells by drawing shapes over parts of the map.
