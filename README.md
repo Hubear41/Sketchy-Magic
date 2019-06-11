@@ -15,7 +15,7 @@
     * The game ends if the crystal leaves the map.
 
 ### Wireframes
-
+    ![](https://wireframe.cc/OzQuLF)
 ## MVPs
     [] Basic visuals and designs for the player and enemies.
     [] Player can move around and cast spells.
@@ -49,6 +49,7 @@ The project will be implemented with the following technologies:
 **Day 3** 
 
     [] Allow enemies to pick up and move with crystal.
+    [] Have the map re-orient when crystal is dropped
     [] Complete at least 2 enemy types and their functionality.
     [] Have the game run several rounds with increasing enemies.
 
@@ -60,8 +61,8 @@ The project will be implemented with the following technologies:
 
 ## Bonus Features
 
-    * Add more shapes & spells as rewards from completing levels
+    * Add more shapes & spells as rewards from completing levels.
     * Add more enemy types.
     * Add different level designs to accomdate new enemies.
     * Player can only have 4 spells at a time. Have a spell manager interface.
-    * Add boss enemy types for final round of each stage.
+    * Add boss enemy types for final round of each level.
