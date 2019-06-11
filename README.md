@@ -1,5 +1,6 @@
 # Sketchy Magic
 ## Overview
+
     Sketchy Magic is simple game about protecting a recently found treasure. The gameplay focuses on casting spells by drawing different shapes to knock out incoming bandits. The bandits will try to steal the treasure in the center of the map while the player tries to defend.
 
     Powerful spells can be cast by drawing shapes with the mouse. Triangles and circles and set traps on the ground or cause big explosions. 
