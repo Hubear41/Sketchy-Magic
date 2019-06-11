@@ -1,6 +1,6 @@
-# Project Title
+# Sketchy Magic
 ## Overview
-    Project Title is simple game about protecting a recently found treasure. The gameplay focuses on casting spells by drawing different shapes to knock out incoming bandits. The bandits will try to steal the treasure in the center of the map while the player tries to defend.
+    Sketchy Magic is simple game about protecting a recently found treasure. The gameplay focuses on casting spells by drawing different shapes to knock out incoming bandits. The bandits will try to steal the treasure in the center of the map while the player tries to defend.
 
     Powerful spells can be cast by drawing shapes with the mouse. Triangles and circles and set traps on the ground or cause big explosions. 
 
@@ -8,20 +8,21 @@
 
 
 ## Functionality
-    * Players will be able to use the WASD keys to move around the map.
     * Players will be able to cast spells by drawing shapes over parts of the map.
     * Enemies will be generated at the edges of the map and will head towards the crystal.
     * If an enemy carrying the crystal is defeated, the map will re-center onto that location.
     * The game ends if the crystal leaves the map.
 
 ### Wireframes
+
     ![](https://wireframe.cc/OzQuLF)
+
 ## MVPs
     [] Basic visuals and designs for the player and enemies.
-    [] Player can move around and cast spells.
+    [] Player cast spells by drawing shapes.
     [] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
     [] Enemies that succeed in leaving causes a 'Game Over'.
-    [] The map re-centers when an enemy that is carrying a crystal is defeated
+    [] The map re-centers when an enemy that is carrying a crystal is defeated.
 
 ## Architecture and Technologies
 
@@ -55,9 +56,9 @@ The project will be implemented with the following technologies:
 
 **Day 4** 
 
-    [] Add flair to magic that is cast
-    [] Finish styling page
-    [] Finish any outstanding MVPS
+    [] Add flair to magic that is cast.
+    [] Finish styling page.
+    [] Finish any outstanding MVPS.
 
 ## Bonus Features
 
