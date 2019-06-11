@@ -32,6 +32,12 @@ The project will be implemented with the following technologies:
 * `Paper.js` for drawing with the mouse as well as rendering.
 * Webpack to bundle and serve up various scripts.
 
+The main files in the project will be:
+
+* `sketchy_magic.js` is the main structure of the canvas.
+* `Player.js` is responsible for all player controls and capturing mouse movements.
+* `spells.js` uses mouse movements to determine what spell is used.
+
 ## Implementation Timeline
 
 **Day 1** 
