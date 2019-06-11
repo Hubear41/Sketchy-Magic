@@ -23,7 +23,6 @@ The game ends when a bandit successfully escapes with the treasure or the player
 - [ ] Player cast spells by drawing shapes.
 - [ ] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
 - [ ] Enemies that succeed in leaving causes a 'Game Over'.
-- [ ] The map re-centers when an enemy that is carrying a crystal is defeated.
 
 ## Architecture and Technologies
 
