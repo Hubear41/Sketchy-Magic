@@ -1,0 +1,24 @@
+.canvas-wrapper {
+    height: 900px;
+    width: 900px;
+    position: relative;
+}
+
+#mainCanvas {
+    background: lightgrey; 
+    display: block; 
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+}
+
+#paperCanvas {
+    background: none; 
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
