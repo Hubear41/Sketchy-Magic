@@ -6,11 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let mainCanvas = document.getElementById('mainCanvas');
     let ctx = mainCanvas.getContext('2d');
     paper.setup(paperCanvas);
-    
+
     // debugger
     let tool = new Tool();
     const shapes = new shapeFinder(tool, mainCanvas);
-    
     draw(mainCanvas);
 });
 

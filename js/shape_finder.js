@@ -1,5 +1,4 @@
-import { relative } from "path";
-import { Point } from "paper";
+import Spell from './Spell';
 
 class ShapeFinder {
     constructor(tool, canvas) {
@@ -8,43 +7,67 @@ class ShapeFinder {
         this.prevPoint = {};
         this.prevVector = null;
         this.numCorners = 0;
-        this.numSides = 0;
+        this.numPoints = 0;
         this.pointsArr = [];
         this.anglesArr = [];
         this.prevPoint = null;
         this.currPoint = null;
+        this.shape = null;
         this.path;
         this.position;
-        this.simpleShape;
+        this.currentSpell;
         this.determineShape = this.determineShape.bind(this);
         this.resetPath = this.resetPath.bind(this);
+        this.drawSimplifiedShape = this.drawSimplifiedShape.bind(this);
 
         tool.onMouseDown = toolEvent => {
             this.path = new Path();
-            this.path.strokeColor = 'black';
+            this.path.opacity = 0.5;
+            this.path.strokeColor = 'blue';
+            this.path.strokeWidth = '5';
 
             this.prevPoint = toolEvent.point;
             this.pointsArr.push(toolEvent.point);
             this.position = this.path.position;
+            this.numPoints++;
         }
 
         tool.onMouseDrag = toolEvent => {
             this.path.add(toolEvent.point);
             this.currPoint = toolEvent.point;
-
+            this.numPoints++;
             this.checkDeltaChange();
         }
 
         tool.onMouseUp = toolEvent => {
-            this.determineShape();
+            this.drawShapeOnCanvas();
             this.resetPath();
         }
     }
 
-    determineShape() {
-        this.path.closePath();
-        debugger
-        switch (this.numCorners) {
+    drawShapeOnCanvas() {
+        this.pointsArr = this.removeRedundantPoints();
+
+        this.determineShape(this.pointsArr);
+
+        if ( this.shape ) {
+            this.drawSimplifiedShape(this.pointsArr);
+            const spellAttr = {
+                position: this.position,
+                points: this.pointsArr,
+                shape: this.shape,
+            }
+
+            this.currentSpell = new Spell(spellAttr);
+        }
+    }
+
+    determineShape(allPoints) {
+        // debugger
+        switch (allPoints.length) {
+            case 1: 
+                this.shape = "LINE";
+                break;
             case 2:
                 this.shape = "LINE";
                 break;
@@ -61,7 +84,7 @@ class ShapeFinder {
                 this.shape = null
         }
 
-        // console.log(this.shape);
+        console.log(this.shape);
     }
 
     resetPath() {
@@ -71,45 +94,27 @@ class ShapeFinder {
         this.pointsArr = [];
         this.prevPoint = {};
         this.prevVector = null;
+        this.shape = null;
     }
 
     checkDeltaChange() {
         const currVector = this.createVector(this.prevPoint, this.currPoint);
 
         if ( this.prevVector ) {
-            const prevAngle = this.prevVector.angle;
-            const currAngle = currVector.angle;
             const directionChange = this._inDifferentDirection(this.prevVector, currVector);
 
-            
             if ( directionChange ) {
                 const tooClose = this._cornersAreClose(this.currPoint);
-                const inSameDirection = this._sameGeneralDirection(this.currPoint, this.prevPoint);
-                
+                // const inSameDirection = this._sameGeneralDirection(this.currPoint, this.prevPoint, currVector);
+                // const largeChange = this._isLargeChange(this.prevVector, currVector);
+
                 if ( !tooClose ) {
-                    // console.log(`angle: ${currAngle} | direction: ${currVector.direction}`);
-                    console.log(this.averageAngle);
                     this.pointsArr.push(this.currPoint);
                     this.anglesArr.push(currVector.angle);
                     this.numCorners++;
-    
-                    let myCircle = new Path.Circle({
-                        center: this.currPoint,
-                        radius: 10,
-                    });
-    
-                    myCircle.strokeColor = 'black';
-                    myCircle.fillColor = 'white';
+                    this.numPoints = 0;
                 } 
             }
-        } else {
-            let myCircle = new Path.Circle({
-                center: this.currPoint,
-                radius: 10,
-            });
-
-            myCircle.strokeColor = 'black';
-            myCircle.fillColor = 'white';
         }
 
         this.prevVector = currVector;
@@ -127,9 +132,140 @@ class ShapeFinder {
         return { dx, dy, angle, direction, length };
     }
 
+    removeRedundantPoints() {
+        const startPoint = this.pointsArr[0];
+        const finalPoints = [startPoint];
+
+        for (let idx = 1; idx < this.pointsArr.length; idx++) {
+            const currPoint = this.pointsArr[idx];
+            const prevPoint = finalPoints[finalPoints.length - 1];
+            let nextPoint;
+
+            if ( idx === this.pointsArr.length - 1) {
+                nextPoint = startPoint;
+            } else {
+                nextPoint = this.pointsArr[idx + 1];
+            }
+
+            const currVector = this.createVector(prevPoint, currPoint);
+            const nextVector = this.createVector(prevPoint, nextPoint);
+
+            if ( this.compareVectors(currVector, nextVector) ) {
+                continue;
+            } else {
+                finalPoints.push(currPoint);
+            }
+        }
+
+        return finalPoints;
+    }
+
+    drawSimplifiedShape(allPoints) {
+        const ctx = this.canvas.getContext('2d');
+        const start = allPoints.shift();
+
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeColor = 'green';
+        ctx.moveTo(start.x, start.y);
+
+        allPoints.forEach( (point, idx) => {
+            const { x, y } = point;
+
+            if ( idx !== allPoints.length - 1 ) {
+                ctx.lineTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+                ctx.lineTo(start.x, start.y);
+            }
+        });
+
+        ctx.closePath()
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    // _movingSlowly(vector) {
+    //     const speedMargin = 0.4;
+    //     const speed = vector.length / this.numPoints;
+    //     // console.log(`Speed: ${speed} length/points`);
+    //     this.speed = speed;
+    //     if ( speed <= speedMargin ) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    // _isLargeChange(oldVector, newVector) {
+    //     const avgDy = (newVector.dy + oldVector.dy) / 2;
+    //     const avgDx = (newVector.dx + oldVector.dx) / 2;
+    //     const dyDiff = Math.abs(newVector.dy - avgDy);
+    //     const dxDiff = Math.abs(newVector.dx - avgDx);
+    //     const totalDiff = dxDiff + dyDiff;
+    //     const changeMargin = dxDiff === 0 || dyDiff === 0 ? 1 : 1.5;
 
 
-    _inDifferentDirection(vectorA, vectorB ) {
+    //     console.log( totalDiff );
+    //     if (totalDiff > changeMargin) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    compareVectors(vectorA, vectorB) {
+        const ratioA = vectorA.dx / vectorA.dy
+        const ratioB = vectorB.dx / vectorB.dy
+        
+        if ( ratioA === ratioB ) {
+            return true;
+        } 
+        
+        const errorRatio = 0.2;
+        const multipleA = Math.abs(vectorA.dx * Math.pow(ratioA, -1));
+        const multipleB = Math.abs(vectorB.dx * Math.pow(ratioB, -1));
+        const biggerMultiple = multipleA > multipleB ? multipleA : multipleB;
+        const errorMargin = errorRatio * biggerMultiple;
+        const bigVectorAx = ratioA * biggerMultiple;
+        const bigVectorBx = ratioB * biggerMultiple;
+
+        if (Math.abs(Math.abs(bigVectorBx) - Math.abs(bigVectorAx)) <= errorMargin ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // compareDirections(directionA, directionB) {
+    //     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+    //     if ( directionA === directionB) {
+    //         return true;
+    //     }
+
+    //     let prevDirection, nextDirection;
+    //     const currIndex = directions.indexOf(directionA); 
+    //     if ( currIndex === 0 ) {
+    //         prevDirection = 'NW';
+    //         nextDirection = 'NE';
+    //     } else if ( currIndex === directions.length - 1) {
+    //         prevDirection = 'W';
+    //         nextDirection = 'N';
+    //     } else {
+    //         prevDirection = directions[currIndex - 1];
+    //         nextDirection = directions[currIndex + 1];
+    //     }
+
+    //     if ( directionB === prevDirection || directionB === nextDirection ) {
+    //         return true;
+    //     } else {
+    //         return false
+    //     }
+    // }
+
+    _inDifferentDirection(vectorA, vectorB) {
         let different = false;
         const errorMargin = 10;
 
@@ -145,28 +281,40 @@ class ShapeFinder {
         return different;
     }
 
-    _closeAngle(angleA, angleB) {
-        let areSimilar = false;
-        const angleMargin = 1.5;
-        const averageAngle = (angleA + angleB) / 2;
-        // debugger
-        // if ( Math.abs(angleB - averageAngle) <= angleMargin && Math.abs(angleA - averageAngle) <= angleMargin) {
-        if ( Math.abs(angleB - angleA) <= angleMargin ) {
-            areSimilar = true;
-        } else {
-            this.averageAngle = Math.abs(angleB - angleA);
-        }
+    // _sameGeneralDirection(pointA, pointB, vector) {
+    //     const latestCorner = this.pointsArr[this.pointsArr.length - 1];
+    //     const vectorA = this.createVector(latestCorner, pointA);
+    //     const vectorB = this.createVector(latestCorner, pointB);
 
-        return areSimilar;
-    }
+    //     return this._closeAngle(vectorA.angle, vectorB.angle, vector);
+    // }
+
+    // _closeAngle(angleA, angleB, vector) {
+    //     let areSimilar = false;
+    //     const averageAngle = (angleA + angleB) / 2;
+    //     const isSlow = this._movingSlowly(vector);
+    //     const margin = isSlow ? 1.5 : 5;
+    //     // const margin = 0.5;
+
+    //     // if ( Math.abs(angleB - averageAngle) <= angleMargin && Math.abs(angleA - averageAngle) <= angleMargin) {
+    //     if ( Math.abs(Math.abs(angleB) - Math.abs(angleA)) <= margin ) {
+    //         areSimilar = true;
+    //     } else {
+    //         this.averageDifference = Math.abs(Math.abs(angleB) - Math.abs(angleA));
+    //     }
+
+    //     return areSimilar;
+    // }
 
     _cornersAreClose(pointA) {
-        const distanceMargin = 40;
+        let distanceMargin = 40;
         let tooClose = false;
 
-        this.pointsArr.forEach( pointB => {
+        this.pointsArr.forEach( (pointB, idx) => {
             const differenceVector = this.createVector(pointB, pointA);
-
+            if ( idx === 0 ) {
+                distanceMargin *= 2;
+            }
             if ( differenceVector.length <= distanceMargin ) {
                 tooClose = true;
             }
