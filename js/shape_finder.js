@@ -74,21 +74,21 @@ class ShapeFinder {
     }
 
     checkDeltaChange() {
-        const currVector = this.findVector(this.prevPoint, this.currPoint);
+        const currVector = this.createVector(this.prevPoint, this.currPoint);
 
         if ( this.prevVector ) {
             const prevAngle = this.prevVector.angle;
             const currAngle = currVector.angle;
-            // const sameAngle = this._inRangeOf(prevAngle, currAngle);
-            const diffDirection = this._inDifferentDirection(this.prevVector, currVector);
-            // debugger
-            console.log(`angle: ${currAngle} | direction: ${currVector.direction}`);
+            const directionChange = this._inDifferentDirection(this.prevVector, currVector);
 
-            if ( diffDirection ) {
-                console.log('Direction Change')
-                const tooClose = this.pointsAreClose(this.currPoint);
-
-                if ( !tooClose) {
+            
+            if ( directionChange ) {
+                const tooClose = this._cornersAreClose(this.currPoint);
+                const inSameDirection = this._sameGeneralDirection(this.currPoint, this.prevPoint);
+                
+                if ( !tooClose ) {
+                    // console.log(`angle: ${currAngle} | direction: ${currVector.direction}`);
+                    console.log(this.averageAngle);
                     this.pointsArr.push(this.currPoint);
                     this.anglesArr.push(currVector.angle);
                     this.numCorners++;
@@ -116,27 +116,18 @@ class ShapeFinder {
         this.prevPoint = this.currPoint;
     }
 
-    findVector(point1, point2) {
+    createVector(point1, point2) {
         const dx = point2.x - point1.x;
         const dy = point2.y - point1.y;
         const radians = Math.atan2(dy, dx);
         const angle = radians * (180 / Math.PI);
         const length = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
-        const direction = this.findDirection(angle);
+        const direction = this._findDirection(angle);
 
         return { dx, dy, angle, direction, length };
-        // return { dx, dy, angle };
     }
 
-    _inRangeOf(refenceAngle, currAngle) {
-        const errorMargin = 5;
 
-        if ( currAngle >= refenceAngle - errorMargin && currAngle <= refenceAngle + errorMargin) {
-            return true;
-        }
-
-        return false;
-    }
 
     _inDifferentDirection(vectorA, vectorB ) {
         let different = false;
@@ -146,9 +137,7 @@ class ShapeFinder {
             const angleA = vectorA.angle;
             const angleB = vectorB.angle;
 
-            // debugger
             if ( Math.abs(angleB - angleA) > errorMargin ) {
-                // debugger
                 different = true;
             }
         }
@@ -156,23 +145,37 @@ class ShapeFinder {
         return different;
     }
 
-    pointsAreClose(pointA) {
+    _closeAngle(angleA, angleB) {
+        let areSimilar = false;
+        const angleMargin = 1.5;
+        const averageAngle = (angleA + angleB) / 2;
+        // debugger
+        // if ( Math.abs(angleB - averageAngle) <= angleMargin && Math.abs(angleA - averageAngle) <= angleMargin) {
+        if ( Math.abs(angleB - angleA) <= angleMargin ) {
+            areSimilar = true;
+        } else {
+            this.averageAngle = Math.abs(angleB - angleA);
+        }
+
+        return areSimilar;
+    }
+
+    _cornersAreClose(pointA) {
         const distanceMargin = 40;
         let tooClose = false;
 
         this.pointsArr.forEach( pointB => {
-            const differenceVector = this.findVector(pointB, pointA);
+            const differenceVector = this.createVector(pointB, pointA);
 
             if ( differenceVector.length <= distanceMargin ) {
                 tooClose = true;
-                console.log(`[${pointA.x},${pointA.y}] is too Close to [${pointB.x},${pointB.y}]`);
             }
         });
 
         return tooClose;
     }
 
-    findDirection(angle) {
+    _findDirection(angle) {
         let direction = '';
         const relativeAngle = angle >= 0 ? angle % 360 : angle + 360;
 
