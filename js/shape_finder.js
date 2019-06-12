@@ -1,9 +1,12 @@
+import { relative } from "path";
+import { Point } from "paper";
+
 class ShapeFinder {
     constructor(tool, canvas) {
         this.tool = tool;
         this.canvas = canvas;
-        this.previousPoint = { x: 0, y: 0 };
-        this.previousVector = null;
+        this.prevPoint = {};
+        this.prevVector = null;
         this.numCorners = 0;
         this.numSides = 0;
         this.pointsArr = [];
@@ -66,91 +69,132 @@ class ShapeFinder {
         this.numCorners = 0;
         this.anglesArr = [];
         this.pointsArr = [];
-        this.previousPoint = { x: 0, y: 0 };
-        this.previousVector = null;
+        this.prevPoint = {};
+        this.prevVector = null;
     }
 
-    findDelta(point1, point2) {
+    checkDeltaChange() {
+        const currVector = this.findVector(this.prevPoint, this.currPoint);
+
+        if ( this.prevVector ) {
+            const prevAngle = this.prevVector.angle;
+            const currAngle = currVector.angle;
+            // const sameAngle = this._inRangeOf(prevAngle, currAngle);
+            const diffDirection = this._inDifferentDirection(this.prevVector, currVector);
+            // debugger
+            console.log(`angle: ${currAngle} | direction: ${currVector.direction}`);
+
+            if ( diffDirection ) {
+                console.log('Direction Change')
+                const tooClose = this.pointsAreClose(this.currPoint);
+
+                if ( !tooClose) {
+                    this.pointsArr.push(this.currPoint);
+                    this.anglesArr.push(currVector.angle);
+                    this.numCorners++;
+    
+                    let myCircle = new Path.Circle({
+                        center: this.currPoint,
+                        radius: 10,
+                    });
+    
+                    myCircle.strokeColor = 'black';
+                    myCircle.fillColor = 'white';
+                } 
+            }
+        } else {
+            let myCircle = new Path.Circle({
+                center: this.currPoint,
+                radius: 10,
+            });
+
+            myCircle.strokeColor = 'black';
+            myCircle.fillColor = 'white';
+        }
+
+        this.prevVector = currVector;
+        this.prevPoint = this.currPoint;
+    }
+
+    findVector(point1, point2) {
         const dx = point2.x - point1.x;
         const dy = point2.y - point1.y;
         const radians = Math.atan2(dy, dx);
         const angle = radians * (180 / Math.PI);
-        const directionGroups = this._findDirectionGroups(angle);
-        // this.anglesArr.push(angle)
+        const length = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
+        const direction = this.findDirection(angle);
 
-        return { dx, dy, angle, groups: directionGroups };
+        return { dx, dy, angle, direction, length };
+        // return { dx, dy, angle };
     }
 
-    checkDeltaChange() {
-        const newVector = this.findDelta(this.prevPoint, this.currPoint);
+    _inRangeOf(refenceAngle, currAngle) {
+        const errorMargin = 5;
 
-        if ( this.previousVector ) {
-            const newAngle = Math.floor((this.previousVector.angle + newVector.angle) / 2);
-            const newAngleGroups = this._findDirectionGroups(newAngle);
-            let sameGroups = true;
+        if ( currAngle >= refenceAngle - errorMargin && currAngle <= refenceAngle + errorMargin) {
+            return true;
+        }
 
-            newAngleGroups.forEach( groupNum => {
-                if (!this.previousVector.groups.includes(groupNum) || !newVector.groups.includes(groupNum)) {
-                    sameGroups = false;
-                }
-            });
+        return false;
+    }
 
-            if ( !sameGroups ) {
-                this.pointsArr.push(this.currPoint);
-                this.anglesArr.push(newVector.angle);
-                this.numCorners++;
+    _inDifferentDirection(vectorA, vectorB ) {
+        let different = false;
+        const errorMargin = 10;
 
-                let myCircle = new Path.Circle({
-                    center: this.currPoint,
-                    radius: 10,
-                });
+        if ( vectorA.direction !== vectorB.direction ) {
+            const angleA = vectorA.angle;
+            const angleB = vectorB.angle;
 
-                myCircle.strokeColor = 'black';
-                myCircle.fillColor = 'white';
+            // debugger
+            if ( Math.abs(angleB - angleA) > errorMargin ) {
+                // debugger
+                different = true;
             }
         }
 
-        this.previousVector = newVector;
+        return different;
     }
 
-    _findDirectionGroups(angle) {
-        const groups = [];
+    pointsAreClose(pointA) {
+        const distanceMargin = 40;
+        let tooClose = false;
 
-        if ( angle > 355 || angle < 5 ) {
-            groups.concat([1,8]);
-        } else if ( angle >= 5 && angle <= 40 ) {
-            groups.push(1);
-        } else if ( angle > 40 && angle < 50 ) {
-            groups.concat([1,2]);
-        } else if ( angle >= 50 && angle <= 85 ) {
-            groups.push(2);
-        } else if ( angle > 85 && angle < 95 ) {
-            groups.concat([2,3]);
-        } else if ( angle >= 95 && angle <= 130) {
-            groups.push(3);
-        } else if ( angle > 130 && angle < 145 ) {
-            groups.concat([3,4]);
-        } else if ( angle >= 145 && angle <= 175) {
-            groups.push(4);
-        } else if ( angle > 175 && angle < 185) {
-            groups.concat([4,5]);
-        } else if ( angle >= 185 && angle <= 210) {
-            groups.push(5);
-        } else if ( angle > 210 && angle < 220) {
-            groups.concat([5,6]);
-        } else if ( angle >= 220 && angle <= 265) {
-            groups.push(6);
-        } else if ( angle > 265 && angle < 275) {
-            groups.concat([6,7]);
-        } else if ( angle >= 275 && angle <= 310) {
-            groups.push(7);
-        } else if ( angle > 310 && angle < 320) {
-            groups.concat([7,8]);
-        } else if ( angle >= 320 && angle <= 355) {
-            groups.push(8);
+        this.pointsArr.forEach( pointB => {
+            const differenceVector = this.findVector(pointB, pointA);
+
+            if ( differenceVector.length <= distanceMargin ) {
+                tooClose = true;
+                console.log(`[${pointA.x},${pointA.y}] is too Close to [${pointB.x},${pointB.y}]`);
+            }
+        });
+
+        return tooClose;
+    }
+
+    findDirection(angle) {
+        let direction = '';
+        const relativeAngle = angle >= 0 ? angle % 360 : angle + 360;
+
+        if ( relativeAngle >= 337.5 || relativeAngle <= 22.5 ) {
+            direction = 'N';
+        } else if ( relativeAngle >= 22.5 && relativeAngle <= 67.5) {
+            direction = 'NE';
+        } else if ( relativeAngle >= 67.5 && relativeAngle <= 112.5) {
+            direction = 'E';
+        } else if ( relativeAngle >= 112.5 && relativeAngle <= 157.5) {
+            direction = 'SE';
+        } else if ( relativeAngle >= 157.5 && relativeAngle <= 202.5) {
+            direction = 'S';
+        } else if ( relativeAngle >= 202.5 && relativeAngle <= 247.5) {
+            direction = 'SW';
+        } else if ( relativeAngle >= 247.5 && relativeAngle <= 292.5) {
+            direction = 'W';
+        } else if ( relativeAngle >= 292.5 && relativeAngle <= 337.5) {
+            direction = 'NW';
         }
-
-        return groups
+        
+        return direction
     }
 }
 
