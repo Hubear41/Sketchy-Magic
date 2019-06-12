@@ -64,13 +64,19 @@ class ShapeFinder {
     resetPath() {
         this.path.remove();
         this.numCorners = 0;
+        this.anglesArr = [];
+        this.pointsArr = [];
+        this.previousPoint = { x: 0, y: 0 };
+        this.previousVector = null;
     }
 
     findDelta(point1, point2) {
         const dx = point2.x - point1.x;
         const dy = point2.y - point1.y;
-        const angle = Math.pow(dy / dx, -1);
+        const radians = Math.atan2(dy, dx);
+        const angle = radians * (180 / Math.PI);
         const directionGroups = this._findDirectionGroups(angle);
+        // this.anglesArr.push(angle)
 
         return { dx, dy, angle, groups: directionGroups };
     }
@@ -93,6 +99,14 @@ class ShapeFinder {
                 this.pointsArr.push(this.currPoint);
                 this.anglesArr.push(newVector.angle);
                 this.numCorners++;
+
+                let myCircle = new Path.Circle({
+                    center: this.currPoint,
+                    radius: 10,
+                });
+
+                myCircle.strokeColor = 'black';
+                myCircle.fillColor = 'white';
             }
         }
 

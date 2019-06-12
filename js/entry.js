@@ -1,6 +1,5 @@
 import { draw } from './Sketchy_Magic';
 import shapeFinder from './shape_finder'
-import { Rectangle, Path, view, Point } from 'paper';
 
 document.addEventListener('DOMContentLoaded', () => {
     let paperCanvas = document.getElementById('paperCanvas');
@@ -8,12 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let ctx = mainCanvas.getContext('2d');
     
     paper.setup(paperCanvas);
-    debugger
+    // debugger
     let tool = new Tool();
     const shapes = new shapeFinder(tool, mainCanvas);
-    // let rectangle = new Rectangle( new Point(50, 50), new Point(150, 100) )
-
-    // let pedastal = new Path.Rectangle(new Rectangle(new Point(50, 50), new Point(150, 100)));
 
     document.addEventListener('mouseup', () => {
         const { shape, path, position } = shapes;
