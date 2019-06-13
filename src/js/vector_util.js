@@ -6,7 +6,7 @@ export const createVector = (point1, point2) => {
     const angle = radians * (180 / Math.PI);
     const length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     const direction = findDirection(angle);
-
+    
     return { dx, dy, angle, direction, length };
 }
 

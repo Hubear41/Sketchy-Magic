@@ -10,7 +10,7 @@ class Game {
         this.paper = paper; 
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
-        this.enemyCount = 10;
+        this.enemyCount = 1;
         this.enemies = [];
 
         for (let i = 0; i < this.enemyCount; i++) {
@@ -79,14 +79,89 @@ class Game {
     }
 
     clear() {
-        
+        this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
     }
 
     drawBg() {
         this.ctx.beginPath();
-        this.ctx.rect(this.canvas.width / 2, this.canvas.height / 2, 20, 10);
-        this.ctx.fillStyle = "black";
+        this.ctx.fillStyle = 'green';
+        this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.fill();
+        this.ctx.closePath();
+
+        this.drawPedestal();
+    }
+
+    drawPedestal() {
+        const height = 80;
+        const width = 120;
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "darkgrey";
+        this.ctx.rect(
+            ((this.canvas.width - width) / 2),
+            ((this.canvas.height - height) / 2),
+            width,
+            height
+        );
+        this.ctx.fill();
+        this.ctx.closePath();
+        
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "grey";
+        this.ctx.rect(
+            ((this.canvas.width - width + 5) / 2),
+            ((this.canvas.height - height + 5) / 2),
+            width - 5,
+            height - 5
+        );
+        this.ctx.fill();
+        this.ctx.closePath();
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "darkgrey";
+        this.ctx.rect(
+            ((this.canvas.width - width + 10) / 2),
+            ((this.canvas.height - height + 10) / 2),
+            width - 10,
+            height - 10,
+        );
+        this.ctx.fill();
+        this.ctx.closePath();
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "grey";
+        this.ctx.rect(
+            ((this.canvas.width - width + 15) / 2),
+            ((this.canvas.height - height + 15) / 2),
+            width - 15,
+            height - 15,
+        );
+        this.ctx.fill();
+        this.ctx.closePath();
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "darkgrey";
+        this.ctx.rect(
+            ((this.canvas.width - width + 20) / 2),
+            ((this.canvas.height - height + 20) / 2),
+            width - 20,
+            height - 20,
+        );
+        this.ctx.fill();
+        this.ctx.closePath();
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = "grey";
+        this.ctx.rect(
+            ((this.canvas.width - width + 25) / 2),
+            ((this.canvas.height - height + 25) / 2),
+            width - 25,
+            height - 25,
+        );
+        this.ctx.fill();
+        this.ctx.closePath();
+
         this.ctx.closePath();
     }
 
