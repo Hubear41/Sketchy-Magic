@@ -175,10 +175,7 @@ class Enemy {
         const nextPosition = { 
             x: x + this.dx,
             y: y + this.dy,
-        };
-
-        if 
-        
+        };  
     }
 
     _leftChestPoints() {
