@@ -1,5 +1,6 @@
 import Spell from './Spell';
 import { Point } from 'paper';
+import * as VectorUTIL from './vector_util';
 
 class ShapeFinder {
     constructor(tool, canvas) {
@@ -126,7 +127,7 @@ class ShapeFinder {
         let sumAllRadii = 0;
         for (let idx = 0; idx < this.pointsArr.length; idx++) {
             const point = this.pointsArr[idx];
-            const vector = this.createVector(center, point);
+            const vector = VectorUTIL.createVector(center, point);
             radii.push(vector.length);
             sumAllRadii += vector.length;
         }
@@ -144,7 +145,7 @@ class ShapeFinder {
     }
 
     checkDeltaChange() {
-        const currVector = this.createVector(this.prevPoint, this.currPoint);
+        const currVector = VectorUTIL.createVector(this.prevPoint, this.currPoint);
 
         if ( this.prevVector ) {
             const directionChange = this._inDifferentDirection(this.prevVector, currVector);
@@ -165,16 +166,6 @@ class ShapeFinder {
         this.prevPoint = this.currPoint;
     }
 
-    createVector(point1, point2) {
-        const dx = point2.x - point1.x;
-        const dy = point2.y - point1.y;
-        const radians = Math.atan2(dy, dx);
-        const angle = radians * (180 / Math.PI);
-        const length = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
-        const direction = this._findDirection(angle);
-
-        return { dx, dy, angle, direction, length };
-    }
 
     removeRedundantPoints() {
         const startPoint = this.pointsArr[0];
@@ -191,8 +182,8 @@ class ShapeFinder {
                 nextPoint = this.pointsArr[idx + 1];
             }
 
-            const currVector = this.createVector(prevPoint, currPoint);
-            const nextVector = this.createVector(prevPoint, nextPoint);
+            const currVector = VectorUTIL.createVector(prevPoint, currPoint);
+            const nextVector = VectorUTIL.createVector(prevPoint, nextPoint);
 
             if ( this.compareVectors(currVector, nextVector) ) {
                 continue;
@@ -345,7 +336,7 @@ class ShapeFinder {
         let tooClose = false;
 
         this.pointsArr.forEach( (pointB, idx) => {
-            const differenceVector = this.createVector(pointB, pointA);
+            const differenceVector = VectorUTIL.createVector(pointB, pointA);
             if ( idx === 0 ) {
                 distanceMargin *= 2;
             }
@@ -355,31 +346,6 @@ class ShapeFinder {
         });
 
         return tooClose;
-    }
-
-    _findDirection(angle) {
-        let direction = '';
-        const relativeAngle = angle >= 0 ? angle % 360 : angle + 360;
-
-        if ( relativeAngle >= 337.5 || relativeAngle <= 22.5 ) {
-            direction = 'N';
-        } else if ( relativeAngle >= 22.5 && relativeAngle <= 67.5) {
-            direction = 'NE';
-        } else if ( relativeAngle >= 67.5 && relativeAngle <= 112.5) {
-            direction = 'E';
-        } else if ( relativeAngle >= 112.5 && relativeAngle <= 157.5) {
-            direction = 'SE';
-        } else if ( relativeAngle >= 157.5 && relativeAngle <= 202.5) {
-            direction = 'S';
-        } else if ( relativeAngle >= 202.5 && relativeAngle <= 247.5) {
-            direction = 'SW';
-        } else if ( relativeAngle >= 247.5 && relativeAngle <= 292.5) {
-            direction = 'W';
-        } else if ( relativeAngle >= 292.5 && relativeAngle <= 337.5) {
-            direction = 'NW';
-        }
-        
-        return direction
     }
 }
 

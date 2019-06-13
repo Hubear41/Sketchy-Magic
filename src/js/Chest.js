@@ -11,13 +11,13 @@ class Chest {
         };
     }
 
-    pickupChest(characterPosition) {
+    pickedUpChest(characterPosition) {
         this.position.x = characterPosition.x - 10;
         this.position.y = characterPosition.y - 10;
         this.carrying = true;
     }
 
-    dropChest(currPosition) {
+    droppedChest(currPosition) {
         const dx = currPosition.x - this.position.x;
         const dy = currPosition.y - this.position.y;
 
