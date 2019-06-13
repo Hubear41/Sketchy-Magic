@@ -1,16 +1,17 @@
 import * as VectorUTIL from './vector_util';
 
 class Enemy {
-    constructor(x, y, chest, canvas, speed) {
+    constructor(x, y, chest, canvas, speed, player) {
         this.canvas = canvas;
         this.chest = chest;
+        this.player = player;
         this.position = {x, y};
         this.originalPosition = {x,y};
         this.carriedOffset = { x: -3, y: -3};
         this.dy;
         this.dx;
         this.target = chest;
-        this.radius = 20;
+        this.radius = 15;
         this.moveSpeed = speed; // smaller is faster;
         this.role = 'STEAL';
         this.carrying = false;
@@ -57,8 +58,12 @@ class Enemy {
 
         this.isNextToChest()
 
-        if (this.chest.beingTaken && this.chest.currEnemy !== this && this.role === 'STEAL') {
+        if (this.role === 'STEAL' && this.chest.beingTaken && this.chest.currEnemy !== this ) {
             this.newObjective();
+        } 
+        else if ( this.role === 'HANGOUT') {
+            debugger
+            this.updateHangout();
         }
 
         this.position.x += this.dx;
@@ -151,7 +156,8 @@ class Enemy {
             this.assignFollwer();
         } else {
             this.role = 'HANGOUT';
-            this.assignHangout();
+            this.updateHangout();
+            debugger
         }
     }
 
@@ -166,16 +172,19 @@ class Enemy {
         }, time)
     }
 
-    assignHangout() {
+    updateHangout() {
+        let distanceModifierY = Math.floor(Math.random() * 40 + 10);
+        let distanceModifierX = Math.floor(Math.random() * 40 + 10);
 
-    }
+        const hangoutPosition = {
+            x: this.player.position.x + distanceModifierX,
+            y: this.player.position.y + distanceModifierY,
+        };
 
-    checkObstacleInPath() {
-        const { x, y } = this.position;
-        const nextPosition = { 
-            x: x + this.dx,
-            y: y + this.dy,
-        };  
+        const toPlayerVector = VectorUTIL.createVector(this.position, hangoutPosition);
+        debugger
+        this.dx = toPlayerVector.dx / (this.moveSpeed / 2);
+        this.dy = toPlayerVector.dy / (this.moveSpeed / 2);
     }
 
     _leftChestPoints() {
