@@ -5,7 +5,7 @@ export const createVector = (point1, point2) => {
     const radians = Math.atan2(dy, dx);
     const angle = radians * (180 / Math.PI);
     const length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    const direction = this._findDirection(angle);
+    const direction = findDirection(angle);
 
     return { dx, dy, angle, direction, length };
 }
@@ -36,38 +36,32 @@ export const findDirection = (angle) => {
     return direction
 }
 
-export const findLongestVector = pointsArr => {
-    const largest = { length: 0 };
+// export const findLongestVector = (pointA, pointsArr) => {
+//     let largest = { length: 0 };
 
-    pointsArr.forEach( (pointA, idx1) => {
-        pointsArr.forEach( (pointB, idx2) => {
-            if ( idx2 > idx1 ) {
-                const newVector = createVector(pointA, pointB);
-                
-                if ( newVector.length > largest.length ) {
-                    largest = newVector;
-                }
-            }
-        });
-    });
+//     pointsArr.forEach( (pointB, idx2) => {
+//         const newVector = createVector(pointA, pointB);
+        
+//         if ( newVector.length > largest.length ) {
+//             largest = newVector;
+//         }
+//     });
 
-    return largest;
-}
+//     return largest;
+// }
 
-export const findSmallestVector = pointsArr => {
-    const smallest = { length: 1000 };
+export const findSmallestVector = (pointA, pointsArr) => {
+    let smallest = { length: 1000 };
+    let closest;
 
-    pointsArr.forEach( (pointA, idx1) => {
-        pointsArr.forEach( (pointB, idx2) => {
-            if ( idx2 > idx1 ) {
-                const newVector = createVector(pointA, pointB);
-                
-                if ( newVector.length < smallest.length ) {
-                    smallest = newVector;
-                }
-            }
-        });
-    });
+    pointsArr.forEach( pointB => {
+        const newVector = createVector(pointA, pointB);
+        
+        if ( newVector.length < smallest.length ) {
+            smallest = newVector;
+            closest = pointB;
+        }
+});
 
     return smallest;
 }

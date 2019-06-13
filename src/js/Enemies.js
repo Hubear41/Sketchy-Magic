@@ -3,37 +3,62 @@ import * as VectorUTIL from './vector_util';
 class Enemy {
     constructor(x, y, chest, canvas) {
         this.canvas = canvas;
+        this.chest = chest;
         this.position = {x, y};
         this.originalPosition = this.position;
+        this.dy;
+        this.dx;
         this.target = chest;
         this.radius = 10;
-        this.moveRadius = 10;
+        this.moveSpeed = 400; // smaller is faster;
         this.carrying = false;
         this.grabbing = false;
         this.life = 10;
+
+        this.closestChestSpot = this.closestChestSpot.bind(this);
+
+        this.findInitialMovement();
     }
 
-    moveTowardChest() {
-        const { dx, dy } = this.closestChestSpot();
-        
-        const a = Math.sqrt( this.moveRadius / ( 1 + ( Math.pow(dx,2) / Math.pow(dy,2))) );
-        const b = (dx / dy) * a;
+    // moveTowardChest() {
+    //     const { dx, dy, length } = this.closestChestSpot();
+    //     let a, b
 
-        this.position = { x: a, y: b };
-    }
+    //     if ( dx === 0) {
+    //         a = 0;
+    //         b = this.moveRadius;
+    //     } else if ( dy === 0 ) {
+    //         a = this.moveRadius;
+    //         b = 0
+    //     } else {
+    //         a = Math.sqrt( Math.pow(this.moveRadius, 2) / ( 1 + ( Math.pow(dx,2) / Math.pow(dy,2))) );
+    //         b = (dx / dy) * a;
+    //         // debugger
+    //     }
+
+    //     this.position = { x: Math.ceil(a), y: Math.ceil(b) };
+    // }
 
     pickup() {
         
     }
 
-    runaway() {
-        const runawayVector = this.createVector(this.position, this.originalPosition);
-        const { dx, dy } = runawayVector;
+    isNextToChest() {
+        const { x, y } = this.position;
+        const chestX = this.chest.position.x;
+        const chestY = this.chest.position.y;
+        const { chestHeight, chestWidth } = this.chest;
+        
+        if ( (x + this.radius >= chestX && x - this.radius <= chestX + chestWidth) && 
+             (y + this.radius >= chestY && y - this.radius <= chestY + chestHeight) ) {
+            // debugger
+            this.dx = 0;
+            this.dy = 0;
+            
+            this.grabChest();
+        }
 
-        const a = Math.sqrt(this.moveRadius / (1 + (Math.pow(dx, 2) / Math.pow(dy, 2))) );
-        const b = (dx / dy) * a;
-
-        this.position = { x: a, y: b };
+        return false;
     }
 
     draw() {
@@ -45,54 +70,72 @@ class Enemy {
         ctx.fill();
         ctx.closePath();
 
-        if ( !carrying ) {
-            this.moveTowardChest();
-        } else {
-            this.runaway();
-        }
+        this.isNextToChest()
+        this.position.x += this.dx;
+        this.position.y += this.dy;
+
+        // if ( !this.carrying ) {
+        //     this.moveTowardChest();
+        // } else {
+        //     this.runaway();
+        // }
+    }
+
+    grabChest() {
+        
     }
 
     closestChestSpot() {
         const enemyToChest = VectorUTIL.createVector(this.position, this.chest.position);
-        const pointsToCheck = [];
-
+        let pointsToCheck = [];
+        
         switch(enemyToChest.direction) {
             case 'N':
-                pointsToCheck.concat(this._bottomChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._bottomChestPoints());
                 break;
             case 'NE':
-                pointsToCheck.concat(this._bottomChestPoints).concat(this._leftChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._bottomChestPoints()).concat(this._leftChestPoints());
                 break;
             case 'E':
-                pointsToCheck.concat(this._leftChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._leftChestPoints());
                 break;
             case 'SE':
-                pointsToCheck.concat(this._leftChestPoints).concat(this._topChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._leftChestPoints()).concat(this._topChestPoints());
                 break;
             case 'S':
-                pointsToCheck.concat(this._topChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._topChestPoints());
                 break;
             case 'SW':
-                pointsToCheck.concat(this._topChestPoints).concat(this._rightChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._topChestPoints()).concat(this._rightChestPoints());
                 break;
             case 'W':
-                pointsToCheck.concat(this._rightChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._rightChestPoints());
                 break;
             case 'NW':
-                pointsToCheck.concat(this._rightChestPoints).concat(this._bottomChestPoints);
+                pointsToCheck = pointsToCheck.concat(this._rightChestPoints()).concat(this._bottomChestPoints());
                 break;
             default: 
                 break;
         }
 
-        return VectorUTIL.findSmallestVector(pointsToCheck);
+        return VectorUTIL.findSmallestVector(this.position, pointsToCheck);
+    }
+
+    findInitialMovement() {
+        const smallestVector = this.closestChestSpot();
+        // debugger
+        this.dx = smallestVector.dx / this.moveSpeed;
+        this.dy = smallestVector.dy / this.moveSpeed;
+
+        // debugger
     }
 
     _leftChestPoints() {
         const points = [];
         points.push(this.chest.position);
+        const combinedRange = this.chest.position.y + this.chest.chestHeight;
 
-        for (let y = this.chest.position.y + 1; y < this.chest.height; y++) {
+        for (let y = this.chest.position.y + 1; y < combinedRange; y++) {
             const newPoint = { 
                 X: this.chest.position.x,
                 y,
@@ -110,9 +153,11 @@ class Enemy {
             x: this.chest.position.x + this.chest.chestWidth,
             y: this.chest.position.y,
         }
+        const combinedRange = this.chest.chestHeight + firstPoint.y;
+
         points.push(firstPoint);
 
-        for (let y = firstPoint.y + 1; y < this.chest.chestHeight; y++) {
+        for (let y = firstPoint.y + 1; y < combinedRange; y++) {
             const newPoint = {
                 x: firstPoint.x,
                 y,
@@ -127,9 +172,10 @@ class Enemy {
     _topChestPoints() {
         const points = [];
         const firstPoint = this.chest.position;
+        const combinedRange = firstPoint.x + this.chest.chestWidth;
         points.push(firstPoint);
 
-        for (let x = firstPoint.x + 1; x < this.chest.chestWidth; x++) {
+        for (let x = firstPoint.x + 1; x < combinedRange; x++) {
             const newPoint = {
                 x,
                 y: firstPoint.y,
@@ -147,10 +193,10 @@ class Enemy {
             x: this.chest.position.x,
             y: this.chest.position.y + this.chest.chestHeight,
         };
-
+        const combinedRange = firstPoint.x + this.chest.chestHeight;
         points.push(firstPoint);
 
-        for (let x = 0; x < this.chest.chestWidth; x++) {
+        for (let x = this.chest.position.x + 1; x < combinedRange; x++) {
             const newPoint = {
                 x,
                 y: firstPoint.y,
