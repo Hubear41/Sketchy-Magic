@@ -45,8 +45,8 @@ The main files in the project will be:
 **Day 1** 
 
 - [ ] Complete basic skeleton and game functionality.
-- [ ] Review documentation on `Paper.js`.
-- [ ] Complete player's ability to draw on map.
+- [x] Review documentation on `Paper.js`.
+- [x] Complete player's ability to draw on map.
 
 **Day 2**
 
