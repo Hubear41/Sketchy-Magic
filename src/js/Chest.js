@@ -47,8 +47,8 @@ class Chest {
 
         const moveToEnemyVector = VectorUTIL.createVector(this.position, carriedPosition);
         this.currEnemy = enemy;
-        this.dx = moveToEnemyVector.dx / 50;
-        this.dy = moveToEnemyVector.dy / 50;
+        this.dx = moveToEnemyVector.dx / 40;
+        this.dy = moveToEnemyVector.dy / 40;
 
         this.carringPosition = carriedPosition;
         this.beingLifted = true;

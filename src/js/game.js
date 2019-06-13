@@ -12,53 +12,7 @@ class Game {
         this.player = new Player(canvas);
         this.enemyCount = 21;
         this.enemies = [];
-
-        for (let i = 0; i < this.enemyCount; i++) {
-            const zone = Math.floor((Math.random() * 5)) + 1;
-            let x, y;
-            let enemy;
-            // this.enemies.push(new Enemy(100, 100, this.ch))
-            switch(zone) {
-                case 1:
-                    x = Math.floor(Math.random() * (-100));
-                    y = Math.floor(Math.random() * (350)) + 350;
-                    enemy = new Enemy(x, y, this.chest, this.canvas);
-                    this.enemies.push(enemy);
-                    break;
-                case 2:
-                    x = Math.floor(Math.random() * (-100));
-                    y = Math.floor(Math.random() * (350));
-                    enemy = new Enemy(x, y, this.chest, this.canvas);
-                    this.enemies.push(enemy);
-                    break;
-                case 3:
-                    x = Math.floor(Math.random() * (450));
-                    y = Math.floor(Math.random() * (-100)) - 100;
-                    enemy = new Enemy(x, y, this.chest, this.canvas);
-                    this.enemies.push(enemy);
-                    break;
-                case 4:
-                    x = Math.floor(Math.random() * (450)) + 450;
-                    y = Math.floor(Math.random() * (-100)) - 100;
-                    enemy = new Enemy(x, y, this.chest, this.canvas);
-                    this.enemies.push(enemy);
-                    break;
-                case 5:
-                    x = Math.floor(Math.random() * (100)) + 900;
-                    y = Math.floor(Math.random() * (350));
-                    enemy = new Enemy(x, y, this.chest, this.canvas);
-                    this.enemies.push(enemy);
-                    break;
-                case 6:
-                    x = Math.floor(Math.random() * (100) + 900);
-                    y = Math.floor(Math.random() * (350)) + 350;
-                    enemy = new Enemy(x, y, this.chest, this.canvas);
-                    this.enemies.push(enemy);
-                    break;
-                default:
-                    break;
-            }
-        }
+        this.createEnemies();
 
         this.mouseTool = new Tool();
         this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
@@ -80,6 +34,56 @@ class Game {
 
     clear() {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    }
+
+    createEnemies() {
+        for (let i = 0; i < this.enemyCount; i++) {
+            const zone = Math.floor((Math.random() * 5)) + 1;
+            const speed = Math.floor((Math.random() * 300) + 200);
+            let x, y;
+            let enemy;
+            // this.enemies.push(new Enemy(100, 100, this.ch))
+            switch (zone) {
+                case 1:
+                    x = Math.floor(Math.random() * (-100));
+                    y = Math.floor(Math.random() * (350)) + 350;
+                    enemy = new Enemy(x, y, this.chest, this.canvas, speed);
+                    this.enemies.push(enemy);
+                    break;
+                case 2:
+                    x = Math.floor(Math.random() * (-100));
+                    y = Math.floor(Math.random() * (350));
+                    enemy = new Enemy(x, y, this.chest, this.canvas, speed);
+                    this.enemies.push(enemy);
+                    break;
+                case 3:
+                    x = Math.floor(Math.random() * (450));
+                    y = Math.floor(Math.random() * (-100)) - 100;
+                    enemy = new Enemy(x, y, this.chest, this.canvas, speed);
+                    this.enemies.push(enemy);
+                    break;
+                case 4:
+                    x = Math.floor(Math.random() * (450)) + 450;
+                    y = Math.floor(Math.random() * (-100)) - 100;
+                    enemy = new Enemy(x, y, this.chest, this.canvas, speed);
+                    this.enemies.push(enemy);
+                    break;
+                case 5:
+                    x = Math.floor(Math.random() * (100)) + 900;
+                    y = Math.floor(Math.random() * (350));
+                    enemy = new Enemy(x, y, this.chest, this.canvas, speed);
+                    this.enemies.push(enemy);
+                    break;
+                case 6:
+                    x = Math.floor(Math.random() * (100) + 900);
+                    y = Math.floor(Math.random() * (350)) + 350;
+                    enemy = new Enemy(x, y, this.chest, this.canvas, speed);
+                    this.enemies.push(enemy);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     drawBg() {

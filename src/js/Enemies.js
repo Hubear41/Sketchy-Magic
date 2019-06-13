@@ -1,7 +1,7 @@
 import * as VectorUTIL from './vector_util';
 
 class Enemy {
-    constructor(x, y, chest, canvas) {
+    constructor(x, y, chest, canvas, speed) {
         this.canvas = canvas;
         this.chest = chest;
         this.position = {x, y};
@@ -11,7 +11,8 @@ class Enemy {
         this.dx;
         this.target = chest;
         this.radius = 20;
-        this.moveSpeed = 400; // smaller is faster;
+        this.moveSpeed = speed; // smaller is faster;
+        this.role = 'STEAL';
         this.carrying = false;
         this.grabbing = false;
         this.escaping = false;
@@ -20,29 +21,6 @@ class Enemy {
         this.closestChestSpot = this.closestChestSpot.bind(this);
 
         this.findInitialMovement();
-    }
-
-    // moveTowardChest() {
-    //     const { dx, dy, length } = this.closestChestSpot();
-    //     let a, b
-
-    //     if ( dx === 0) {
-    //         a = 0;
-    //         b = this.moveRadius;
-    //     } else if ( dy === 0 ) {
-    //         a = this.moveRadius;
-    //         b = 0
-    //     } else {
-    //         a = Math.sqrt( Math.pow(this.moveRadius, 2) / ( 1 + ( Math.pow(dx,2) / Math.pow(dy,2))) );
-    //         b = (dx / dy) * a;
-    //         // debugger
-    //     }
-
-    //     this.position = { x: Math.ceil(a), y: Math.ceil(b) };
-    // }
-
-    pickup() {
-        
     }
 
     isNextToChest() {
@@ -71,7 +49,6 @@ class Enemy {
     draw() {
         const ctx = this.canvas.getContext('2d');
 
-        // this.clear();
         ctx.beginPath();
         ctx.fillStyle = 'brown';
         ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
@@ -79,12 +56,17 @@ class Enemy {
         ctx.closePath();
 
         this.isNextToChest()
+
+        if (this.chest.beingTaken && this.chest.currEnemy !== this && this.role === 'STEAL') {
+            this.newObjective();
+        }
+
         this.position.x += this.dx;
         this.position.y += this.dy;
     }
 
     grabChest() {
-        if ( !this.chest.beingLifted && !this.chest.beingTaken ) {
+        if ( !this.chest.beingLifted && !this.chest.beingTaken) {
             this.grabbing = true;
             this.chest.pickUpChest(this.position, this.carriedOffset, this);
         }
@@ -147,11 +129,9 @@ class Enemy {
 
     findInitialMovement() {
         const smallestVector = this.closestChestSpot();
-        // debugger
+
         this.dx = smallestVector.dx / this.moveSpeed;
         this.dy = smallestVector.dy / this.moveSpeed;
-
-        // debugger
     }
 
     clear() {
@@ -161,6 +141,44 @@ class Enemy {
         const rectY = y - this.radius;
 
         ctx.clearRect(rectX, rectY, this.radius * 2, this.radius * 2);
+    }
+
+    newObjective() {
+        let randomNum = Math.floor(Math.random() * 99) + 1;
+
+        if ( randomNum >= 1 && randomNum <= 40 ) {
+            this.role = 'FOLLOW';
+            this.assignFollwer();
+        } else {
+            this.role = 'HANGOUT';
+            this.assignHangout();
+        }
+    }
+
+    assignFollwer() {
+        const { dx, dy } = this.chest;
+        let modifier = Math.random();
+        let time = Math.floor(Math.random * 1000 + 1)
+
+        setTimeout( () => {
+            this.dx = dx + modifier;
+            this.dy = dy + modifier;
+        }, time)
+    }
+
+    assignHangout() {
+
+    }
+
+    checkObstacleInPath() {
+        const { x, y } = this.position;
+        const nextPosition = { 
+            x: x + this.dx,
+            y: y + this.dy,
+        };
+
+        if 
+        
     }
 
     _leftChestPoints() {
