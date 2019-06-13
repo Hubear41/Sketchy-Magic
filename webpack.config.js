@@ -2,10 +2,10 @@ const path = require('path');
 
 module.exports = {
     context: __dirname,
-    entry: './js/entry.js',
+    entry: './src/js/entry.js',
     output: {
-        path: path.join(__dirname, 'js'),
+        path: path.join(__dirname, 'src'),
         filename: 'bundle.js'
-    },
-    devtool: 'source-map'
+    }
+    // devtool: 'source-map'
 };
