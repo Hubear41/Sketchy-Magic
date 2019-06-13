@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./src/css/main-view.css">
+    <script type="text/javascript" src="./src/bundle.js"></script>
+    <!-- Load the Paper.js library -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.1/paper-core.js"></script>
+
+    <script type="text/javascript" canvas="mainCanvas">
+        paper.install(window);
+    </script>
+
+    <title>Sketchy Magic</title>
+</head>
+<body>
+    <figure class='canvas-wrapper'>
+        <canvas id="mainCanvas" width="900px" height="900px"></canvas>
+        <canvas id="paperCanvas" width="900px" height="900px"></canvas>
+    </figure>
+</body>
+</html>
