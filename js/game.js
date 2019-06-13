@@ -7,8 +7,8 @@ class Game {
 
         this.mouseTool = new Tool();
         this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
-
-        // this.drawBg = this.drawBg.bind(this);
+        this.draw = this.draw.bind(this);
+        this.drawBg = this.drawBg.bind(this);
 
         document.addEventListener('mouseup', () => {
             this.spell = this.spellFinder.currentSpell;
@@ -23,7 +23,7 @@ class Game {
         const ctx = this.canvas.getContext('2d');
 
         ctx.beginPath();
-        ctx.rect(canvas.width / 2, canvas.height / 2, 20, 10);
+        ctx.rect(this.canvas.width / 2, this.canvas.height / 2, 20, 10);
         ctx.fillStyle = "#C1B8B6";
         ctx.fill();
         ctx.closePath();
