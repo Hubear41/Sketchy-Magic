@@ -2,6 +2,7 @@ class Chest {
     constructor(canvas) {
         this.dx = null;
         this.dy = null;
+        this.carrying = false;
         this.chestHeight = 40;
         this.chestWidth = 60;
         this.position = { 
@@ -10,16 +11,20 @@ class Chest {
         };
     }
 
-    pickupChest(movementDelta) {
-        this.dx = movementDelta.dx;
-        this.dy = movementDelta.dy;
+    pickupChest(characterPosition) {
+        this.position.x = characterPosition.x - 10;
+        this.position.y = characterPosition.y - 10;
+        this.carrying = true;
     }
 
     dropChest(currPosition) {
         const dx = currPosition.x - this.position.x;
         const dy = currPosition.y - this.position.y;
 
+        this.carrying = false;
         this.position = currPosition;
+        this.dx = null;
+        this.dy = null;
 
         return { dx, dy } 
     }

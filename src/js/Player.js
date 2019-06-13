@@ -49,7 +49,7 @@ class Player {
     draw() {
         const ctx = this.canvas.getContext('2d');
         const wandPosition = {
-            x: this.position.x + this.playerWidth + 5,
+            x: this.position.x + this.playerWidth + 10,
             y: this.position.y + 5,
         }
         const wandHeight = 25;
@@ -57,13 +57,13 @@ class Player {
         
         ctx.fillStyle = 'purple';
         ctx.fillRect(this.position.x, this.position.y, this.playerWidth, this.playerHeight);
-        ctx.fillStyle = 'black';
-        ctx.fillRect(wandPosition.x, wandPosition.y, wandWidth, wandHeight);
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(wandPosition.x, wandPosition.y, wandWidth, 4);
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(wandPosition.x, wandPosition.y, wandWidth, 4);
+        // ctx.fillStyle = 'black';
+        // ctx.fillRect(wandPosition.x, wandPosition.y, wandWidth, wandHeight);
+        // ctx.fillStyle = 'blue';
+        // ctx.fillRect(wandPosition.x, wandPosition.y, wandWidth, 4);
+        // ctx.strokeStyle = 'white';
+        // ctx.lineWidth = 1;
+        // ctx.strokeRect(wandPosition.x, wandPosition.y, wandWidth, 4);
     }
 }
 

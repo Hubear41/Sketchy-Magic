@@ -58,6 +58,10 @@ class Game {
         this.ctx.strokeRect(position.x, position.y, chestWidth, chestHeight);
     }
 
+    chestCollison() {
+        
+    }
+
     draw() {
         this.clear();
         this.drawBg();
