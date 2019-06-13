@@ -31,14 +31,14 @@ The project will be implemented with the following technologies:
 * Vanilla Javascipt.
 * `HTML5 Canvas` for rendering on to the DOM.
 * `Paper.js` for drawing with the mouse as well as rendering.
+* `WebAudioAPI` as an audio player for music and sound effects.
 * Webpack to bundle and serve up various scripts.
 
 The main files in the project will be:
 
-* `sketchy_magic.js` is the main structure of the canvas.
+* `game.js` is the main structure of the canvas.
 * `Player.js` is responsible for all player controls and capturing mouse movements.
-* `WebAudioAPI` as an audio player for music and sound effects
-* `spells.js` uses mouse movements to determine what spell is used.
+* `Spells.js` uses mouse movements to determine what spell is used.
 
 ## Implementation Timeline
 
