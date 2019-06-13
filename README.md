@@ -74,3 +74,4 @@ The main files in the project will be:
 * Add different level designs to accomdate new enemies.
 * Player can only have 4 spells at a time. Have a spell manager interface.
 * Add boss enemy types for final round of each level.
+
