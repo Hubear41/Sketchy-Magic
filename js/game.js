@@ -1,12 +1,48 @@
-// class Game {
-//     constructor(canvas, paper) {
-//         this.canvas = canvas;
-//         this.paper = paper; 
-//     }
+import shapeFinder from './shape_finder';
 
-//     start() {
-        
-//     }
-// }
+class Game {
+    constructor(canvas, paper) {
+        this.canvas = canvas;
+        this.paper = paper; 
 
-// export default Game;
+        this.mouseTool = new Tool();
+        this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
+
+        // this.drawBg = this.drawBg.bind(this);
+
+        document.addEventListener('mouseup', () => {
+            this.spell = this.spellFinder.currentSpell;
+        });
+    }
+
+    start() {
+        setInterval(this.draw, 1000);
+    }
+
+    drawBg() {
+        const ctx = this.canvas.getContext('2d');
+
+        ctx.beginPath();
+        ctx.rect(canvas.width / 2, canvas.height / 2, 20, 10);
+        ctx.fillStyle = "#C1B8B6";
+        ctx.fill();
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    drawSpells() {
+        if (!this.spell) {
+            return
+        }
+
+        // this.spell.draw();
+        // this.spell.decreaseLife();
+    }
+
+    draw() {
+        this.drawBg();
+        this.drawSpells();
+    }
+}
+
+export default Game;
