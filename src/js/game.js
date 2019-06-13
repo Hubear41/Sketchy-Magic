@@ -10,7 +10,7 @@ class Game {
         this.paper = paper; 
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
-        this.enemyCount = 1;
+        this.enemyCount = 21;
         this.enemies = [];
 
         for (let i = 0; i < this.enemyCount; i++) {

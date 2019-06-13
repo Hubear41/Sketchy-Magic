@@ -6,8 +6,10 @@ class Chest {
         this.dx = null;
         this.dy = null;
         this.carringPosition = null;
-        this.taken = false;
+        this.beingTaken = false;
         this.beingLifted = false;
+        this.waitingToEscape = false;
+        this.enemy = null;
         this.currEnemy = null;
         this.chestHeight = 40;
         this.chestWidth = 60;
@@ -17,11 +19,6 @@ class Chest {
         };
     }
 
-    // clear() {
-    //     const ctx = this.canvas.getContext('2d');
-
-    //     ctx.clear
-    // }
 
     draw() {
         const ctx = this.canvas.getContext('2d');
@@ -32,7 +29,7 @@ class Chest {
         ctx.fillRect(this.position.x, this.position.y, this.chestWidth, this.chestHeight);
         ctx.strokeRect(this.position.x, this.position.y, this.chestWidth, this.chestHeight);
 
-        if ( this.beingLifted || this.taken ) {
+        if ( this.beingLifted || this.beingTaken ) {
             this.position.x += this.dx;
             this.position.y += this.dy;
 
@@ -42,21 +39,24 @@ class Chest {
         }
     }
 
-    pickUpChest(characterPosition, carriedOffset) {
+    pickUpChest(characterPosition, carriedOffset, enemy) {
         const carriedPosition = {
             x: characterPosition.x - carriedOffset.x,
             y: characterPosition.y - carriedOffset.y,
         }
+
         const moveToEnemyVector = VectorUTIL.createVector(this.position, carriedPosition);
-        
-        this.dx = moveToEnemyVector.dx / 100;
-        this.dy = moveToEnemyVector.dy / 100;
+        this.currEnemy = enemy;
+        this.dx = moveToEnemyVector.dx / 50;
+        this.dy = moveToEnemyVector.dy / 50;
 
         this.carringPosition = carriedPosition;
         this.beingLifted = true;
     }
 
     moveWithEnemy(delta) {
+        this.waitingToEscape = false;
+        this.beingTaken = true;
         this.dx = delta.dx;
         this.dy = delta.dy;
     }
@@ -69,7 +69,7 @@ class Chest {
 
         if ( x <= targetX + margin && x >= targetX - margin && y <= targetY + margin && y >= targetY - margin ) {
             this.beingLifted = false;
-            this.beingTaken = true;
+            this.waitingToEscape = true;
             this.dx = 0;
             this.dy = 0;
         }

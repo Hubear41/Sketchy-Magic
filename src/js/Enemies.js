@@ -51,7 +51,7 @@ class Enemy {
         const chestY = this.chest.position.y;
         const { chestHeight, chestWidth } = this.chest;
         
-        if ( !this.carrying || !this.chest.beingTaken ) {
+        if ( !this.chest.beingTaken && !this.chest.beingLifted && !this.chest.waitingToEscape ) {
             if ( (x + this.radius >= chestX && x - this.radius <= chestX + chestWidth) && 
                     (y + this.radius >= chestY && y - this.radius <= chestY + chestHeight) ) {
 
@@ -59,8 +59,11 @@ class Enemy {
                 this.dy = 0;
     
                 this.grabChest();
-            }
-        }
+            } 
+            
+        } else if (this.chest.waitingToEscape && this.chest.currEnemy === this ) {
+            this.escapeWithChest();
+        } 
 
         return false;
     }
@@ -78,34 +81,31 @@ class Enemy {
         this.isNextToChest()
         this.position.x += this.dx;
         this.position.y += this.dy;
-
-        // if ( !this.carrying ) {
-        //     this.moveTowardChest();
-        // } else {
-        //     this.runaway();
-        // }
     }
 
     grabChest() {
         if ( !this.chest.beingLifted && !this.chest.beingTaken ) {
             this.grabbing = true;
-            this.chest.pickUpChest(this.position, this.carriedOffset);
-        } else if ( this.chest.beingTaken && !this.escaping) {
+            this.chest.pickUpChest(this.position, this.carriedOffset, this);
+        }
+    }
+
+    escapeWithChest() {
+        if ( !this.escaping ) {
             this.carrying = true;
             this.grabbing = false;
 
-            const escapeVector = VectorUTIL.createVector(this.originalPosition, this.position);
+            const escapeVector = VectorUTIL.createVector(this.position, this.originalPosition);
 
             this.dx = escapeVector.dx / this.moveSpeed;
             this.dy = escapeVector.dy / this.moveSpeed;
-            
+
             this.chest.moveWithEnemy({
                 dx: this.dx,
                 dy: this.dy,
             });
 
             this.escaping = true;
-            // debugger
         }
     }
 
