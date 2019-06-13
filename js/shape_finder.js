@@ -1,4 +1,5 @@
 import Spell from './Spell';
+import { Point } from 'paper';
 
 class ShapeFinder {
     constructor(tool, canvas) {
@@ -16,6 +17,7 @@ class ShapeFinder {
         this.path;
         this.position;
         this.currentSpell;
+        this.circleParams = { center: null, radius: 0 };
         this.determineShape = this.determineShape.bind(this);
         this.resetPath = this.resetPath.bind(this);
         this.drawSimplifiedShape = this.drawSimplifiedShape.bind(this);
@@ -40,17 +42,19 @@ class ShapeFinder {
         }
 
         tool.onMouseUp = toolEvent => {
-            this.drawShapeOnCanvas();
+            this.drawShape();
             this.resetPath();
         }
     }
 
-    drawShapeOnCanvas() {
+    drawShape() {
         this.pointsArr = this.removeRedundantPoints();
 
         this.determineShape(this.pointsArr);
 
-        if ( this.shape ) {
+        if ( this.shape === 'Circle' ) {
+            this.drawCircle(); 
+        } else if ( this.shape ) {
             this.drawSimplifiedShape(this.pointsArr);
             const spellAttr = {
                 position: this.position,
@@ -98,7 +102,45 @@ class ShapeFinder {
     }
 
     checkIfCircle() {
+        if ( this.pointsArr.length < 3) { return; }
 
+        const margin = 5;
+        const radii = [];
+        const xs = [];
+        const ys = [];
+        let longest = { length: 1000 }, shortest = { length: 0 };
+
+        // collects all x values and y values
+        this.pointsArr.forEach( point => {
+            xs.push(point.x);
+            ys.push(point.y);
+        });
+
+        const sumX = xs.reduce( (a, b) => a + b, 0); // sum of all x values
+        const sumY = ys.reduce( (a, b) => a + b, 0); // sum of all y values
+        const centerX = sumX / xs.length; // center x = average of all x values
+        const centerY = sumY / ys.length; // center y = average of all y values
+
+        const center = new Point(centerX, centerY);
+
+        let sumAllRadii = 0;
+        for (let idx = 0; idx < this.pointsArr.length; idx++) {
+            const point = this.pointsArr[idx];
+            const vector = this.createVector(center, point);
+            radii.push(vector.length);
+            sumAllRadii += vector.length;
+        }
+
+        const averageRadius = sumAllRadii / this.pointsArr.length;
+        const anyOutliers = radii.some( radius => radius < averageRadius + margin || 
+                                            radius > averageRadius - margin );
+            
+        if ( !anyOutliers ) {
+            this.shape = 'Circle';
+            this.circleParams = { center, radius: averageRadius };
+        } else {
+            this.shape = null;
+        }
     }
 
     checkDeltaChange() {
@@ -184,6 +226,21 @@ class ShapeFinder {
 
         ctx.closePath()
         ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.stroke();
+    }
+
+
+    drawCircle() {
+        const { center, radius } = this.circleParams;
+        const ctx = this.canvas.getContext('2d');
+
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeColor = 'blue';
+        ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
+        ctx.closePath();
+        ctx.fillStyle = 'green';
         ctx.fill();
         ctx.stroke();
     }
