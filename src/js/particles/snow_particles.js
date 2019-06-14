@@ -19,9 +19,10 @@ class SnowParticles {
     draw(ctx) {
         ctx.beginPath();
         ctx.fillStyle = `rgba(0,255,255,${this.opacity})`;
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        ctx.fill();
         ctx.closePath();
-        // debugger
+        
         this.opacity -= this.decay;
         this.x += this.delta.dx;
         this.y += this.delta.dy;
