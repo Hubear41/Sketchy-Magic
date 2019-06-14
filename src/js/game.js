@@ -201,9 +201,7 @@ class Game {
             }
 
             const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
-            if ( betweenEnemyVector.length < enemyPiece.radius * 2 ) {
-                const vector = VectorUtil.createVector(otherEnemyNextPos, nextPosition);
-            }
+
             
         });
         
