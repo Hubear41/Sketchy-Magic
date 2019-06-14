@@ -31,29 +31,36 @@ class Spell {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
+        this.decreaseLife();
+    }
 
+    decreaseLife() {
         this.life -= this.decay;
     }
 
     _determineFillColor(shape) {
         switch(shape) {
-            case 'SQUARE':
+            case 'LINE':
                 return 'red';
+            case 'SQUARE':
+                return 'goldenrod';
             case 'TRIANGLE':
                 return 'blue';
             default:
-                return null;
+                return 'white';
         }
     }
 
     _determineStrokeColor(shape) {
         switch (shape) {
+            case 'LINE':
+                return 'darkblue';
             case 'SQUARE':
                 return 'orange';
             case 'TRIANGLE':
                 return 'lightblue';
             default:
-                return null;
+                return 'white';
         }
     }
 }

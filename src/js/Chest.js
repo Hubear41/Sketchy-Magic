@@ -15,14 +15,13 @@ class Chest {
         this.chestWidth = 60;
         this.position = { 
             x: (canvas.width / 2) - (this.chestWidth / 2), 
-            y: (canvas.height / 2) - (this.chestHeight / 2),
+            y: (3 * canvas.height / 4) - (3 * this.chestHeight / 4),
         };
     }
 
 
     draw() {
         const ctx = this.canvas.getContext('2d');
-
         ctx.fillStyle = 'goldenrod';
         ctx.strokeStyle = 'orange';
         ctx.lineWidth = 5;

@@ -108,7 +108,7 @@ class Game {
         this.ctx.fillStyle = "darkgrey";
         this.ctx.rect(
             ((this.canvas.width - width) / 2),
-            ((this.canvas.height - height) / 2),
+            (3 * (this.canvas.height - height) / 4),
             width,
             height
         );
@@ -119,7 +119,7 @@ class Game {
         this.ctx.fillStyle = "grey";
         this.ctx.rect(
             ((this.canvas.width - width + 5) / 2),
-            ((this.canvas.height - height + 5) / 2),
+            (3 * (this.canvas.height - height + 5) / 4),
             width - 5,
             height - 5
         );
@@ -130,7 +130,7 @@ class Game {
         this.ctx.fillStyle = "darkgrey";
         this.ctx.rect(
             ((this.canvas.width - width + 10) / 2),
-            ((this.canvas.height - height + 10) / 2),
+            (3 * (this.canvas.height - height + 10) / 4),
             width - 10,
             height - 10,
         );
@@ -141,7 +141,7 @@ class Game {
         this.ctx.fillStyle = "grey";
         this.ctx.rect(
             ((this.canvas.width - width + 15) / 2),
-            ((this.canvas.height - height + 15) / 2),
+            (3 * (this.canvas.height - height + 15) / 4),
             width - 15,
             height - 15,
         );
@@ -152,7 +152,7 @@ class Game {
         this.ctx.fillStyle = "darkgrey";
         this.ctx.rect(
             ((this.canvas.width - width + 20) / 2),
-            ((this.canvas.height - height + 20) / 2),
+            (3 * (this.canvas.height - height + 20) / 4),
             width - 20,
             height - 20,
         );
@@ -163,7 +163,7 @@ class Game {
         this.ctx.fillStyle = "grey";
         this.ctx.rect(
             ((this.canvas.width - width + 25) / 2),
-            ((this.canvas.height - height + 25) / 2),
+            (3 * (this.canvas.height - height + 25) / 4),
             width - 25,
             height - 25,
         );

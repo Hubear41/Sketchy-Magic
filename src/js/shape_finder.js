@@ -1,4 +1,5 @@
-import Spell from './Spell';
+import Spell from './spells/Spell';
+import LineSpell from './spells/line-spell';
 import { Point } from 'paper';
 import * as VectorUTIL from './vector_util';
 
@@ -63,7 +64,11 @@ class ShapeFinder {
                 shape: this.shape,
             }
 
-            this.currentSpell = new Spell(spellAttr);
+            if ( this.shape === 'LINE') {
+                this.currentSpell = new LineSpell(spellAttr);
+            } else {
+                this.currentSpell = new Spell(spellAttr);
+            }
         }
     }
 
