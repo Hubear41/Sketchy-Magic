@@ -186,32 +186,32 @@ class Game {
         }
     }
 
-    // enemyCollisionDetection(enemyPiece, nextPosition) {
-    //     const { position, dx, dy } = enemyPiece;
+    enemyCollisionDetection(enemyPiece, nextPosition) {
+        const { position, dx, dy } = enemyPiece;
 
-    //     let collision = false; 
-    //     this.enemies.forEach( otherEnemy => {
-    //         if ( otherEnemy === enemyPiece ) {
-    //             continue;
-    //         }
+        let collision = false; 
+        this.enemies.forEach( otherEnemy => {
+            if ( otherEnemy === enemyPiece ) {
+                continue;
+            }
 
-    //         const otherEnemyNextPos = {
-    //             x: otherEnemy.position.x + otherEnemy.dx,
-    //             y: otherEnemy.position.y + otherEnemy.dy,
-    //         }
+            const otherEnemyNextPos = {
+                x: otherEnemy.position.x + otherEnemy.dx,
+                y: otherEnemy.position.y + otherEnemy.dy,
+            }
 
-    //         const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
-    //         if ( betweenEnemyVector.length < enemyPiece.radius * 2 ) {
-    //             const vector = VectorUtil.createVector(otherEnemyNextPos, nextPosition);
-    //         }
+            const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
+            if ( betweenEnemyVector.length < enemyPiece.radius * 2 ) {
+                const vector = VectorUtil.createVector(otherEnemyNextPos, nextPosition);
+            }
             
-    //     });
+        });
         
-    // }
+    }
 
-    // playerCollisionDetection() {
+    playerCollisionDetection() {
 
-    // }
+    }
 
     draw() {
         this.clear();
