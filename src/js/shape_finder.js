@@ -1,5 +1,6 @@
 import Spell from './spells/Spell';
 import LineSpell from './spells/line-spell';
+import TriangleSpell from './spells/triangle-spell';
 import { Point } from 'paper';
 import * as VectorUTIL from './vector_util';
 
@@ -44,6 +45,7 @@ class ShapeFinder {
         }
 
         tool.onMouseUp = toolEvent => {
+            this.finalPoint = toolEvent.point;
             this.drawShape();
             this.resetPath();
         }
@@ -66,6 +68,8 @@ class ShapeFinder {
 
             if ( this.shape === 'LINE') {
                 this.currentSpell = new LineSpell(spellAttr);
+            } else if (this.shape === 'TRIANGLE') {
+                this.currentSpell = new TriangleSpell(spellAttr);
             } else {
                 this.currentSpell = new Spell(spellAttr);
             }
@@ -75,7 +79,7 @@ class ShapeFinder {
     determineShape(allPoints) {
         switch (allPoints.length) {
             case 1: 
-                this.shape = "LINE";
+                this.checkIfLine(allPoints[0]);
                 break;
             case 2:
                 this.shape = "LINE";
@@ -106,6 +110,17 @@ class ShapeFinder {
         this.shape = null;
     }
 
+    checkIfLine(firstPoint) {
+        const firstToFinalPosition = VectorUTIL.createVector(firstPoint, this.finalPoint);
+        const margin = 40;
+
+        if ( this.finalPoint && firstToFinalPosition.length > margin ) {
+            console.log(this.finalPoint);
+            this.shape = 'LINE';
+            this.pointsArr.push(this.finalPoint);
+        }
+    }
+
     checkIfCircle() {
         if ( this.pointsArr.length < 3) { return; }
 
@@ -113,7 +128,6 @@ class ShapeFinder {
         const radii = [];
         const xs = [];
         const ys = [];
-        let longest = { length: 1000 }, shortest = { length: 0 };
 
         // collects all x values and y values
         this.pointsArr.forEach( point => {

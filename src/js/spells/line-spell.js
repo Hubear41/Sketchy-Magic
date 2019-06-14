@@ -1,10 +1,14 @@
 import Spell from './Spell';
 import * as VectorUTIL from '../vector_util';
 
+const DONE = 'DONE';
+const EXPLODING = 'EXPLODING';
+const PREP = 'PREP';
+
 class LineSpell extends Spell {
     constructor(props) {
         super(props);
-        this.state = 'PREP';
+        this.state = PREP;
         this.explosionSpeed = 5;
         this.explosionRadius = 50;
         this.explosionPosition = null;
@@ -31,17 +35,21 @@ class LineSpell extends Spell {
         ctx.stroke();
         ctx.fill();
 
-        if ( this.state === 'EXPLODING') {
+        if ( this.state === EXPLODING) {
             this.drawExplosions(ctx);
         } else {
             this.startExplosions(ctx);
         }
 
         this.decreaseLife();
+
+        if ( this.life <= 0 ){
+            this.state = DONE;
+        }
     }
 
     startExplosions(ctx) {
-        this.state = 'EXPLODING';
+        this.state = EXPLODING;
         const explosionPath = VectorUTIL.createVector(this.points[0], this.points[1]);
         
         this.explosionDx = explosionPath.dx / this.explosionSpeed;
@@ -53,18 +61,20 @@ class LineSpell extends Spell {
     }
 
     drawExplosions(ctx) {
-        const clearRadius = ( this.explosionStage * this.explosionRadius / this.maxStage );
-        const orangeRadius = (this.explosionRadius + clearRadius) * 0.6;
-        const yellowRadius = clearRadius + 20;
+        const orangeStage = this.explosionStage + 5 > this.maxStage ? this.maxStage : this.explosionStage + 5;
+        const yellowStage = this.explosionStage + 2 > this.maxStage ? this.maxStage : this.explosionStage + 2;
+        const clearRadius = this.explosionStage * this.explosionRadius / this.maxStage;
+        const orangeRadius = orangeStage * this.explosionRadius / this.maxStage;
+        const yellowRadius = yellowStage * this.explosionRadius / this.maxStage;
         
-        ctx.filter = "blur(15px)";  // "feather"
+        ctx.filter = "blur(2px)";  // "feather"
 
         ctx.beginPath();
         ctx.arc(this.explosionPosition.x, this.explosionPosition.y, this.explosionRadius, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill();
 
-        ctx.filter = "blur(5px)";  // "feather"
+        ctx.filter = "blur(10px)"; // inner feather
 
         ctx.beginPath();
         ctx.fillStyle = 'orange'

@@ -4,6 +4,8 @@ import Player from './Player';
 import Enemy from './Enemies';
 import * as VectorUtil from './vector_util';
 
+const DONE = 'DONE';
+
 class Game {
     constructor(canvas, paper) {
         this.canvas = canvas;
@@ -180,7 +182,7 @@ class Game {
             const spell = this.activeSpells[idx];
 
             spell.draw(this.ctx);
-            if ( spell.life <= 0 ) {
+            if ( spell.state === DONE ) {
                 spellsToRemove.push(idx);
             }
         }
