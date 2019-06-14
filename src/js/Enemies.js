@@ -172,9 +172,18 @@ class Enemy {
         }, time)
     }
 
+    updatePosition(newDelta) {
+        const { dx, dy } = newDelta;
+
+        this.dx = dx;
+        this.dy = dy;
+    }
+
     updateHangout() {
-        let distanceModifierY = Math.floor(Math.random() * 40 + 10);
-        let distanceModifierX = Math.floor(Math.random() * 40 + 10);
+        let distanceModifierY = Math.floor(Math.random() * 40) + this.player.playerHeight;
+        let distanceModifierX = Math.floor(Math.random() * 40) + this.player.playerWidth;
+
+        const compositeLength = Math.sqrt(distanceModifierX**2 + distanceModifierY**2);
 
         const hangoutPosition = {
             x: this.player.position.x + distanceModifierX,
@@ -182,9 +191,14 @@ class Enemy {
         };
 
         const toPlayerVector = VectorUTIL.createVector(this.position, hangoutPosition);
-        debugger
-        this.dx = toPlayerVector.dx / (this.moveSpeed / 2);
-        this.dy = toPlayerVector.dy / (this.moveSpeed / 2);
+
+        if ( toPlayerVector.length <= compositeLength ) {
+            this.dx = 0;
+            this.dy = 0;
+        } else {
+            this.dx = toPlayerVector.dx / (this.moveSpeed / 2);
+            this.dy = toPlayerVector.dy / (this.moveSpeed / 2);
+        }
     }
 
     _leftChestPoints() {

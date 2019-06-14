@@ -2,6 +2,7 @@ import shapeFinder from './shape_finder';
 import Chest from './Chest';
 import Player from './Player';
 import Enemy from './Enemies';
+import * as VectorUtil from './vector_util';
 
 class Game {
     constructor(canvas, paper) {
@@ -185,8 +186,31 @@ class Game {
         }
     }
 
-    chestCollison() {
+    enemyCollisionDetection(enemyPiece, nextPosition) {
+        const { position, dx, dy } = enemyPiece;
+
+        let collision = false; 
+        this.enemies.forEach( otherEnemy => {
+            if ( otherEnemy === enemyPiece ) {
+                continue;
+            }
+
+            const otherEnemyNextPos = {
+                x: otherEnemy.position.x + otherEnemy.dx,
+                y: otherEnemy.position.y + otherEnemy.dy,
+            }
+
+            const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
+            if ( betweenEnemyVector.length < enemyPiece.radius * 2 ) {
+                const vector = VectorUtil.createVector(otherEnemyNextPos, nextPosition);
+            }
+            
+        });
         
+    }
+
+    playerCollisionDetection() {
+
     }
 
     draw() {
