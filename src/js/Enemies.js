@@ -11,7 +11,7 @@ class Enemy {
         this.dy;
         this.dx;
         this.target = chest;
-        this.radius = 15;
+        this.length = 15;
         this.moveSpeed = speed; // smaller is faster;
         this.role = 'STEAL';
         this.carrying = false;
@@ -31,8 +31,8 @@ class Enemy {
         const { chestHeight, chestWidth } = this.chest;
         
         if ( !this.chest.beingTaken && !this.chest.beingLifted && !this.chest.waitingToEscape ) {
-            if ( (x + this.radius >= chestX && x - this.radius <= chestX + chestWidth) && 
-                    (y + this.radius >= chestY && y - this.radius <= chestY + chestHeight) ) {
+            if ( (x + this.length >= chestX && x + this.length <= chestX + chestWidth) && 
+                    (y + this.length >= chestY && y + this.length <= chestY + chestHeight) ) {
 
                 this.dx = 0;
                 this.dy = 0;
