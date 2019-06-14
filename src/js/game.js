@@ -12,6 +12,7 @@ class Game {
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
         this.enemyCount = 21;
+        this.activeSpells = [];
         this.enemies = [];
         this.createEnemies();
 
@@ -24,7 +25,9 @@ class Game {
         this.clear = this.clear.bind(this);
 
         document.addEventListener('mouseup', () => {
-            this.spell = this.spellFinder.currentSpell;
+            let spell = this.spellFinder.currentSpell;  // returns a spell object
+
+            this.activeSpells.push(spell);
         });
     }
 
@@ -171,12 +174,20 @@ class Game {
     }
 
     drawSpells() {
-        if (!this.spell) {
-            return
+        let spellsToRemove = [];
+
+        for (let idx = 0; idx < this.activeSpells.length; idx++) {
+            const spell = this.activeSpells[idx];
+
+            spell.draw(this.ctx);
+            if ( spell.life <= 0 ) {
+                spellsToRemove.push(idx);
+            }
         }
 
-        // this.spell.draw();
-        // this.spell.decreaseLife();
+        spellsToRemove.forEach( idx => {
+            this.activeSpells.splice(idx, 1);
+        });
     }
 
     drawEnemies() {
@@ -186,37 +197,37 @@ class Game {
         }
     }
 
-    enemyCollisionDetection(enemyPiece, nextPosition) {
-        const { position, dx, dy } = enemyPiece;
+    // enemyCollisionDetection(enemyPiece, nextPosition) {
+    //     const { position, dx, dy } = enemyPiece;
 
-        let collision = false; 
-        this.enemies.forEach( otherEnemy => {
-            if ( otherEnemy === enemyPiece ) {
-                continue;
-            }
+    //     let collision = false; 
+    //     this.enemies.forEach( otherEnemy => {
+    //         if ( otherEnemy === enemyPiece ) {
+    //             continue;
+    //         }
 
-            const otherEnemyNextPos = {
-                x: otherEnemy.position.x + otherEnemy.dx,
-                y: otherEnemy.position.y + otherEnemy.dy,
-            }
+    //         const otherEnemyNextPos = {
+    //             x: otherEnemy.position.x + otherEnemy.dx,
+    //             y: otherEnemy.position.y + otherEnemy.dy,
+    //         }
 
-            const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
+    //         const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
 
             
-        });
+    //     });
         
-    }
+    // }
 
-    playerCollisionDetection() {
+    // playerCollisionDetection() {
 
-    }
+    // }
 
     draw() {
         this.clear();
         this.drawBg();
         this.chest.draw();
-        this.drawEnemies();
         this.drawSpells();
+        this.drawEnemies();
         this.player.draw();
     }
 }

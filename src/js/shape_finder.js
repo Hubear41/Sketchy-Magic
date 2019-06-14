@@ -56,7 +56,7 @@ class ShapeFinder {
         if ( this.shape === 'Circle' ) {
             this.drawCircle(); 
         } else if ( this.shape ) {
-            this.drawSimplifiedShape(this.pointsArr);
+            // this.drawSimplifiedShape(this.pointsArr);
             const spellAttr = {
                 position: this.position,
                 points: this.pointsArr,
@@ -68,7 +68,6 @@ class ShapeFinder {
     }
 
     determineShape(allPoints) {
-        // debugger
         switch (allPoints.length) {
             case 1: 
                 this.shape = "LINE";
