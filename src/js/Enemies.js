@@ -11,7 +11,7 @@ class Enemy {
         this.dy;
         this.dx;
         this.target = chest;
-        this.length = 15;
+        this.length = 20;
         this.moveSpeed = speed; // smaller is faster;
         this.role = 'STEAL';
         this.carrying = false;
@@ -31,9 +31,8 @@ class Enemy {
         const { chestHeight, chestWidth } = this.chest;
         
         if ( !this.chest.beingTaken && !this.chest.beingLifted && !this.chest.waitingToEscape ) {
-            if ( (x + this.length >= chestX && x + this.length <= chestX + chestWidth) && 
-                    (y + this.length >= chestY && y + this.length <= chestY + chestHeight) ) {
-
+            if ( (x + this.length >= chestX && x <= chestX + chestWidth) && 
+                    (y + this.length >= chestY && y <= chestY + chestHeight) ) {
                 this.dx = 0;
                 this.dy = 0;
     
@@ -52,8 +51,8 @@ class Enemy {
 
         ctx.beginPath();
         ctx.fillStyle = 'brown';
-        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.fillRect(this.position.x, this.position.y, this.length, this.length);
+        // ctx.fill();
         ctx.closePath();
 
         this.isNextToChest()
@@ -62,7 +61,6 @@ class Enemy {
             this.newObjective();
         } 
         else if ( this.role === 'HANGOUT') {
-            debugger
             this.updateHangout();
         }
 
@@ -142,10 +140,8 @@ class Enemy {
     clear() {
         const { x, y } = this.position;
         const ctx = this.canvas.getContext('2d');
-        const rectX = x - this.radius;
-        const rectY = y - this.radius;
 
-        ctx.clearRect(rectX, rectY, this.radius * 2, this.radius * 2);
+        ctx.clearRect(x, y, this.length, this.length);
     }
 
     newObjective() {
@@ -157,7 +153,6 @@ class Enemy {
         } else {
             this.role = 'HANGOUT';
             this.updateHangout();
-            debugger
         }
     }
 
@@ -180,8 +175,8 @@ class Enemy {
     }
 
     updateHangout() {
-        let distanceModifierY = Math.floor(Math.random() * 40) + this.player.playerHeight;
-        let distanceModifierX = Math.floor(Math.random() * 40) + this.player.playerWidth;
+        let distanceModifierY = Math.floor(Math.random() * 80) + this.player.playerHeight;
+        let distanceModifierX = Math.floor(Math.random() * 80) + this.player.playerWidth;
 
         const compositeLength = Math.sqrt(distanceModifierX**2 + distanceModifierY**2);
 
