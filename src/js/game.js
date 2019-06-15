@@ -35,7 +35,6 @@ class Game {
 
     start() {
         setInterval(this.draw, 20);
-        // setInterval(this.drawEnemies, 1000);
     }
 
     clear() {
@@ -48,7 +47,7 @@ class Game {
             const speed = Math.floor((Math.random() * 300) + 200);
             let x, y;
             let enemy;
-            // this.enemies.push(new Enemy(100, 100, this.ch))
+
             switch (zone) {
                 case 1:
                     x = Math.floor(Math.random() * (-100));
@@ -199,26 +198,31 @@ class Game {
         }
     }
 
-    // enemyCollisionDetection(enemyPiece, nextPosition) {
-    //     const { position, dx, dy } = enemyPiece;
+    enemyCollisionDetection(enemyPiece, nextPosition) {
+        let collision = false; 
+        let betterPosition = nextPosition;
 
-    //     let collision = false; 
-    //     this.enemies.forEach( otherEnemy => {
-    //         if ( otherEnemy === enemyPiece ) {
-    //             continue;
-    //         }
+        // checks for other enemies
+        this.enemies.forEach( otherEnemy => {
+            if ( otherEnemy === enemyPiece ) {
+                return;
+            }
 
-    //         const otherEnemyNextPos = {
-    //             x: otherEnemy.position.x + otherEnemy.dx,
-    //             y: otherEnemy.position.y + otherEnemy.dy,
-    //         }
+            const otherEnemyNextPos = {
+                x: otherEnemy.position.x + otherEnemy.dx,
+                y: otherEnemy.position.y + otherEnemy.dy,
+            };
 
-    //         const betweenEnemyVector = VectorUtil.createVector(nextPosition, otherEnemyNextPos);
-
-            
-    //     });
+            if ( nextPosition.x < otherEnemyNextPos.x + otherEnemy.length && 
+                 nextPosition.y < otherEnemyNextPos.y + otherEnemy.length && 
+                 nextPosition.x > otherEnemyNextPos.x &&
+                 nextPosition.y > otherEnemyNextPos.y ) 
+            {
+                
+            }
+        });
         
-    // }
+    }
 
     // playerCollisionDetection() {
 

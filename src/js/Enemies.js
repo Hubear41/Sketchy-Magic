@@ -31,8 +31,11 @@ class Enemy {
         const { chestHeight, chestWidth } = this.chest;
         
         if ( !this.chest.beingTaken && !this.chest.beingLifted && !this.chest.waitingToEscape ) {
-            if ( (x + this.length >= chestX && x <= chestX + chestWidth) && 
-                    (y + this.length >= chestY && y <= chestY + chestHeight) ) {
+            if ( x + this.length >= chestX && 
+                    x <= chestX + chestWidth && 
+                    y + this.length >= chestY && 
+                    y <= chestY + chestHeight ) {
+                        
                 this.dx = 0;
                 this.dy = 0;
     

@@ -33,4 +33,4 @@ class SnowParticles {
     }
 }
 
-export default SnowParticles;
+export default SnowParticles
