@@ -44,31 +44,32 @@ The main files in the project will be:
 
 **Day 1** 
 
-- [ ] Complete basic skeleton and game functionality.
+- [x] Complete basic skeleton and game functionality.
 - [x] Review documentation on `Paper.js`.
 - [x] Complete player's ability to draw on map.
 
 **Day 2**
 
-- [ ] Complete player avatar movements, appearance, and basic attacks.
-- [ ] Complete player spell casting through mouse drawings.
+- [ ] Complete player avatar movements and basic attacks.
+- [x] Complete player spell casting through mouse drawings ( atleast 2 shapes ).
 - [ ] Start creating enemy designs and AI.
 
 **Day 3** 
 
-- [ ] Allow enemies to pick up and move with crystal.
+- [x] Allow enemies to pick up and move with treasure.
 - [ ] Have the map re-orient when crystal is dropped
-- [ ] Complete at least 2 enemy types and their functionality.
 - [ ] Have the game run several rounds with increasing enemies.
 
 **Day 4** 
 
-- [ ] Add flair to magic that is cast.
+- [x] Add flair to magic that is cast.
+- [ ] Add Music and Sound Effects.
 - [ ] Finish styling page.
 - [ ] Finish any outstanding MVPS.
 
 ## Bonus Features
 
+* Replace enemies and player avatar with sprites.
 * Add more shapes & spells as rewards from completing levels.
 * Add more enemy types.
 * Add different level designs to accomdate new enemies.
