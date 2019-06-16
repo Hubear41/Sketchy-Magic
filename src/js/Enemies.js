@@ -76,7 +76,7 @@ class Enemy {
             
             this.position.x += this.dx;
             this.position.y += this.dy;
-        } else {
+        } else {    
             // debugger
             this.drawDeath();
         }
