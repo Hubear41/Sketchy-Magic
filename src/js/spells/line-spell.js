@@ -1,10 +1,13 @@
 import Spell from './Spell';
 import * as VectorUTIL from '../vector_util';
-import {
-    DONE,
-    EXPLODING,
-    PREP,
-} from '../global_values';
+// import {
+//     DONE,
+//     EXPLODING,
+//     PREP,
+// } from '../global_values';
+const DONE = 'DONE';
+const EXPLODING = 'EXPLODING';
+const PREP = 'PREP';
 
 class LineSpell extends Spell {
     constructor(props) {

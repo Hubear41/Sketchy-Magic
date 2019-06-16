@@ -65,7 +65,7 @@ class Enemy {
                 this.newObjective();
             } else if ( this.state === 'STEAL') {
                 this.isNextToChest();
-            } else if ( !this.chest.beingTaken ) {
+            } else if ( !this.chest.beingTaken && this.state !== 'FROZEN' ) {
                 this.updateSpeed();
                 this.locateChest();
             } else if (this.state === 'FROZEN') {
