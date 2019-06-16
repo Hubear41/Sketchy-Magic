@@ -11,11 +11,12 @@ class EnemyParticles {
 
         this.size = Math.random() * 5 + 5;
         this.state;
+        this.color = this._decideColor();
     }
 
     draw(ctx) {
         ctx.beginPath();
-        ctx.fillStyle = `rgba(0,255,255,${this.opacity})`;
+        ctx.fillStyle = `rgba(${this.color.r},${this.color.g},${this.color.b},${this.opacity})`;
         ctx.fillRect(this.x, this.y, this.size, this.size);
         ctx.closePath();
 
@@ -24,8 +25,20 @@ class EnemyParticles {
         this.y += this.delta.dy;
 
         if (this.opacity <= 0) {
-            this.state = DONE;
+            this.state = 'DONE';
         }
+    }
+
+    _decideColor() {
+        const COLORS = [
+            { r: 164, g: 42,  b: 42 },
+            { r: 244, g: 229, b: 66 },
+            { r: 188, g: 121, b: 33 },
+            { r: 245, g: 252, b: 32 },
+        ];
+
+        const idx = Math.floor(Math.random() * 3);
+        return COLORS[idx];
     }
 }
 

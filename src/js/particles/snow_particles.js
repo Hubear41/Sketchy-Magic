@@ -5,7 +5,7 @@ class SnowParticles {
         this.x = x;
         this.y = y;
         this.opacity = 1.0;
-        this.decay = Math.random() * (0.1) + 0.01;
+        this.decay = Math.random() * (0.1) + 0.02;
         this.delta = {
             dx: (Math.random() * 4) - 2,
             dy: (Math.random() * 4) - 2,

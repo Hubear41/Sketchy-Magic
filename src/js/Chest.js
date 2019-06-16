@@ -75,15 +75,17 @@ class Chest {
     }
 
     droppedChest(currPosition) {
-        const dx = currPosition.x - this.position.x;
-        const dy = currPosition.y - this.position.y;
+        // will use these later to re-align everything
+        // const dx = currPosition.x - this.position.x;
+        // const dy = currPosition.y - this.position.y;
 
         this.carrying = false;
+        this.beingTaken = false;
+        this.beingLifted = false;
+        this.waitingToEscape = false;
         this.position = currPosition;
         this.dx = null;
         this.dy = null;
-
-        return { dx, dy } 
     }
 }
 

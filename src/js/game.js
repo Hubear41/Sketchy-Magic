@@ -13,7 +13,7 @@ class Game {
         this.paper = paper; 
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
-        this.enemyCount = 1;
+        this.enemyCount = 121;
         this.activeSpells = [];
         this.enemies = [];
         this.createEnemies();
@@ -175,27 +175,33 @@ class Game {
     }
 
     drawSpells() {
-        let spellsToRemove = [];
+        let remainingSpells = [];
 
         for (let idx = 0; idx < this.activeSpells.length; idx++) {
             const spell = this.activeSpells[idx];
 
             spell.draw(this.ctx);
-            if ( spell.state === DONE ) {
-                spellsToRemove.push(idx);
+            if ( spell.state !== DONE ) {
+                remainingSpells.push(spell);
             }
         }
 
-        spellsToRemove.forEach( idx => {
-            this.activeSpells.splice(idx, 1);
-        });
+        this.activeSpells = remainingSpells;
     }
 
     drawEnemies() {
+        const remainingEnemies = [];
+
         for (let idx = 0; idx < this.enemies.length; idx++) {
             const enemy = this.enemies[idx];
             enemy.draw();
+
+            if ( enemy.state !== 'DEAD') {
+                remainingEnemies.push(enemy);
+            }
         }
+
+        this.enemies = remainingEnemies;
     }
 
     enemySpellCollisionDetection() {
@@ -222,32 +228,33 @@ class Game {
         //check for magic spell area 
         this.activeSpells.forEach( spell => {
             this.enemies.forEach( enemyPiece => {
-                switch ( spell.shape ) {
-                    case 'LINE':
-                        if ( spell.state === 'EXPLODING' ) {
-                            const posToExplosion = VectorUtil.createVector(enemyPiece.position, spell.explosionPosition);
-    
-                            if ( posToExplosion.length < spell.explosionRadius ) {
-                                enemyPiece.state = 'DYING';
-                            } else {
-                                // check for next position and avoid spell.
+                if ( spell.state !== 'DONE' ) {
+                    switch ( spell.shape ) {
+                        case 'LINE':
+                            if ( spell.state === 'EXPLODING' ) {
+                                const posToExplosion = VectorUtil.createVector(enemyPiece.position, spell.explosionPosition);
+        
+                                if ( posToExplosion.length < spell.explosionRadius ) {
+                                    enemyPiece.drawDeath();
+                                }
                             }
-                        }
-                        break;
-                    case 'TRIANGLE':
-                        const enemyInSpell = VectorUtil.isPointInTriangle(enemyPiece.position, spell.points);
-                        
-                        if ( enemyInSpell ) {
-                            if ( spell.state === 'FREEZING') {
-                                debugger
-                                enemyPiece.animateShiver();
+                            break; 
+                        case 'TRIANGLE':
+                            const enemyInSpell = VectorUtil.isPointInTriangle(enemyPiece.position, spell.points);
+                            
+                            if ( enemyInSpell ) {
+                                if ( (spell.state === 'FREEZING' || spell.state === 'BEFORE_SHATTER') && enemyPiece.state !== 'FROZEN') {
+                                    enemyPiece.animateShiver();
+                                } else if ( spell.state === 'SHATTERING' && enemyPiece.state !== 'DYING' ) {
+                                    enemyPiece.drawDeath();
+                                }
                             }
-                        }
-                        break; // try for safer position
-                    default:
-                        break;
+                            break; 
+                        default:
+                            break;
+                    }
                 }
-            })
+            });
         });
     }
 

@@ -19,7 +19,7 @@ class Enemy {
         this.escaping = false;
         this.life = 10;
         this.freezeNum = 0;
-        this.freezeTimer = 1000;
+        this.freezeTimer = 5000;
         this.explosion = [];
 
         this.closestChestSpot = this.closestChestSpot.bind(this);
@@ -55,86 +55,106 @@ class Enemy {
     draw() {
         const ctx = this.canvas.getContext('2d');
 
-        if ( this.state !== 'DEAD' ) {
+        if ( this.state !== 'DEAD' && this.state !== 'DYING' ) {
             ctx.beginPath();
             ctx.fillStyle = 'brown';
             ctx.fillRect(this.position.x, this.position.y, this.length, this.length);
             ctx.closePath();
     
-            this.isNextToChest()
-    
-            if (this.state === 'STEAL' && this.chest.beingTaken && this.chest.currEnemy !== this ) {
+            if ( this.state === 'STEAL' && this.chest.beingTaken && this.chest.currEnemy !== this ) {
                 this.newObjective();
-            } 
-            else if ( this.state === 'HANGOUT') {
+            } else if ( this.state === 'STEAL') {
+                this.isNextToChest();
+            } else if ( !this.chest.beingTaken ) {
+                this.updateSpeed();
+                this.locateChest();
+            } else if (this.state === 'FROZEN') {
+                this.animateShiver();
+            } else if ( this.state === 'HANGOUT') {
                 this.updateHangout();
             }
-    
+            
             this.position.x += this.dx;
             this.position.y += this.dy;
         } else {
-            this.drawDeath(ctx);
+            // debugger
+            this.drawDeath();
         }
     }
 
-    drawDeath(ctx) {
-        if ( this.state !== 'DYING' && this.state !== 'DEAD' ) {
-            this.state = 'DYING';
-            this._prepDeathExplosion();
-        }
-
+    drawDeath() {
+        const ctx = this.canvas.getContext('2d');
         let remainingParticles = [];
+        
+        if ( this.state !== 'DYING' ) {
+            this.state = 'DYING';
+            this.dx = 0;
+            this.dy = 0;
+            this._prepDeathExplosion();
+            
+            if ( this.carrying || this.grabbing || this.escaping ) {
+                this.dropChest();
+            }
+        }
 
         this.explosion.forEach( particle => {
             particle.draw(ctx);
 
-            if (particle.state !== DONE ) {
+            if (particle.state !== 'DONE' ) {
                 remainingParticles.push(particle);
             }
         });
 
+        // debugger
         if ( remainingParticles.length === 0 ) {
-            this.state === 'DEAD';
+            this.state = 'DEAD';
         } else {
             this.explosion = remainingParticles;
         }
     }
 
     animateShiver() {
-        if ( this.state !== 'FROZEN' ) {
-            // for future use when enemies don't die in one hit
-            // this.previousState = this.state;
-            // this.previousDelta = {
-                //     dx: this.dx,
-                //     dy: this.dy,
-                // };
-
-            this.state === 'FROZEN';
-            this.freezeTimer = 1000;
+        if ( this.state !== 'DEAD') {
+            if ( this.state !== 'FROZEN' ) {
+                // for future use when enemies don't die in one hit
+                // this.previousState = this.state;
+                // this.previousDelta = {
+                    //     dx: this.dx,
+                    //     dy: this.dy,
+                    // };
+    
+                this.state = 'FROZEN';
+                this.freezeTimer = 4000;
+                this.dropChest();
+            }
+            
+            if ( this.freezeNum === 1 || this.freezeNum === 5 ) {
+                this.dx = 2;
+                this.dy = 2;
+            } else if (this.freezeNum === 2 || this.freezeNum === 6 ) {
+                this.dx = -2;
+                this.dy = -2;
+            } else if (this.freezeNum === 3 || this.freezeNum === 7) {
+                this.dx = -2;
+                this.dy = -2;
+            } else if (this.freezeNum === 4 || this.freezeNum === 8) {
+                this.dx = 2;
+                this.dy = 2;
+            } else {
+                this.dx = 0;
+                this.dy = 0;
+            }
+    
+            this.freezeNum = (this.freezeNum + 1) % 45;
         }
+    }
 
-        if ( this.freezeNum === 1 || this.freezeNum === 5 ) {
-            this.dx = 1;
-            this.dy = 1;
-        } else if (this.freezeNum === 2 || this.freezeNum === 6 ) {
-            this.dx = -1;
-            this.dy = -1;
-        } else if (this.freezeNum === 3 || this.freezeNum === 7) {
-            this.dx = -1;
-            this.dy = -1;
-        } else if (this.freezeNum === 4 || this.freezeNum === 8) {
-            this.dx = 1;
-            this.dy = 1;
-        } else {
-            this.dx = 0;
-            this.dy = 0;
-        }
-
-        this.freezeNum = (this.freezeNum + 1) % 20;
-        this.freezeTimer -= 50;
-
-        if ( this.freezeTimer <= 0 ) {
-            this.drawDeath();
+    dropChest() {
+        if ( this.carrying || this.escaping ) {
+            this.carrying = false;
+            this.escaping = false;
+            
+            this.chest.droppedChest(this.position);
         }
     }
 
@@ -201,6 +221,7 @@ class Enemy {
     }
 
     locateChest() {
+        this.state = 'STEAL';
         const smallestVector = this.closestChestSpot();
 
         this.dx = smallestVector.dx / this.moveSpeed;
@@ -266,13 +287,19 @@ class Enemy {
         }
     }
 
+    updateSpeed() {
+        this.moveSpeed = Math.floor(Math.random() * 300) + 100;
+    }
+
     _prepDeathExplosion() {
         const { x, y } = this.position; 
+        const centerX = x + this.length / 2;
+        const centerY = y + this.length / 2;
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             const xOffset = Math.random() * 10 - 5;
             const yOffset = Math.random() * 10 - 5;
-            const particle = new EnemyParticle(x + xOffset, y + yOffset);
+            const particle = new EnemyParticle(centerX + xOffset, centerY + yOffset);
             
             this.explosion.push(particle);
         }

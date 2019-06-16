@@ -1,12 +1,13 @@
 import Spell from './Spell';
 import SnowParticles from '../particles/snow_particles';
 import * as VectorUTIL from '../vector_util';
-
-const PREP = 'PREP';
-const FREEZING = 'FREEZING';
-const BEFORE_SHATTER = 'BEFORE_SHATTER';
-const SHATTERING = 'SHATTERING';
-const DONE = 'DONE';
+import {
+    PREP,
+    FREEZING,
+    BEFORE_SHATTER,
+    SHATTERING,
+    DONE,
+} from '../global_values';
 
 class TriangleSpell extends Spell {
     constructor(spellAttr) {
@@ -22,7 +23,6 @@ class TriangleSpell extends Spell {
         this.life = 2;
         this.currMistFeather = 5;
         this.mistOpacity = 1;
-
 
         this._createSnow();
     }
@@ -60,7 +60,6 @@ class TriangleSpell extends Spell {
             }
             this.decreaseLife();
         } else {
-            // debugger
             this.drawShatter(ctx);
         }
 
@@ -123,7 +122,7 @@ class TriangleSpell extends Spell {
             if (this.state !== BEFORE_SHATTER) {
                 setInterval(() => {
                     this.state = SHATTERING;
-                }, 3000)
+                }, 2000);
 
                 this.state = BEFORE_SHATTER;
                 this.startMist();
@@ -193,7 +192,7 @@ class TriangleSpell extends Spell {
         });
 
         if ( remainingSnow.length === 0 ) {
-            this.state === DONE;
+            this.state = DONE;
         } else {
             this.snowParticles = remainingSnow;
         }
