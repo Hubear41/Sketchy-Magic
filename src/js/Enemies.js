@@ -1,4 +1,5 @@
 import * as VectorUTIL from './vector_util';
+import EnemyParticle from './particles/enemy_particles';
 
 class Enemy {
     constructor(x, y, chest, canvas, speed, player) {
@@ -10,18 +11,20 @@ class Enemy {
         this.carriedOffset = { x: -3, y: -3};
         this.dy;
         this.dx;
-        this.target = chest;
         this.length = 20;
         this.moveSpeed = speed; // smaller is faster;
-        this.role = 'STEAL';
+        this.state = 'STEAL';
         this.carrying = false;
         this.grabbing = false;
         this.escaping = false;
         this.life = 10;
+        this.freezeNum = 0;
+        this.freezeTimer = 1000;
+        this.explosion = [];
 
         this.closestChestSpot = this.closestChestSpot.bind(this);
 
-        this.findInitialMovement();
+        this.locateChest();
     }
 
     isNextToChest() {
@@ -52,23 +55,87 @@ class Enemy {
     draw() {
         const ctx = this.canvas.getContext('2d');
 
-        ctx.beginPath();
-        ctx.fillStyle = 'brown';
-        ctx.fillRect(this.position.x, this.position.y, this.length, this.length);
-        // ctx.fill();
-        ctx.closePath();
+        if ( this.state !== 'DEAD' ) {
+            ctx.beginPath();
+            ctx.fillStyle = 'brown';
+            ctx.fillRect(this.position.x, this.position.y, this.length, this.length);
+            ctx.closePath();
+    
+            this.isNextToChest()
+    
+            if (this.state === 'STEAL' && this.chest.beingTaken && this.chest.currEnemy !== this ) {
+                this.newObjective();
+            } 
+            else if ( this.state === 'HANGOUT') {
+                this.updateHangout();
+            }
+    
+            this.position.x += this.dx;
+            this.position.y += this.dy;
+        } else {
+            this.drawDeath(ctx);
+        }
+    }
 
-        this.isNextToChest()
-
-        if (this.role === 'STEAL' && this.chest.beingTaken && this.chest.currEnemy !== this ) {
-            this.newObjective();
-        } 
-        else if ( this.role === 'HANGOUT') {
-            this.updateHangout();
+    drawDeath(ctx) {
+        if ( this.state !== 'DYING' && this.state !== 'DEAD' ) {
+            this.state = 'DYING';
+            this._prepDeathExplosion();
         }
 
-        this.position.x += this.dx;
-        this.position.y += this.dy;
+        let remainingParticles = [];
+
+        this.explosion.forEach( particle => {
+            particle.draw(ctx);
+
+            if (particle.state !== DONE ) {
+                remainingParticles.push(particle);
+            }
+        });
+
+        if ( remainingParticles.length === 0 ) {
+            this.state === 'DEAD';
+        } else {
+            this.explosion = remainingParticles;
+        }
+    }
+
+    animateShiver() {
+        if ( this.state !== 'FROZEN' ) {
+            // for future use when enemies don't die in one hit
+            // this.previousState = this.state;
+            // this.previousDelta = {
+                //     dx: this.dx,
+                //     dy: this.dy,
+                // };
+
+            this.state === 'FROZEN';
+            this.freezeTimer = 1000;
+        }
+
+        if ( this.freezeNum === 1 || this.freezeNum === 5 ) {
+            this.dx = 1;
+            this.dy = 1;
+        } else if (this.freezeNum === 2 || this.freezeNum === 6 ) {
+            this.dx = -1;
+            this.dy = -1;
+        } else if (this.freezeNum === 3 || this.freezeNum === 7) {
+            this.dx = -1;
+            this.dy = -1;
+        } else if (this.freezeNum === 4 || this.freezeNum === 8) {
+            this.dx = 1;
+            this.dy = 1;
+        } else {
+            this.dx = 0;
+            this.dy = 0;
+        }
+
+        this.freezeNum = (this.freezeNum + 1) % 20;
+        this.freezeTimer -= 50;
+
+        if ( this.freezeTimer <= 0 ) {
+            this.drawDeath();
+        }
     }
 
     grabChest() {
@@ -133,7 +200,7 @@ class Enemy {
         return VectorUTIL.findSmallestVector(this.position, pointsToCheck);
     }
 
-    findInitialMovement() {
+    locateChest() {
         const smallestVector = this.closestChestSpot();
 
         this.dx = smallestVector.dx / this.moveSpeed;
@@ -151,15 +218,15 @@ class Enemy {
         let randomNum = Math.floor(Math.random() * 99) + 1;
 
         if ( randomNum >= 1 && randomNum <= 40 ) {
-            this.role = 'FOLLOW';
-            this.assignFollwer();
+            this.state = 'FOLLOW';
+            this.assignFollower();
         } else {
-            this.role = 'HANGOUT';
+            this.state = 'HANGOUT';
             this.updateHangout();
         }
     }
 
-    assignFollwer() {
+    assignFollower() {
         const { dx, dy } = this.chest;
         let modifier = Math.random();
         let time = Math.floor(Math.random * 1000 + 1)
@@ -196,6 +263,18 @@ class Enemy {
         } else {
             this.dx = toPlayerVector.dx / (this.moveSpeed / 2);
             this.dy = toPlayerVector.dy / (this.moveSpeed / 2);
+        }
+    }
+
+    _prepDeathExplosion() {
+        const { x, y } = this.position; 
+
+        for (let i = 0; i < 10; i++) {
+            const xOffset = Math.random() * 10 - 5;
+            const yOffset = Math.random() * 10 - 5;
+            const particle = new EnemyParticle(x + xOffset, y + yOffset);
+            
+            this.explosion.push(particle);
         }
     }
 

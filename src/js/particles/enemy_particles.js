@@ -1,7 +1,5 @@
-const DONE = 'DONE';
-
-class SnowParticles {
-    constructor(x, y) {
+class EnemyParticles {
+    constructor( x, y ) {
         this.x = x;
         this.y = y;
         this.opacity = 1.0;
@@ -18,18 +16,17 @@ class SnowParticles {
     draw(ctx) {
         ctx.beginPath();
         ctx.fillStyle = `rgba(0,255,255,${this.opacity})`;
-        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.fillRect(this.x, this.y, this.size, this.size);
         ctx.closePath();
-        
+
         this.opacity -= this.decay;
         this.x += this.delta.dx;
         this.y += this.delta.dy;
 
-        if ( this.opacity <= 0) {
+        if (this.opacity <= 0) {
             this.state = DONE;
         }
     }
 }
 
-export default SnowParticles
+export default EnemyParticles;

@@ -36,32 +36,47 @@ export const findDirection = (angle) => {
     return direction
 }
 
-// export const findLongestVector = (pointA, pointsArr) => {
-//     let largest = { length: 0 };
-
-//     pointsArr.forEach( (pointB, idx2) => {
-//         const newVector = createVector(pointA, pointB);
-        
-//         if ( newVector.length > largest.length ) {
-//             largest = newVector;
-//         }
-//     });
-
-//     return largest;
-// }
-
 export const findSmallestVector = (pointA, pointsArr) => {
     let smallest = { length: 1000 };
-    let closest;
 
     pointsArr.forEach( pointB => {
         const newVector = createVector(pointA, pointB);
         
         if ( newVector.length < smallest.length ) {
             smallest = newVector;
-            closest = pointB;
         }
-});
+    });
 
     return smallest;
+};
+
+// Checks whether or not the position position is within the triangle.
+// It checks if the point is on the left or right side of the line and assigns a positive or negative value
+// The position is inside if all of the sides are either negative or positive but not a mix.
+export const isPointInTriangle = (position, triCorners) => {
+    let hasNegs = false, hasPos = false;
+    const a = triCorners[0];
+    const b = triCorners[1];
+    const c = triCorners[2];
+    
+    const side1 = findSign(position, a, b);
+    const side2 = findSign(position, b, c);
+    const side3 = findSign(position, c, a);
+
+    hasNegs = (side1 < 0) || (side2 < 0) || (side3 < 0);
+    hasPos  = (side1 > 0) || (side2 > 0) || (side3 > 0);
+    
+    return !( hasNegs && hasPos );
+};
+
+// checks what side of the triangle the point
+const findSign = (point, v1, v2) => {
+    const x1 = point.x;
+    const y1 = point.y;
+    const x2 = v1.x;
+    const y2 = v1.y;
+    const x3 = v2.x;
+    const y3 = v2.y;
+
+    return (x1 - x3) * (y2 - y3) - (x2 - x3) * (y1 - y3);
 }

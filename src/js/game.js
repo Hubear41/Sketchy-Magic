@@ -13,7 +13,7 @@ class Game {
         this.paper = paper; 
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
-        this.enemyCount = 21;
+        this.enemyCount = 1;
         this.activeSpells = [];
         this.enemies = [];
         this.createEnemies();
@@ -198,30 +198,57 @@ class Game {
         }
     }
 
-    enemyCollisionDetection(enemyPiece, nextPosition) {
-        let collision = false; 
-        let betterPosition = nextPosition;
-
+    enemySpellCollisionDetection() {
         // checks for other enemies
-        this.enemies.forEach( otherEnemy => {
-            if ( otherEnemy === enemyPiece ) {
-                return;
-            }
+        // this.enemies.forEach( otherEnemy => {
+        //     if ( otherEnemy === enemyPiece ) {
+        //         return;
+        //     }
 
-            const otherEnemyNextPos = {
-                x: otherEnemy.position.x + otherEnemy.dx,
-                y: otherEnemy.position.y + otherEnemy.dy,
-            };
+        //     const otherEnemyNextPos = {
+        //         x: otherEnemy.position.x + otherEnemy.dx,
+        //         y: otherEnemy.position.y + otherEnemy.dy,
+        //     };
 
-            if ( nextPosition.x < otherEnemyNextPos.x + otherEnemy.length && 
-                 nextPosition.y < otherEnemyNextPos.y + otherEnemy.length && 
-                 nextPosition.x > otherEnemyNextPos.x &&
-                 nextPosition.y > otherEnemyNextPos.y ) 
-            {
+        //     if ( nextPosition.x < otherEnemyNextPos.x + otherEnemy.length && 
+        //          nextPosition.y < otherEnemyNextPos.y + otherEnemy.length && 
+        //          nextPosition.x > otherEnemyNextPos.x &&
+        //          nextPosition.y > otherEnemyNextPos.y ) 
+        //     {
                 
-            }
+        //     }
+        // });
+
+        //check for magic spell area 
+        this.activeSpells.forEach( spell => {
+            this.enemies.forEach( enemyPiece => {
+                switch ( spell.shape ) {
+                    case 'LINE':
+                        if ( spell.state === 'EXPLODING' ) {
+                            const posToExplosion = VectorUtil.createVector(enemyPiece.position, spell.explosionPosition);
+    
+                            if ( posToExplosion.length < spell.explosionRadius ) {
+                                enemyPiece.state = 'DYING';
+                            } else {
+                                // check for next position and avoid spell.
+                            }
+                        }
+                        break;
+                    case 'TRIANGLE':
+                        const enemyInSpell = VectorUtil.isPointInTriangle(enemyPiece.position, spell.points);
+                        
+                        if ( enemyInSpell ) {
+                            if ( spell.state === 'FREEZING') {
+                                debugger
+                                enemyPiece.animateShiver();
+                            }
+                        }
+                        break; // try for safer position
+                    default:
+                        break;
+                }
+            })
         });
-        
     }
 
     // playerCollisionDetection() {
@@ -232,6 +259,7 @@ class Game {
         this.clear();
         this.drawBg();
         this.chest.draw();
+        this.enemySpellCollisionDetection();
         this.drawSpells();
         this.drawEnemies();
         this.player.draw();
