@@ -21,8 +21,8 @@ Sketchy Magic is inspired by [Magicka](https://en.wikipedia.org/wiki/Magicka) wh
 
 ## MVPs
 - [ ] Basic visuals and designs for the player and enemies.
-- [ ] Player cast spells by drawing shapes.
-- [ ] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
+- [x] Player cast spells by drawing shapes.
+- [x] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
 - [ ] Enemies that succeed in leaving causes a 'Game Over'.
 
 ## Architecture and Technologies
@@ -30,7 +30,7 @@ Sketchy Magic is inspired by [Magicka](https://en.wikipedia.org/wiki/Magicka) wh
 The project will be implemented with the following technologies:
 * Vanilla Javascipt.
 * `HTML5 Canvas` for rendering on to the DOM.
-* `Paper.js` for drawing with the mouse as well as rendering.
+* `Paper.js` for mouse movement detection and vector calcultions.
 * `WebAudioAPI` as an audio player for music and sound effects.
 * Webpack to bundle and serve up various scripts.
 
