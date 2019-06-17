@@ -18,13 +18,24 @@ class Game {
         this.enemies = [];
         this.createEnemies();
 
-        this.mouseTool = new Tool();
-        this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
-
         this.draw = this.draw.bind(this);
         this.drawBg = this.drawBg.bind(this);
         this.drawEnemies = this.drawEnemies.bind(this);
         this.clear = this.clear.bind(this);
+    }
+
+    start() {
+        this.setupSpellFinder();
+        this.gameInterval = setInterval(this.draw, 20);
+    }
+
+    clear() {
+        this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    }
+
+    setupSpellFinder() {
+        this.mouseTool = new Tool();
+        this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
 
         document.addEventListener('mouseup', () => {
             let spell = this.spellFinder.currentSpell;  // returns a spell object
@@ -33,13 +44,39 @@ class Game {
         });
     }
 
-    start() {
-        setInterval(this.draw, 20);
+    lose() {
+        const { x, y } = this.chest.position;
+
+        if (x + this.chest.chestWidth  < 0 || x > this.canvas.width || 
+            y + this.chest.chestHeight < 0 || y > this.canvas.height ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    clear() {
-        this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    win() {
+        if ( this.enemies.length <= 0 ) {
+            return true;
+        }
+
+        this.enemies.forEach( enemy => {
+            const { x, y } = enemy.position;
+
+            if ( x <= 0 && x + enemy.length <= this.canvas.width || 
+                    y <= 0 && y + enemy.length <= this.canvas.height ) {
+                        return false;
+                    }
+        });
+        
+        return true;
     }
+
+    // isGameover() {
+    //     if ( !this.win() || !this.lose() ) {
+    //         return false;
+    //     }
+    // }
 
     createEnemies() {
         for (let i = 0; i < this.enemyCount; i++) {
@@ -51,13 +88,13 @@ class Game {
             switch (zone) {
                 case 1:
                     x = Math.floor(Math.random() * (-100));
-                    y = Math.floor(Math.random() * (350)) + 350;
+                    y = Math.floor(Math.random() * (200)) + 200;
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
                 case 2:
                     x = Math.floor(Math.random() * (-100));
-                    y = Math.floor(Math.random() * (350));
+                    y = Math.floor(Math.random() * (200));
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
@@ -75,13 +112,13 @@ class Game {
                     break;
                 case 5:
                     x = Math.floor(Math.random() * (100)) + 900;
-                    y = Math.floor(Math.random() * (350));
+                    y = Math.floor(Math.random() * (200));
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
                 case 6:
                     x = Math.floor(Math.random() * (100) + 900);
-                    y = Math.floor(Math.random() * (350)) + 350;
+                    y = Math.floor(Math.random() * (200)) + 200;
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
@@ -228,7 +265,7 @@ class Game {
         //check for magic spell area 
         this.activeSpells.forEach( spell => {
             this.enemies.forEach( enemyPiece => {
-                if ( spell.state !== 'DONE' ) {
+                if ( spell && spell.state !== 'DONE' ) {
                     switch ( spell.shape ) {
                         case 'LINE':
                             if ( spell.state === 'EXPLODING' ) {
@@ -270,6 +307,8 @@ class Game {
         this.drawSpells();
         this.drawEnemies();
         this.player.draw();
+
+        // this.isGameover();
     }
 }
 
