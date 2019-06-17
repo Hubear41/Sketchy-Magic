@@ -18,7 +18,7 @@ class Enemy {
         this.grabbing = false;
         this.escaping = false;
         this.life = 10;
-        this.freezeNum = Math.floor(Math.random() * 40);
+        this.freezeNum = 0;
         this.freezeTimer = 5000;
         this.explosion = [];
 
@@ -65,7 +65,7 @@ class Enemy {
                 this.newObjective();
             } else if ( this.state === 'STEAL') {
                 this.isNextToChest();
-            } else if ( !this.chest.beingTaken && !this.chest.beingLifted && !this.chest.waitingToEscape && this.state !== 'FROZEN' ) {
+            } else if ( !this.chest.beingTaken && this.state !== 'FROZEN' ) {
                 this.updateSpeed();
                 this.locateChest();
             } else if (this.state === 'FROZEN') {
@@ -145,7 +145,7 @@ class Enemy {
                 this.dy = 0;
             }
     
-            this.freezeNum = (this.freezeNum + 1) % 60;
+            this.freezeNum = (this.freezeNum + 1) % 45;
         }
     }
 
