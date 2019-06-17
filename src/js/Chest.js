@@ -12,11 +12,8 @@ class Chest {
         this.canvas = canvas;
         this.dx = null;
         this.dy = null;
-        this.carringPosition = null;
-        this.beingTaken = false;
-        this.beingLifted = false;
-        this.waitingToEscape = false;
-        this.enemy = null;
+        this.carryingPosition = null;
+        this.state = STANDING;
         this.currEnemy = null;
         this.chestHeight = 40;
         this.chestWidth = 60;
@@ -26,7 +23,6 @@ class Chest {
         };
     }
 
-
     draw() {
         const ctx = this.canvas.getContext('2d');
         ctx.fillStyle = 'goldenrod';
@@ -35,11 +31,11 @@ class Chest {
         ctx.fillRect(this.position.x, this.position.y, this.chestWidth, this.chestHeight);
         ctx.strokeRect(this.position.x, this.position.y, this.chestWidth, this.chestHeight);
 
-        if ( this.beingLifted || this.beingTaken ) {
+        if ( this.state === BEING_LIFTED && this.state === BEING_TAKEN ) {
             this.position.x += this.dx;
             this.position.y += this.dy;
 
-            if ( this.beingLifted ) {
+            if ( this.state === BEING_LIFTED ) {
                 this.inCarryingPosition();
             }
         }
@@ -56,26 +52,24 @@ class Chest {
         this.dx = moveToEnemyVector.dx / 40;
         this.dy = moveToEnemyVector.dy / 40;
 
-        this.carringPosition = carriedPosition;
-        this.beingLifted = true;
+        this.position.y = carriedPosition;
+        this.state = BEING_LIFTED;
     }
 
     moveWithEnemy(delta) {
-        this.waitingToEscape = false;
-        this.beingTaken = true;
+        this.state = BEING_TAKEN;
         this.dx = delta.dx;
         this.dy = delta.dy;
     }
 
     inCarryingPosition() {
         const { x, y } = this.position;
-        const targetX = this.carringPosition.x;
-        const targetY = this.carringPosition.y;
+        const targetX = this.y.x;
+        const targetY = this.y.y;
         const margin = 1.5;
 
         if ( x <= targetX + margin && x >= targetX - margin && y <= targetY + margin && y >= targetY - margin ) {
-            this.beingLifted = false;
-            this.waitingToEscape = true;
+            this.state = WAITING_TO_ESCAPE;
             this.dx = 0;
             this.dy = 0;
         }
@@ -86,10 +80,7 @@ class Chest {
         // const dx = currPosition.x - this.position.x;
         // const dy = currPosition.y - this.position.y;
 
-        this.carrying = false;
-        this.beingTaken = false;
-        this.beingLifted = false;
-        this.waitingToEscape = false;
+        this.state = STANDING;
         this.position = currPosition;
         this.dx = null;
         this.dy = null;
