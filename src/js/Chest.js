@@ -52,7 +52,7 @@ class Chest {
         this.dx = moveToEnemyVector.dx / 40;
         this.dy = moveToEnemyVector.dy / 40;
 
-        this.position.y = carriedPosition;
+        this.carryingPosition = carriedPosition;
         this.state = BEING_LIFTED;
     }
 
@@ -64,8 +64,8 @@ class Chest {
 
     inCarryingPosition() {
         const { x, y } = this.position;
-        const targetX = this.y.x;
-        const targetY = this.y.y;
+        const targetX = this.carryingPosition.x;
+        const targetY = this.carryingPosition.y;
         const margin = 1.5;
 
         if ( x <= targetX + margin && x >= targetX - margin && y <= targetY + margin && y >= targetY - margin ) {
