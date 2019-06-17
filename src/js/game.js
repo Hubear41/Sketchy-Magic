@@ -47,12 +47,12 @@ class Game {
             if ( spell ) {
                 switch ( spell.shape ) {
                     case 'LINE':
-                        if (this.player.readyLine()) {
+                        if ( this.player.readyLine() ) {
                             this.activeSpells.push(spell);
                         }
                         break;
                     case 'TRIANGLE':
-                        if ( this.player.readyTriangle()) {
+                        if ( this.player.readyTriangle() ) {
                             this.activeSpells.push(spell);
                         }
                         break;
@@ -156,6 +156,14 @@ class Game {
 
         this.drawPedestal();
     }
+
+    // drawSpellCooldown() {
+    //     const {width, height} = this.canvas;
+
+    //     this.ctx.beginPath();
+    //     this.ctx.rect( 10, height - 50, 20, 40);
+    //     this.ctx.closePath();
+    // }
 
     drawPedestal() {
         const height = 80;
@@ -326,6 +334,7 @@ class Game {
         this.drawSpells();
         this.drawEnemies();
         this.player.draw();
+        // this.drawSpellCooldown();
 
         if ( this.checkForGameover ) {
             this.isGameover();

@@ -7,10 +7,10 @@ class Player {
         this.dx = 20;
         this.dy = 20;
         this.direction = 0;
-        this.triangleCooldown = 5;
-        this.triangleEnergy = 100;
-        this.lineEnergy = 100;
-        this.lineCooldown = 10;
+        this.triangleCooldown = 1;
+        this.triangleEnergy = 120;
+        this.lineEnergy = 90;
+        this.lineCooldown = 1;
         this.fiveCooldown = 0;
         
         this.position = { 
@@ -80,7 +80,7 @@ class Player {
     }
 
     readyLine() {
-        if ( this.lineEnergy === 100) {
+        if ( this.lineEnergy === 100 ) {
             this.lineEnergy = 0;
             return true;
         } else {
