@@ -7,15 +7,16 @@ import * as VectorUtil from './vector_util';
 const DONE = 'DONE';
 
 class Game {
-    constructor(canvas, paper) {
+    constructor(canvas, mouseTool) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
-        this.paper = paper; 
+        this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
         this.enemyCount = 121;
         this.activeSpells = [];
         this.enemies = [];
+        this.checkForGameover = false;
         this.createEnemies();
 
         this.draw = this.draw.bind(this);
@@ -27,6 +28,10 @@ class Game {
     start() {
         this.setupSpellFinder();
         this.gameInterval = setInterval(this.draw, 20);
+
+        setTimeout( () => {
+            this.checkForGameover = true;
+        }, 5000);
     }
 
     clear() {
@@ -34,19 +39,35 @@ class Game {
     }
 
     setupSpellFinder() {
-        this.mouseTool = new Tool();
         this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
 
         document.addEventListener('mouseup', () => {
             let spell = this.spellFinder.currentSpell;  // returns a spell object
-
-            this.activeSpells.push(spell);
+            
+            if ( spell ) {
+                switch ( spell.shape ) {
+                    case 'LINE':
+                        if (this.player.readyLine()) {
+                            this.activeSpells.push(spell);
+                        }
+                        break;
+                    case 'TRIANGLE':
+                        if ( this.player.readyTriangle()) {
+                            this.activeSpells.push(spell);
+                        }
+                        break;
+                    default: 
+                        break;
+                }
+            }
+            // this.activeSpells.push(spell);
         });
     }
 
     lose() {
         const { x, y } = this.chest.position;
 
+        // debugger
         if (x + this.chest.chestWidth  < 0 || x > this.canvas.width || 
             y + this.chest.chestHeight < 0 || y > this.canvas.height ) {
             return true;
@@ -56,27 +77,25 @@ class Game {
     }
 
     win() {
-        if ( this.enemies.length <= 0 ) {
+        if ( this.enemies.length <= 0 || !this._enemiesInBounds ) {
             return true;
+        } else {
+            return false;
         }
-
-        this.enemies.forEach( enemy => {
-            const { x, y } = enemy.position;
-
-            if ( x <= 0 && x + enemy.length <= this.canvas.width || 
-                    y <= 0 && y + enemy.length <= this.canvas.height ) {
-                        return false;
-                    }
-        });
-        
-        return true;
     }
 
-    // isGameover() {
-    //     if ( !this.win() || !this.lose() ) {
-    //         return false;
-    //     }
-    // }
+    isGameover() {
+        if ( !this.win() && !this.lose() ) {
+            return false;
+        } 
+
+        clearTimeout(this.gameInterval);
+        const gameEndScreen = document.getElementById('game-over');
+        const messageEl = document.getElementById('game-over-msg');
+
+        gameEndScreen.className = 'visible';
+        messageEl.innerHTML = this.lose() ? 'You Lose' : 'You Win';
+    }
 
     createEnemies() {
         for (let i = 0; i < this.enemyCount; i++) {
@@ -308,7 +327,22 @@ class Game {
         this.drawEnemies();
         this.player.draw();
 
-        // this.isGameover();
+        if ( this.checkForGameover ) {
+            this.isGameover();
+        }
+    }
+
+    _enemiesInBounds() {
+        this.enemies.forEach(enemy => {
+            const { x, y } = enemy.position;
+            debugger
+            if (x >= 0 && x + enemy.length <= this.canvas.width &&
+                y >= 0 && y + enemy.length <= this.canvas.height) {
+                return true;
+            }
+        });
+
+        return false
     }
 }
 

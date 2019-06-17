@@ -18,7 +18,13 @@
         <canvas id="mainCanvas" width="900px" height="600px"></canvas>
         <canvas id="paperCanvas" width="900px" height="600px"></canvas>
         <div id='start' class='visible'>
-            <button id='start-btn'>Start Game</button>
+            <button id='start-btn' class='button'>Start Game</button>
+        </div>
+        <div id='game-over' class='hidden'>
+            <section class='game-over-content'>
+                <span id='game-over-msg'></span>
+                <button id='restart-btn' class='button'>Play Again</button>
+            </section>
         </div>
     </figure>
     <aside class="sidebar">

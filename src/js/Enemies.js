@@ -56,8 +56,14 @@ class Enemy {
         const ctx = this.canvas.getContext('2d');
 
         if ( this.state !== 'DEAD' && this.state !== 'DYING' ) {
+            
+            if ( this.state === 'FROZEN') {
+                ctx.fillStyle = 'lightblue';
+            } else {
+                ctx.fillStyle = 'brown';
+            }
+
             ctx.beginPath();
-            ctx.fillStyle = 'brown';
             ctx.fillRect(this.position.x, this.position.y, this.length, this.length);
             ctx.closePath();
     

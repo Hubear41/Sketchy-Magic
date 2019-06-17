@@ -1,3 +1,4 @@
+
 class Player {
     constructor(canvas) {
         this.canvas = canvas;
@@ -6,6 +7,11 @@ class Player {
         this.dx = 20;
         this.dy = 20;
         this.direction = 0;
+        this.triangleCooldown = 5;
+        this.triangleEnergy = 100;
+        this.lineEnergy = 100;
+        this.lineCooldown = 10;
+        this.fiveCooldown = 0;
         
         this.position = { 
             x: canvas.width / 2,
@@ -64,6 +70,31 @@ class Player {
         // ctx.strokeStyle = 'white';
         // ctx.lineWidth = 1;
         // ctx.strokeRect(wandPosition.x, wandPosition.y, wandWidth, 4);
+
+        this.increaseCooldown();
+    }
+
+    increaseCooldown() {
+        this.lineEnergy = this.lineEnergy < 100 ? this.lineEnergy + this.lineCooldown : 100;
+        this.triangleEnergy = this.triangleEnergy < 100 ? this.triangleEnergy + this.triangleCooldown : 100;
+    }
+
+    readyLine() {
+        if ( this.lineEnergy === 100) {
+            this.lineEnergy = 0;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    readyTriangle() {
+        if ( this.triangleEnergy === 100 ) {
+            this.triangleEnergy = 0;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
