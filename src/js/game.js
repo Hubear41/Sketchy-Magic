@@ -157,13 +157,54 @@ class Game {
         this.drawPedestal();
     }
 
-    // drawSpellCooldown() {
-    //     const {width, height} = this.canvas;
+    drawSpellCooldown() {
+        const { width, height } = this.canvas;
+        const { lineEnergy, lineMax, triangleEnergy, triangleMax } = this.player;
 
-    //     this.ctx.beginPath();
-    //     this.ctx.rect( 10, height - 50, 20, 40);
-    //     this.ctx.closePath();
-    // }
+        // line spell
+        const lineEnergyLevel = ( lineEnergy / lineMax ) * -50;
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillRect(20, height - 30, 50, lineEnergyLevel);
+
+        this.ctx.strokeStyle = lineEnergy === lineMax ? 'goldenrod' : 'darkgray';
+        this.ctx.strokeStyle = ''
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.rect( 20, height - 80, 50, 50);
+        this.ctx.closePath();
+        this.ctx.stroke();
+
+        this.ctx.lineWidth = 5;
+        this.ctx.beginPath();
+        this.ctx.moveTo(30, height - 40);
+        this.ctx.lineTo(60, height - 70);
+        this.ctx.lineTo(50, height - 70);
+        this.ctx.lineTo(60, height - 70);
+        this.ctx.lineTo(60, height - 60);
+        this.ctx.stroke();
+        this.ctx.closePath();
+
+        // triangle spell 
+        const triEnergyLevel = ( triangleEnergy / triangleMax ) * -50;
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillRect(90, height - 30, 50, triEnergyLevel);
+
+        this.ctx.strokeStyle = triangleEnergy === triangleMax ? 'goldenrod' : 'darkgray';
+        this.ctx.strokeStyle = ''
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.rect(90, height - 80, 50, 50);
+        this.ctx.closePath();
+        this.ctx.stroke();
+
+        this.ctx.lineWidth = 5;
+        this.ctx.beginPath();
+        this.ctx.moveTo(115, height - 70);
+        this.ctx.lineTo(100, height - 40);
+        this.ctx.lineTo(130, height - 40);
+        this.ctx.closePath();
+        this.ctx.stroke();
+    }
 
     drawPedestal() {
         const height = 80;
@@ -334,7 +375,7 @@ class Game {
         this.drawSpells();
         this.drawEnemies();
         this.player.draw();
-        // this.drawSpellCooldown();
+        this.drawSpellCooldown();
 
         if ( this.checkForGameover ) {
             this.isGameover();

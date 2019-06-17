@@ -7,11 +7,12 @@ class Player {
         this.dx = 20;
         this.dy = 20;
         this.direction = 0;
+        this.triangleEnergy = 250;
+        this.triangleMax = 250;
         this.triangleCooldown = 1;
-        this.triangleEnergy = 120;
-        this.lineEnergy = 90;
+        this.lineEnergy = 150;
+        this.lineMax = 150;
         this.lineCooldown = 1;
-        this.fiveCooldown = 0;
         
         this.position = { 
             x: canvas.width / 2,
@@ -75,12 +76,12 @@ class Player {
     }
 
     increaseCooldown() {
-        this.lineEnergy = this.lineEnergy < 100 ? this.lineEnergy + this.lineCooldown : 100;
-        this.triangleEnergy = this.triangleEnergy < 100 ? this.triangleEnergy + this.triangleCooldown : 100;
+        this.lineEnergy = this.lineEnergy < this.lineMax ? this.lineEnergy + this.lineCooldown : this.lineMax;
+        this.triangleEnergy = this.triangleEnergy < this.triangleMax ? this.triangleEnergy + this.triangleCooldown : this.triangleMax;
     }
 
     readyLine() {
-        if ( this.lineEnergy === 100 ) {
+        if ( this.lineEnergy === this.lineMax ) {
             this.lineEnergy = 0;
             return true;
         } else {
@@ -89,7 +90,7 @@ class Player {
     }
 
     readyTriangle() {
-        if ( this.triangleEnergy === 100 ) {
+        if ( this.triangleEnergy === this.triangleMax ) {
             this.triangleEnergy = 0;
             return true;
         } else {
