@@ -1,4 +1,11 @@
 import * as VectorUTIL from './vector_util';
+import {
+    STANDING,
+    BEING_TAKEN,
+    BEING_LIFTED,
+    WAITING_TO_ESCAPE,
+} from './global_values';
+
 
 class Chest {
     constructor(canvas) {

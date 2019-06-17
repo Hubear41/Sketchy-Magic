@@ -1,19 +1,13 @@
 import Spell from './Spell';
 import SnowParticles from '../particles/snow_particles';
 import * as VectorUTIL from '../vector_util';
-// import {
-//     PREP,
-//     FREEZING,
-//     BEFORE_SHATTER,
-//     SHATTERING,
-//     DONE,
-// } from '../global_values';
-
-const PREP = 'PREP';
-const FREEZING = 'FREEZING';
-const BEFORE_SHATTER = 'BEFORE_SHATTER';
-const SHATTERING = 'SHATTERING';
-const DONE = 'DONE';
+import {
+    PREP,
+    FREEZING,
+    BEFORE_SHATTER,
+    SHATTERING,
+    DONE,
+} from '../global_values';
 
 class TriangleSpell extends Spell {
     constructor(spellAttr) {
