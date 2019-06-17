@@ -5,8 +5,8 @@ class EnemyParticles {
         this.opacity = 1.0;
         this.decay = Math.random() * (0.1) + 0.01;
         this.delta = {
-            dx: (Math.random() * 4) - 2,
-            dy: (Math.random() * 4) - 2,
+            dx: (Math.random() * 2) - 1,
+            dy: (Math.random() * 2) - 1,
         };
 
         this.size = Math.random() * 5 + 5;

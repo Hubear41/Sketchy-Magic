@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./src/css/main-view.css">
+    <link rel="stylesheet" type="text/css" href="./src/css/main-view.css">
     <script type="text/javascript" src="./src/bundle.js"></script>
-    <!-- Load the Paper.js library -->
     <script type="text/javascript" src="./node_modules/paper/dist/paper-full.js"></script>
-
-    <script type="text/javascript" canvas="mainCanvas">
+    <script type="text/javascript" canvas="paperCanvas">
         paper.install(window);
     </script>
 
@@ -17,8 +15,42 @@
 </head>
 <body>
     <figure class='canvas-wrapper'>
-        <canvas id="mainCanvas" width="900px" height="900px"></canvas>
-        <canvas id="paperCanvas" width="900px" height="900px"></canvas>
+        <canvas id="mainCanvas" width="900px" height="600px"></canvas>
+        <canvas id="paperCanvas" width="900px" height="600px"></canvas>
+        <div id='start' class='visible'>
+            <button>Start Game</button>
+        </div>
     </figure>
+    <aside class="sidebar">
+        <section class="game-info">
+            <h1>Sketchy Magic</h1>
+            <article class='game-description'>
+                <h2>Description</h2>
+                <p>Welcome to <strong>Sketchy Magic</strong>. In this game, you have to protect your newly found treasure by drawing shapes to cast magic.</p>
+            </article>
+            <article class='game-controls'>
+                <h2>Controls</h2>
+                <p>To cast spells in this game, use the mouse to draw shapes on the screen. There are currently 2 spells available to you.</p>
+                <ul class='spell-list'>
+                    <li class='triangle-item'>
+                        <h3>Triangle</h3>
+                        <img src="" alt="">
+                        <p>By drawing a triangle on the screen, you gain the ability to summon an icy triangle the freezes all that it touches.</p>
+                    </li>
+
+                    <li class='line-item'>
+                        <h3>Line</h3>
+                        <img src="" alt="">
+                        <p>The line spell punishes anyone that wanders in it's path. Explosions run along the path you create.</p>
+                    </li>
+                </ul>
+            </article>
+        </section>
+        <section class='personal-links'>
+
+        </section>
+        <!-- <section class="game-guide"> -->
+        <!-- </section> -->
+    </aside>
 </body>
 </html>
