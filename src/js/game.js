@@ -13,7 +13,7 @@ class Game {
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
         this.player = new Player(canvas);
-        this.enemyCount = 121;
+        this.enemyCount = 100;
         this.activeSpells = [];
         this.enemies = [];
         this.checkForGameover = false;

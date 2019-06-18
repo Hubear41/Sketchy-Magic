@@ -7,11 +7,11 @@ class Player {
         this.dx = 20;
         this.dy = 20;
         this.direction = 0;
-        this.triangleEnergy = 250;
-        this.triangleMax = 250;
+        this.triangleEnergy = 150;
+        this.triangleMax = 150;
         this.triangleCooldown = 1;
-        this.lineEnergy = 150;
-        this.lineMax = 150;
+        this.lineEnergy = 60;
+        this.lineMax = 60;
         this.lineCooldown = 1;
         
         this.position = { 
@@ -54,16 +54,16 @@ class Player {
     }
 
     draw() {
-        const ctx = this.canvas.getContext('2d');
-        const wandPosition = {
-            x: this.position.x + this.playerWidth + 10,
-            y: this.position.y + 5,
-        }
-        const wandHeight = 25;
-        const wandWidth = 5;
+        // const ctx = this.canvas.getContext('2d');
+        // const wandPosition = {
+        //     x: this.position.x + this.playerWidth + 10,
+        //     y: this.position.y + 5,
+        // }
+        // const wandHeight = 25;
+        // const wandWidth = 5;
         
-        ctx.fillStyle = 'purple';
-        ctx.fillRect(this.position.x, this.position.y, this.playerWidth, this.playerHeight);
+        // ctx.fillStyle = 'purple';
+        // ctx.fillRect(this.position.x, this.position.y, this.playerWidth, this.playerHeight);
         // ctx.fillStyle = 'black';
         // ctx.fillRect(wandPosition.x, wandPosition.y, wandWidth, wandHeight);
         // ctx.fillStyle = 'blue';
