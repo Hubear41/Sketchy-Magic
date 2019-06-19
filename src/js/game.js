@@ -19,14 +19,15 @@ class Game {
         this.activeSpells = [];
 
         // level/wave attributes
-        this.levelList = getLevelList();
+        // this.levelList = getLevelList();
         this.currentLevel = 0;
         this.currentWave = null;
         this.levelType = null;
 
         // enemy attributes
-        this.enemyCount = 0;
+        this.enemyCount = 1000;
         this.enemies = [];
+        this.createEnemies();
         
         // level/game end flags
         this.checkForGameover = false;
@@ -40,7 +41,7 @@ class Game {
 
     start() {
         this.setupSpellFinder();
-        this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
+        // this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
 
         this.gameInterval = setInterval(this.draw, 20);
 
@@ -137,9 +138,9 @@ class Game {
     }
 
     createEnemies() {
-        const newEnemyCount = this.currentWave.enemyCount;
+        // const newEnemyCount = this.currentWave.enemyCount;
 
-        for (let i = 0; i < newEnemyCount; i++) {
+        for (let i = 0; i < this.enemyCount; i++) {
             const zone = Math.floor((Math.random() * 5)) + 1;
             const speed = Math.floor((Math.random() * 300) + 200);
             let x, y;
@@ -337,7 +338,7 @@ class Game {
 
     drawEnemies() {
         const remainingEnemies = [];
-
+        // debugger
         for (let idx = 0; idx < this.enemies.length; idx++) {
             const enemy = this.enemies[idx];
             enemy.draw();

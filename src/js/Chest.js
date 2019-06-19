@@ -11,22 +11,21 @@ class Chest {
         this.waitingToEscape = false;
         this.enemy = null;
         this.currEnemy = null;
-        this.chestHeight = 40;
-        this.chestWidth = 60;
+        this.chestHeight = 32;
+        this.chestWidth = 32;
         this.position = { 
             x: (canvas.width / 2) - (this.chestWidth / 2), 
             y: (3 * canvas.height / 4) - (3 * this.chestHeight / 4),
         };
+
+        this.chooseSprite();
     }
 
 
     draw() {
         const ctx = this.canvas.getContext('2d');
-        ctx.fillStyle = 'goldenrod';
-        ctx.strokeStyle = 'orange';
-        ctx.lineWidth = 5;
-        ctx.fillRect(this.position.x, this.position.y, this.chestWidth, this.chestHeight);
-        ctx.strokeRect(this.position.x, this.position.y, this.chestWidth, this.chestHeight);
+
+        ctx.drawImage(this.spriteSheet, this.position.x, this.position.y, this.chestWidth, this.chestHeight );
 
         if ( this.beingLifted || this.beingTaken ) {
             this.position.x += this.dx;
@@ -36,6 +35,12 @@ class Chest {
                 this.inCarryingPosition();
             }
         }
+    }
+
+    chooseSprite() {
+        this.spriteSheet = new Image();
+        const spriteNum = Math.floor(Math.random() * 2) + 1;
+        this.spriteSheet.src = `assets/Chests/chest${spriteNum}.png` 
     }
 
     pickUpChest(characterPosition, carriedOffset, enemy) {

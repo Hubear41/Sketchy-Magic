@@ -12,19 +12,20 @@ class Enemy {
         this.movementFunction = defaultBehavior;
         this.dy;
         this.dx;
-        this.length = 20;
+        this.length = 30;
         this.moveSpeed = speed; // smaller is faster;
         this.state = 'STEAL';
         this.carrying = false;
         this.grabbing = false;
         this.escaping = false;
-        this.life = 10;
         this.freezeNum = 0;
         this.freezeTimer = 5000;
         this.explosion = [];
+        this.walkIdx = Math.floor(Math.random() * 8);
 
         this.closestChestSpot = this.closestChestSpot.bind(this);
 
+        this.chooseSprite();
         this.locateChest();
     }
 
@@ -64,10 +65,8 @@ class Enemy {
                 ctx.fillStyle = 'brown';
             }
 
-            ctx.beginPath();
-            ctx.fillRect(this.position.x, this.position.y, this.length, this.length);
-            ctx.closePath();
-    
+            this.drawWalk(ctx);
+
             if ( this.state === 'STEAL' && this.chest.beingTaken && this.chest.currEnemy !== this ) {
                 this.newObjective();
             } else if ( this.state === 'STEAL') {
@@ -118,6 +117,14 @@ class Enemy {
         } else {
             this.explosion = remainingParticles;
         }
+    }
+
+    drawWalk(ctx) {
+        const walkPositions = [60, 60, 60, 100, 100, 100, 100, 100, 100, 100, 120, 120, 120, 100, 100, 100, 100, 100, 100, 100];
+        const currPos = walkPositions[this.walkIdx];
+        this.walkIdx = (this.walkIdx + 1) % walkPositions.length;
+
+        ctx.drawImage(this.spriteSheet, currPos, 20, 20, 20, this.position.x, this.position.y, this.length, this.length);
     }
 
     animateShiver() {
@@ -296,6 +303,12 @@ class Enemy {
 
     updateSpeed() {
         this.moveSpeed = Math.floor(Math.random() * 300) + 100;
+    }
+
+    chooseSprite() {
+        this.spriteSheet = new Image();
+        this.spriteNum = Math.floor(Math.random() * 2) + 2;
+        this.spriteSheet.src = `/Users/dennishu/Documents/Bootcamp Work/Sketchy_Magic/assets/Enemies/Orc/orc${this.spriteNum}.png`;
     }
 
     _prepDeathExplosion() {
