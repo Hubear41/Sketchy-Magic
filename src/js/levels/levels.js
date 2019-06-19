@@ -1,9 +1,10 @@
 import Wave from './Wave';
+import { create } from 'domain';
 
 export const TUTORIAL = 'TUTORIAL';
 export const STAGE = 'STAGE';
 
-export const tutorial1 = () => {
+const createTutorial1 = () => {
     const Wave1 = new Wave(4, true, true);
     Wave1.nextWave = newWave(6, true, true);
 
@@ -29,4 +30,10 @@ const noMoreEnemies = (currEnemyCount) => {
     } else {
         return false;
     }
+}
+
+export const getLevelList = () => {
+    const tutorialLevel = createTutorial1(); 
+
+    return [ tutorialLevel ];
 }

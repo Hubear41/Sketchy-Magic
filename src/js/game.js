@@ -2,6 +2,7 @@ import shapeFinder from './shape_finder';
 import Chest from './Chest';
 import Player from './Player';
 import Enemy from './Enemies';
+import { TUTORIAL, STAGE, getLevelList } from './levels/levels';
 import * as VectorUtil from './vector_util';
 
 const DONE = 'DONE';
@@ -12,12 +13,22 @@ class Game {
         this.ctx = this.canvas.getContext('2d');
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
+
+        // player/spells attributes
         this.player = new Player(canvas);
-        this.enemyCount = 100;
         this.activeSpells = [];
+
+        // level/wave attributes
+        this.levelList = getLevelList();
+        this.currentLevel = 0;
+        this.currentWave = null;
+
+        // enemy attributes
+        this.enemyCount = 0;
         this.enemies = [];
-        this.checkForGameover = false;
         this.createEnemies();
+        
+        this.checkForGameover = false;
 
         this.draw = this.draw.bind(this);
         this.drawBg = this.drawBg.bind(this);
@@ -97,8 +108,33 @@ class Game {
         messageEl.innerHTML = this.lose() ? 'You Lose' : 'You Win';
     }
 
+    updateLevelSettings() {
+        // add logic for winning for there are no more levels
+        const nextLevel = this.levelList[this.currentLevel];
+
+        this.currentWave = nextLevel.firstWave;
+        this.enemies = 0;
+        this.createEnemies();
+    }
+
+    updateWave() {
+        if (this.currentWave.waveCondition(this.enemyCount) === true) {
+            const nextWave = this.currentWave.nextWave;
+
+            if ( nextWave === null ) {
+                this.currentLevel++;
+                this.updateLevelSettings()
+            } else {
+                this.createEnemies();
+            }
+
+        }
+    }
+
     createEnemies() {
-        for (let i = 0; i < this.enemyCount; i++) {
+        const newEnemyCount = this.currentWave.enemyCount;
+
+        for (let i = 0; i < newEnemyCount; i++) {
             const zone = Math.floor((Math.random() * 5)) + 1;
             const speed = Math.floor((Math.random() * 300) + 200);
             let x, y;
