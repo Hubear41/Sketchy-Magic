@@ -22,13 +22,15 @@ class Game {
         this.levelList = getLevelList();
         this.currentLevel = 0;
         this.currentWave = null;
+        this.levelType = null;
 
         // enemy attributes
         this.enemyCount = 0;
         this.enemies = [];
-        this.createEnemies();
         
+        // level/game end flags
         this.checkForGameover = false;
+        this.levelOver = false;
 
         this.draw = this.draw.bind(this);
         this.drawBg = this.drawBg.bind(this);
@@ -38,6 +40,8 @@ class Game {
 
     start() {
         this.setupSpellFinder();
+        this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
+
         this.gameInterval = setInterval(this.draw, 20);
 
         setTimeout( () => {
@@ -53,7 +57,7 @@ class Game {
         this.spellFinder = new shapeFinder(this.mouseTool, mainCanvas);
 
         document.addEventListener('mouseup', () => {
-            let spell = this.spellFinder.currentSpell;  // returns a spell object
+            let spell = this.spellFinder.currentSpell;  // returns a spell object if there was a recognized shape
             
             if ( spell ) {
                 switch ( spell.shape ) {
@@ -114,6 +118,7 @@ class Game {
 
         this.currentWave = nextLevel.firstWave;
         this.enemies = 0;
+        this.levelType = nextLevel.type;
         this.createEnemies();
     }
 
