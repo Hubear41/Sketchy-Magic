@@ -122,7 +122,7 @@ class Enemy {
         const currPos = walkPositions[this.walkIdx];
         this.walkIdx = (this.walkIdx + 1) % walkPositions.length;
 
-        ctx.drawImage(this.spriteSheet, currPos, 20, 20, 20, this.position.x, this.position.y, this.length, this.length);
+        ctx.drawImage(this.spriteSheet, currPos, 20, 20, 20, this.position.x - this.length / 2, this.position.y - this.length / 2, this.length, this.length);
     }
 
     animateShiver() {

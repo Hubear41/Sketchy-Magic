@@ -27,7 +27,7 @@ class Game {
         this.levelType = null;
 
         // enemy attributes
-        this.enemyCount = 10;
+        this.enemyCount = 1000;
         this.enemies = [];
         this.createEnemies();
         
@@ -46,9 +46,9 @@ class Game {
 
         this.gameInterval = setInterval(this.draw, 20);
 
-        setTimeout( () => {
-            this.checkForGameover = true;
-        }, 5000);
+        // setTimeout( () => {
+        //     this.checkForGameover = true;
+        // }, 5000);
     }
 
     clear() {
@@ -330,10 +330,10 @@ class Game {
     draw() {
         this.clear();
         this.background.drawBG();
-        this.chest.draw();
         this.enemySpellCollisionDetection();
         this.drawSpells();
         this.drawEnemies();
+        this.chest.draw();
         this.player.draw();
         this.background.drawFG();
         this.drawSpellCooldown();

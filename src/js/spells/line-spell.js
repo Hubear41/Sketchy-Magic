@@ -1,5 +1,6 @@
 import Spell from './Spell';
 import * as VectorUTIL from '../vector_util';
+import { runInThisContext } from 'vm';
 // import {
 //     DONE,
 //     EXPLODING,
@@ -18,15 +19,18 @@ class LineSpell extends Spell {
         this.explosionPosition = null;
         this.explosionDx = 0;
         this.explosionDy = 0;
-        this.explosionStage = 0;
+        this.explosionFrame = 1;
+        this.minRadius = 50;
         this.maxRadius = 100;
-        this.maxStage = 20;
-        this.life = 1.2;
+        this.totalFrames = 80;
+        this.life = 2.4;
+        // this.life = Infinity;
+
+        this.importSprite();
     }
 
     draw(ctx) {
-        ctx.fillStyle = this._determineFillColor(this.shape);
-        ctx.strokeStyle = this._determineStrokeColor(this.shape);
+        ctx.strokeStyle = 'purple';
 
         const startPoint = this.points[0];
         const endPoint = this.points[1];
@@ -37,7 +41,6 @@ class LineSpell extends Spell {
 
         ctx.closePath();
         ctx.stroke();
-        ctx.fill();
 
         if ( this.state === EXPLODING) {
             this.drawExplosions(ctx);
@@ -59,56 +62,48 @@ class LineSpell extends Spell {
         this.explosionDx = explosionPath.dx / this.explosionSpeed;
         this.explosionDy = explosionPath.dy / this.explosionSpeed;
 
-        this.explosionRadius = explosionPath.length / 5 > this.maxRadius ? this.maxRadius : explosionPath.length / 5;
+        if (explosionPath.length / 5 >= this.minRadius && explosionPath.length / 5 <= this.maxRadius) {
+            this.explosionRadius = explosionPath.length / 5;
+        } else if ( explosionPath.length / 5 < this.minRadius ) {
+            this.explosionRadius = this.minRadius;
+        } else if ( explosionPath.length / 5 > this.maxRadius) {
+            this.explosionRadius = this.maxRadius;
+        }
+
         this.explosionPosition = this.points[0];
         this.drawExplosions(ctx);
     }
 
     drawExplosions(ctx) {
-        const orangeStage = this.explosionStage + 5 > this.maxStage ? this.maxStage : this.explosionStage + 5;
-        const yellowStage = this.explosionStage + 2 > this.maxStage ? this.maxStage : this.explosionStage + 2;
-        const clearRadius = this.explosionStage * this.explosionRadius / this.maxStage;
-        const orangeRadius = orangeStage * this.explosionRadius / this.maxStage;
-        const yellowRadius = yellowStage * this.explosionRadius / this.maxStage;
+        const { x, y } = this.explosionPosition;
+
+        const spriteX = ((this.explosionFrame % 10) - 1) * 100;
+        const spriteY = Math.floor(this.explosionFrame / 10) * 100;
+
+        ctx.drawImage(  this.explosionSprite, 
+                        spriteX, 
+                        spriteY, 
+                        100, 
+                        100, 
+                        x - (this.explosionRadius * 2.5) / 2, 
+                        y - (this.explosionRadius * 2.5) / 2, 
+                        this.explosionRadius * 2.5, 
+                        this.explosionRadius * 2.5
+        );
         
-        ctx.filter = "blur(2px)";  // "feather"
-
-        ctx.beginPath();
-        ctx.arc(this.explosionPosition.x, this.explosionPosition.y, this.explosionRadius, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.filter = "blur(10px)"; // inner feather
-
-        ctx.beginPath();
-        ctx.fillStyle = 'orange'
-        ctx.arc(this.explosionPosition.x, this.explosionPosition.y, orangeRadius, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = 'yellow'
-        ctx.arc(this.explosionPosition.x, this.explosionPosition.y, yellowRadius, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
-        // ctx.stroke();
-
-        ctx.beginPath(); 
-        ctx.fillStyle = "lightgreen";
-        ctx.arc(this.explosionPosition.x, this.explosionPosition.y, clearRadius, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.filter = "none";
-        
-        if ( this.explosionStage === this.maxStage ) {
+        if ( this.explosionFrame >= this.totalFrames ) {
             this.explosionPosition.x += this.explosionDx;
             this.explosionPosition.y += this.explosionDy;
 
-            this.explosionStage = 0;
+            this.explosionFrame = 1;
         }
 
-        this.explosionStage++;
+        this.explosionFrame += 2;
+    }
+
+    importSprite() {
+        this.explosionSprite = new Image();
+        this.explosionSprite.src = 'assets/Explosions/spritesheet.png';
     }
 
 }
