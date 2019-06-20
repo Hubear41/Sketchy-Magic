@@ -2,6 +2,7 @@ import shapeFinder from './shape_finder';
 import Chest from './Chest';
 import Player from './Player';
 import Enemy from './Enemies';
+import Background from './Background';
 import { TUTORIAL, STAGE, getLevelList } from './levels/levels';
 import * as VectorUtil from './vector_util';
 
@@ -13,6 +14,7 @@ class Game {
         this.ctx = this.canvas.getContext('2d');
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
+        this.background = new Background(canvas);
 
         // player/spells attributes
         this.player = new Player(canvas);
@@ -25,7 +27,7 @@ class Game {
         this.levelType = null;
 
         // enemy attributes
-        this.enemyCount = 1000;
+        this.enemyCount = 10;
         this.enemies = [];
         this.createEnemies();
         
@@ -34,7 +36,6 @@ class Game {
         this.levelOver = false;
 
         this.draw = this.draw.bind(this);
-        this.drawBg = this.drawBg.bind(this);
         this.drawEnemies = this.drawEnemies.bind(this);
         this.clear = this.clear.bind(this);
     }
@@ -160,25 +161,25 @@ class Game {
                     this.enemies.push(enemy);
                     break;
                 case 3:
-                    x = Math.floor(Math.random() * (450));
+                    x = Math.floor(Math.random() * (this.canvas.width / 2));
                     y = Math.floor(Math.random() * (-100)) - 100;
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
                 case 4:
-                    x = Math.floor(Math.random() * (450)) + 450;
+                    x = Math.floor(Math.random() * (this.canvas.width / 2)) + this.canvas.width / 2;
                     y = Math.floor(Math.random() * (-100)) - 100;
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
                 case 5:
-                    x = Math.floor(Math.random() * (100)) + 900;
+                    x = Math.floor(Math.random() * (100)) + this.canvas.width;
                     y = Math.floor(Math.random() * (200));
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
                     break;
                 case 6:
-                    x = Math.floor(Math.random() * (100) + 900);
+                    x = Math.floor(Math.random() * (100) + this.canvas.width);
                     y = Math.floor(Math.random() * (200)) + 200;
                     enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
                     this.enemies.push(enemy);
@@ -187,16 +188,6 @@ class Game {
                     break;
             }
         }
-    }
-
-    drawBg() {
-        this.ctx.beginPath();
-        this.ctx.fillStyle = 'green';
-        this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.fill();
-        this.ctx.closePath();
-
-        this.drawPedestal();
     }
 
     drawSpellCooldown() {
@@ -246,79 +237,6 @@ class Game {
         this.ctx.lineTo(130, height - 40);
         this.ctx.closePath();
         this.ctx.stroke();
-    }
-
-    drawPedestal() {
-        const height = 80;
-        const width = 120;
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "darkgrey";
-        this.ctx.rect(
-            ((this.canvas.width - width) / 2),
-            (3 * (this.canvas.height - height) / 4),
-            width,
-            height
-        );
-        this.ctx.fill();
-        this.ctx.closePath();
-        
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "grey";
-        this.ctx.rect(
-            ((this.canvas.width - width + 5) / 2),
-            (3 * (this.canvas.height - height + 5) / 4),
-            width - 5,
-            height - 5
-        );
-        this.ctx.fill();
-        this.ctx.closePath();
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "darkgrey";
-        this.ctx.rect(
-            ((this.canvas.width - width + 10) / 2),
-            (3 * (this.canvas.height - height + 10) / 4),
-            width - 10,
-            height - 10,
-        );
-        this.ctx.fill();
-        this.ctx.closePath();
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "grey";
-        this.ctx.rect(
-            ((this.canvas.width - width + 15) / 2),
-            (3 * (this.canvas.height - height + 15) / 4),
-            width - 15,
-            height - 15,
-        );
-        this.ctx.fill();
-        this.ctx.closePath();
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "darkgrey";
-        this.ctx.rect(
-            ((this.canvas.width - width + 20) / 2),
-            (3 * (this.canvas.height - height + 20) / 4),
-            width - 20,
-            height - 20,
-        );
-        this.ctx.fill();
-        this.ctx.closePath();
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = "grey";
-        this.ctx.rect(
-            ((this.canvas.width - width + 25) / 2),
-            (3 * (this.canvas.height - height + 25) / 4),
-            width - 25,
-            height - 25,
-        );
-        this.ctx.fill();
-        this.ctx.closePath();
-
-        this.ctx.closePath();
     }
 
     drawSpells() {
@@ -411,12 +329,13 @@ class Game {
 
     draw() {
         this.clear();
-        this.drawBg();
+        this.background.drawBG();
         this.chest.draw();
         this.enemySpellCollisionDetection();
         this.drawSpells();
         this.drawEnemies();
         this.player.draw();
+        this.background.drawFG();
         this.drawSpellCooldown();
 
         if ( this.checkForGameover ) {

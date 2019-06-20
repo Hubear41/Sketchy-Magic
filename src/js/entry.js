@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameEndScreen = document.getElementById('game-over');
 
     let game = new Game(mainCanvas, mouseTool);
-    game.drawBg();
+    game.background.drawBG();
+    game.background.drawFG();
 
     startBtn.addEventListener('click', e => {
         playPopup.className = "hidden";

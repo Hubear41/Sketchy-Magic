@@ -98,9 +98,7 @@ class Enemy {
             this.dy = 0;
             this._prepDeathExplosion();
             
-            if ( this.carrying || this.grabbing || this.escaping ) {
-                this.dropChest();
-            }
+            this.dropChest();
         }
 
         this.explosion.forEach( particle => {
@@ -128,7 +126,7 @@ class Enemy {
     }
 
     animateShiver() {
-        if ( this.state !== 'DEAD') {
+        if ( this.state !== 'DEAD' && this.state !== 'DYING') {
             if ( this.state !== 'FROZEN' ) {
                 // for future use when enemies don't die in one hit
                 // this.previousState = this.state;
@@ -139,7 +137,6 @@ class Enemy {
     
                 this.state = 'FROZEN';
                 this.freezeTimer = 4000;
-                this.dropChest();
             }
             
             if ( this.freezeNum === 1 || this.freezeNum === 5 ) {
@@ -158,13 +155,14 @@ class Enemy {
                 this.dx = 0;
                 this.dy = 0;
             }
-    
+            
             this.freezeNum = (this.freezeNum + 1) % 45;
+            this.dropChest();
         }
     }
 
     dropChest() {
-        if ( this.carrying || this.escaping ) {
+        if ( this.carrying || this.escaping || this.grabbing ) {
             this.carrying = false;
             this.escaping = false;
             
@@ -250,15 +248,15 @@ class Enemy {
     }
 
     newObjective() {
-        let randomNum = Math.floor(Math.random() * 99) + 1;
+        // let randomNum = Math.floor(Math.random() * 99) + 1;
 
-        if ( randomNum >= 1 && randomNum <= 40 ) {
+        // if ( randomNum >= 1 && randomNum <= 40 ) {
             this.state = 'FOLLOW';
             this.assignFollower();
-        } else {
-            this.state = 'HANGOUT';
-            this.updateHangout();
-        }
+        // } else {
+        //     this.state = 'HANGOUT';
+        //     this.updateHangout();
+        // }
     }
 
     assignFollower() {
@@ -308,7 +306,7 @@ class Enemy {
     chooseSprite() {
         this.spriteSheet = new Image();
         this.spriteNum = Math.floor(Math.random() * 2) + 2;
-        this.spriteSheet.src = `/Users/dennishu/Documents/Bootcamp Work/Sketchy_Magic/assets/Enemies/Orc/orc${this.spriteNum}.png`;
+        this.spriteSheet.src = `assets/Enemies/Orc/orc${this.spriteNum}.png`;
     }
 
     _prepDeathExplosion() {

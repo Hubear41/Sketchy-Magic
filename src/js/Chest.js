@@ -11,8 +11,8 @@ class Chest {
         this.waitingToEscape = false;
         this.enemy = null;
         this.currEnemy = null;
-        this.chestHeight = 32;
-        this.chestWidth = 32;
+        this.chestHeight = 30;
+        this.chestWidth = 30;
         this.position = { 
             x: (canvas.width / 2) - (this.chestWidth / 2), 
             y: (3 * canvas.height / 4) - (3 * this.chestHeight / 4),

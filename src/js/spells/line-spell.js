@@ -94,7 +94,7 @@ class LineSpell extends Spell {
         // ctx.stroke();
 
         ctx.beginPath(); 
-        ctx.fillStyle = "darkgreen";
+        ctx.fillStyle = "lightgreen";
         ctx.arc(this.explosionPosition.x, this.explosionPosition.y, clearRadius, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill();
