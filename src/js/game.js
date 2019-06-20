@@ -46,9 +46,9 @@ class Game {
 
         this.gameInterval = setInterval(this.draw, 20);
 
-        // setTimeout( () => {
-        //     this.checkForGameover = true;
-        // }, 5000);
+        setTimeout( () => {
+            this.checkForGameover = true;
+        }, 5000);
     }
 
     clear() {
@@ -77,7 +77,6 @@ class Game {
                         break;
                 }
             }
-            // this.activeSpells.push(spell);
         });
     }
 

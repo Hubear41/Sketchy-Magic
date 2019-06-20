@@ -118,6 +118,22 @@ class Enemy {
     }
 
     drawWalk(ctx) {
+        let currDirection;
+        let primaryDirection = this.dx > this.dy ? this.dx : this.dy;
+        if ( this.dx === primaryDirection ) {
+            if ( this.dx > 0 ) {
+                currDirection = 'RIGHT';
+            } else {
+                currDirection = 'LEFT';
+            }
+        } else {
+            if ( this.dy > 0 ) {
+                currDirection = 'UP';
+            } else {
+                currDirection = 'DOWN';
+            }
+        }
+
         const walkPositions = [60, 60, 60, 100, 100, 100, 100, 100, 100, 100, 120, 120, 120, 100, 100, 100, 100, 100, 100, 100];
         const currPos = walkPositions[this.walkIdx];
         this.walkIdx = (this.walkIdx + 1) % walkPositions.length;

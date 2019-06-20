@@ -9,7 +9,7 @@ class EnemyParticles {
             dy: (Math.random() * 2) - 1,
         };
 
-        this.size = 100;
+        this.size = 50;
         this.state;
         this.setupSprite();
     }
