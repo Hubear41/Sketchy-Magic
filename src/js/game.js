@@ -268,28 +268,8 @@ class Game {
         this.enemies = remainingEnemies;
     }
 
+    //check for magic spell area 
     enemySpellCollisionDetection() {
-        // checks for other enemies
-        // this.enemies.forEach( otherEnemy => {
-        //     if ( otherEnemy === enemyPiece ) {
-        //         return;
-        //     }
-
-        //     const otherEnemyNextPos = {
-        //         x: otherEnemy.position.x + otherEnemy.dx,
-        //         y: otherEnemy.position.y + otherEnemy.dy,
-        //     };
-
-        //     if ( nextPosition.x < otherEnemyNextPos.x + otherEnemy.length && 
-        //          nextPosition.y < otherEnemyNextPos.y + otherEnemy.length && 
-        //          nextPosition.x > otherEnemyNextPos.x &&
-        //          nextPosition.y > otherEnemyNextPos.y ) 
-        //     {
-                
-        //     }
-        // });
-
-        //check for magic spell area 
         this.activeSpells.forEach( spell => {
             this.enemies.forEach( enemyPiece => {
                 if ( spell && spell.state !== 'DONE' ) {
@@ -322,10 +302,6 @@ class Game {
         });
     }
 
-    // playerCollisionDetection() {
-
-    // }
-
     draw() {
         this.clear();
         this.background.drawBG();
@@ -336,6 +312,7 @@ class Game {
         this.player.draw();
         this.background.drawFG();
         this.drawSpellCooldown();
+        // this.createEnemies();
 
         if ( this.checkForGameover ) {
             this.isGameover();

@@ -6,7 +6,7 @@ body {
     justify-content: space-between;
     background-color: black;
     padding: 5% 0;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 .canvas-wrapper {
@@ -16,7 +16,8 @@ body {
 }
 
 #mainCanvas {
-    background: lightgrey; 
+    background: lightgrey;
+    overflow: hidden;
     /* display: block;  */
     /* margin: 0 auto; */
 }
