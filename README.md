@@ -20,10 +20,11 @@ Sketchy Magic is inspired by [Magicka](https://en.wikipedia.org/wiki/Magicka) wh
 [Wireframe layout](https://wireframe.cc/OzQuLF)
 
 ## MVPs
-- [ ] Basic visuals and designs for the player and enemies.
+- [x] Basic visuals and designs for the player and enemies.
 - [x] Player cast spells by drawing shapes.
 - [x] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
-- [ ] Enemies that succeed in leaving causes a 'Game Over'.
+- [x] Enemies that succeed in leaving causes a 'Game Over'.
+- [ ] A Tutorial is available for players to practice drawing with a mouse or touchpad.
 
 ## Architecture and Technologies
 
@@ -50,14 +51,13 @@ The main files in the project will be:
 
 **Day 2**
 
-- [ ] Complete player avatar movements and basic attacks.
 - [x] Complete player spell casting through mouse drawings ( atleast 2 shapes ).
-- [ ] Start creating enemy designs and AI.
+- [x] Start creating enemy designs and AI.
 
 **Day 3** 
 
 - [x] Allow enemies to pick up and move with treasure.
-- [ ] Have the map re-orient when crystal is dropped
+- [x] Each spell has a bar that corresponds to the next time it can be used
 - [ ] Have the game run several rounds with increasing enemies.
 
 **Day 4** 
