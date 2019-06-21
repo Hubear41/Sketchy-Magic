@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="./src/css/main-view.css">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css"
+        integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
     <script type="text/javascript" src="./src/bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.2/paper-full.js"></script>
     <script type="text/javascript" canvas="paperCanvas">
@@ -14,47 +17,25 @@
     <title>Sketchy Magic</title>
 </head>
 <body>
+    <h1 class='game-title'>Sketchy Magic</h1>
     <figure class='canvas-wrapper'>
         <canvas id="mainCanvas" width="1280px" height="600px"></canvas>
         <canvas id="paperCanvas" width="1280px" height="600px"></canvas>
-        <div id='start' class='visible'>
-            <button id='start-btn' class='button'>Start Game</button>
+        <div id='start' class='visible no-select'>
+            <button id='start-btn' class='button'>Click to Start</button>
         </div>
-        <div id='game-over' class='hidden'>
+        <div id='game-over' class='hidden no-select'>
             <section class='game-over-content'>
                 <span id='game-over-msg'></span>
                 <button id='restart-btn' class='button'>Play Again</button>
             </section>
         </div>
     </figure>
-    <!-- <aside class="sidebar">
-        <section class="game-info">
-            <h1>Sketchy Magic</h1>
-            <article class='game-description'>
-                <h2>Description</h2>
-                <p>Welcome to <strong>Sketchy Magic</strong>. In this game, you have to protect your newly found treasure by drawing shapes to cast magic.</p>
-            </article>
-            <article class='game-controls'>
-                <h2>Controls</h2>
-                <p>To cast spells in this game, use the mouse to draw shapes on the screen. There are currently 2 spells available to you.</p>
-                <ul class='spell-list'>
-                    <li class='triangle-item'>
-                        <h3>Triangle</h3>
-                        <img src="" alt="">
-                        <p>By drawing a triangle on the screen, you gain the ability to summon an icy triangle the freezes all that it touches.</p>
-                    </li>
-
-                    <li class='line-item'>
-                        <h3>Line</h3>
-                        <img src="" alt="">
-                        <p>The line spell punishes anyone that wanders in it's path. Explosions run along the path you create.</p>
-                    </li>
-                </ul>
-            </article>
-        </section>
-        <section class='personal-links'>
-
-        </section>
-    </aside> -->
+    <aside class='personal-links'>
+        <a href="https://www.linkedin.com/in/dennisdhu" target='new'><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/Hubear41/Sketchy-Magic" target='new'><i class="fab fa-github-square"></i></a>
+        <a href="https://angel.co/dennis-hu-1?public_profile=1" target='new'><i class="fab fa-angellist"></i></a>
+        <a href="" target='new'><i class="fas fa-ghost"></i></a>
+    </aside>
 </body>
 </html>

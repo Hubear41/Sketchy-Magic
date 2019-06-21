@@ -1,12 +1,21 @@
 @import 'reset.css';
-@import 'sidebar.css';
+@import 'personal-links.css';
 
 body {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     background-color: black;
-    padding: 5% 0;
-    overflow: hidden;
+    overflow-x: hidden;
+}
+
+.game-title {
+    color: white;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16pt;
+    padding: 20px;
 }
 
 .canvas-wrapper {
@@ -18,7 +27,7 @@ body {
 #mainCanvas {
     background: lightgrey;
     overflow: hidden;
-    /* display: block;  */
+    /* display: block; */
     /* margin: 0 auto; */
 }
 
@@ -41,13 +50,16 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    
 }
 
 #start-btn {
     background-color: steelblue;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Press Start 2P', cursive;
     font-size: 16pt;
+    padding: 20px;
+    text-shadow: 1px 2px black;
+    box-shadow: 1px 2px 2px black;
+    cursor: pointer;
 }
 
 #game-over {
@@ -61,8 +73,9 @@ body {
 
 #restart-btn {
     background-color: darkgreen;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 18pt;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12pt;
+    cursor: pointer;
 }
 
 .game-over-content {
@@ -96,4 +109,15 @@ body {
 .hidden {
     z-index: -1;
     display: none;
+}
+
+/* disables text highlighting */
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
