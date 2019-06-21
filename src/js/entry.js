@@ -13,8 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameEndScreen = document.getElementById('game-over');
 
     let game = new Game(mainCanvas, mouseTool);
-    game.background.drawBG();
-    game.background.drawFG();
+    const startImage = new Image();
+    startImage.src = 'assets/Backgrounds/field_with_trees.jpg';
+
+    startImage.onload = () => {
+        const ctx = mainCanvas.getContext('2d');
+        ctx.drawImage(startImage, 0, 0, 1280, 600);
+        ctx.font = ''
+    }
 
     startBtn.addEventListener('click', e => {
         playPopup.className = "hidden";
@@ -30,4 +36,3 @@ document.addEventListener('DOMContentLoaded', () => {
         game.start();
     });
 });
-
