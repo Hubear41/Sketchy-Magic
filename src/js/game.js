@@ -106,7 +106,7 @@ class Game {
             // debugger
             if ( level.currWave.nextWave === null ) {
                 this.updateLevelSettings();
-            } else if ( level.waveCondition(this.enemies.length) ) { //need condition for current wave
+            } else if ( level.waveCondition( this.enemies.length ) ) { //need condition for current wave
                 this.updateWave();
             }
         }
@@ -139,13 +139,14 @@ class Game {
 
     updateWave() {
         const nextWave = this.currentWave.nextWave;
-
+        debugger
         if ( nextWave === null ) {
             this.currentLevel++;
             this.updateLevelSettings()
         } else {
             this.enemyCount += nextWave.enemyCount;
             this.createEnemies(nextWave.enemyCount);
+            this.currentWave = nextWave;
         }
     }
 
