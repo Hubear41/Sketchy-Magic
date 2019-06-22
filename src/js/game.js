@@ -21,7 +21,7 @@ class Game {
         this.activeSpells = [];
 
         // level/wave attributes
-        // this.levelList = getLevelList();
+        this.levelList = getLevelList();
         this.currentLevel = 0;
         this.currentWave = null;
         this.levelType = null;
@@ -29,7 +29,7 @@ class Game {
         // enemy attributes
         this.enemyCount = 1000;
         this.enemies = [];
-        this.createEnemies(this.enemyCount);
+        // this.createEnemies(this.enemyCount);
         
         // level/game end flags
         this.checkForGameover = false;
@@ -42,7 +42,7 @@ class Game {
 
     start() {
         this.setupSpellFinder();
-        // this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
+        this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
 
         this.gameInterval = setInterval(this.draw, 20);
 
@@ -83,7 +83,6 @@ class Game {
     lose() {
         const { x, y } = this.chest.position;
 
-        // debugger
         if (x + this.chest.chestWidth  < 0 || x > this.canvas.width || 
             y + this.chest.chestHeight < 0 || y > this.canvas.height ) {
             return true;
@@ -93,25 +92,25 @@ class Game {
     }
 
     win() {
-        if ( this.enemies.length <= 0 || !this._enemiesInBounds ) {
-            return true;
-        } else {
-            return false;
-        }
-        // const level = this.levelList[this.currentLevel];
-
-        // if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
-        //     return true
-        // } else if ( this.currentLevel < this.levelList.length ) {
-        //     // debugger
-        //     if ( level.currWave.nextWave === null ) {
-        //         this.updateLevelSettings();
-        //     } else if ( level.waveCondition( this.enemies.length ) ) { //need condition for current wave
-        //         this.updateWave();
-        //     }
+        // if ( this.enemies.length <= 0 || !this._enemiesInBounds ) {
+        //     return true;
+        // } else {
+        //     return false;
         // }
+        const level = this.levelList[this.currentLevel];
 
-        // return false;
+        if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
+            return true
+        } else if ( this.currentLevel < this.levelList.length ) {
+            // debugger
+            if ( level.currWave.nextWave === null) {
+                this.updateLevelSettings();
+            } else if ( level.waveCondition( this.enemies.length ) ) { //need condition for current wave
+                this.updateWave();
+            }
+        }
+
+        return false;
     }
 
     isGameover() {
@@ -128,10 +127,9 @@ class Game {
     }
 
     updateLevelSettings() {
-        // add logic for winning for there are no more levels
         const nextLevel = this.levelList[this.currentLevel];
         // debugger
-        this.currentWave = nextLevel.currWave;
+        this.currentWave = nextLevel ? nextLevel.currWave : null;
         this.enemies = [];
         this.levelType = nextLevel.type;
         this.createEnemies(this.currentWave.enemyCount);
@@ -139,19 +137,19 @@ class Game {
 
     updateWave() {
         const nextWave = this.currentWave.nextWave;
-        debugger
+        // debugger
         if ( nextWave === null ) {
             this.currentLevel++;
             this.updateLevelSettings()
         } else {
-            this.enemyCount += nextWave.enemyCount;
-            this.createEnemies(nextWave.enemyCount);
             this.currentWave = nextWave;
+            this.enemyCount += this.currentWave.enemyCount;
+            this.createEnemies(this.currentWave.enemyCount);
         }
     }
 
     createEnemies(numOfEnemies) {
-        // if ( this.currentWave.defaultPositions === null ) { // if there aren't any default positions
+        if ( this.currentWave.defaultPositions === null ) { // if there aren't any default positions
             for (let i = 0; i < numOfEnemies; i++) {
                 const zone = Math.floor((Math.random() * 5)) + 1;
                 const speed = Math.floor((Math.random() * 300) + 200);
@@ -199,17 +197,17 @@ class Game {
                         break;
                 }
             }
-        // } else { // if there are default positions
-        //     this.currentWave.defaultPositions.forEach( ({ x, y }) => {
-        //         const defaultEnemy = new Enemy(x, y, this.chest, this.canvas, 0, this.player);
-        //         defaultEnemy.dx = 0;
-        //         defaultEnemy.dy = 0;
+        } else { // if there are default positions
+            this.currentWave.defaultPositions.forEach( ({ x, y }) => {
+                const defaultEnemy = new Enemy(x, y, this.chest, this.canvas, 0, this.player);
+                defaultEnemy.dx = 0;
+                defaultEnemy.dy = 0;
 
-        //         this.enemies.push(defaultEnemy);
-        //     });
+                this.enemies.push(defaultEnemy);
+            });
 
-        //     this.currentWave.loaded = true;
-        // }
+            this.currentWave.loaded = true;
+        }
     }
 
     drawSpellCooldown() {
