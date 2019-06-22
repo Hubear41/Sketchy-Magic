@@ -21,7 +21,7 @@ class Game {
         this.activeSpells = [];
 
         // level/wave attributes
-        // this.levelList = getLevelList();
+        this.levelList = getLevelList();
         this.currentLevel = 0;
         this.currentWave = null;
         this.levelType = null;
