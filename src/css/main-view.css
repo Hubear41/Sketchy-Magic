@@ -80,12 +80,12 @@ body {
     height: 20%;
 }
 
-.welcome-message {
+#welcome-message {
     font-family: 'Press Start 2P', cursive;
     color: white;
     font-size: 20pt;
     height: 20%;
-    text-shadow: 1px 1px black;
+    text-shadow: 2px 2px black;
 }
 
 .button {
