@@ -138,16 +138,14 @@ class Game {
     }
 
     updateWave() {
-        if (this.currentWave.waveCondition(this.enemyCount) === true) {
-            const nextWave = this.currentWave.nextWave;
+        const nextWave = this.currentWave.nextWave;
 
-            if ( nextWave === null ) {
-                this.currentLevel++;
-                this.updateLevelSettings()
-            } else {
-                this.enemyCount += nextWave.enemyCount;
-                this.createEnemies(nextWave.enemyCount);
-            }
+        if ( nextWave === null ) {
+            this.currentLevel++;
+            this.updateLevelSettings()
+        } else {
+            this.enemyCount += nextWave.enemyCount;
+            this.createEnemies(nextWave.enemyCount);
         }
     }
 
@@ -261,6 +259,10 @@ class Game {
         this.ctx.closePath();
         this.ctx.stroke();
     }
+
+    // drawTutorial() {
+
+    // }
 
     drawSpells() {
         let remainingSpells = [];
