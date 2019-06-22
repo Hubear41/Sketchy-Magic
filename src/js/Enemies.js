@@ -2,14 +2,14 @@ import * as VectorUTIL from './vector_util';
 import EnemyParticle from './particles/enemy_particles';
 
 class Enemy {
-    constructor(x, y, chest, canvas, speed, player, defaultBehavior = null) {
+    constructor(x, y, chest, canvas, speed, player) {
         this.canvas = canvas;
         this.chest = chest;
         this.player = player;
         this.position = { x, y };
         this.originalPosition = { x, y };
         this.carriedOffset = { x: -3, y: -3 };
-        this.movementFunction = defaultBehavior;
+        // this.movementFunction = defaultBehavior;
         this.dy;
         this.dx;
         this.length = 30;

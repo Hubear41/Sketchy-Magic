@@ -29,7 +29,7 @@ class Game {
         // enemy attributes
         this.enemyCount = 1000;
         this.enemies = [];
-        this.createEnemies();
+        // this.createEnemies();
         
         // level/game end flags
         this.checkForGameover = false;
@@ -42,7 +42,7 @@ class Game {
 
     start() {
         this.setupSpellFinder();
-        // this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
+        this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
 
         this.gameInterval = setInterval(this.draw, 20);
 
@@ -93,11 +93,25 @@ class Game {
     }
 
     win() {
-        if ( this.enemies.length <= 0 || !this._enemiesInBounds ) {
-            return true;
-        } else {
-            return false;
+        // if ( this.enemies.length <= 0 || !this._enemiesInBounds ) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        const level = this.levelList[this.currentLevel];
+
+        if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
+            return true
+        } else if ( this.currentLevel < this.levelList.length ) {
+            // debugger
+            if ( level.currWave.nextWave === null ) {
+                this.updateLevelSettings();
+            } else if ( level.waveCondition(this.enemies.length) ) { //need condition for current wave
+                this.updateWave();
+            }
         }
+
+        return false;
     }
 
     isGameover() {
@@ -116,11 +130,11 @@ class Game {
     updateLevelSettings() {
         // add logic for winning for there are no more levels
         const nextLevel = this.levelList[this.currentLevel];
-
-        this.currentWave = nextLevel.firstWave;
-        this.enemies = 0;
+        // debugger
+        this.currentWave = nextLevel.currWave;
+        this.enemies = [];
         this.levelType = nextLevel.type;
-        this.createEnemies();
+        this.createEnemies(this.currentWave.enemyCount);
     }
 
     updateWave() {
@@ -131,61 +145,71 @@ class Game {
                 this.currentLevel++;
                 this.updateLevelSettings()
             } else {
-                this.createEnemies();
+                this.enemyCount += nextWave.enemyCount;
+                this.createEnemies(nextWave.enemyCount);
             }
-
         }
     }
 
-    createEnemies() {
-        // const newEnemyCount = this.currentWave.enemyCount;
-
-        for (let i = 0; i < this.enemyCount; i++) {
-            const zone = Math.floor((Math.random() * 5)) + 1;
-            const speed = Math.floor((Math.random() * 300) + 200);
-            let x, y;
-            let enemy;
-
-            switch (zone) {
-                case 1:
-                    x = Math.floor(Math.random() * (-100));
-                    y = Math.floor(Math.random() * (200)) + 200;
-                    enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
-                    this.enemies.push(enemy);
-                    break;
-                case 2:
-                    x = Math.floor(Math.random() * (-100));
-                    y = Math.floor(Math.random() * (200));
-                    enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
-                    this.enemies.push(enemy);
-                    break;
-                case 3:
-                    x = Math.floor(Math.random() * (this.canvas.width / 2));
-                    y = Math.floor(Math.random() * (-100)) - 100;
-                    enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
-                    this.enemies.push(enemy);
-                    break;
-                case 4:
-                    x = Math.floor(Math.random() * (this.canvas.width / 2)) + this.canvas.width / 2;
-                    y = Math.floor(Math.random() * (-100)) - 100;
-                    enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
-                    this.enemies.push(enemy);
-                    break;
-                case 5:
-                    x = Math.floor(Math.random() * (100)) + this.canvas.width;
-                    y = Math.floor(Math.random() * (200));
-                    enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
-                    this.enemies.push(enemy);
-                    break;
-                case 6:
-                    x = Math.floor(Math.random() * (100) + this.canvas.width);
-                    y = Math.floor(Math.random() * (200)) + 200;
-                    enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
-                    this.enemies.push(enemy);
-                    break;
-                default:
-                    break;
+    createEnemies(numOfEnemies) {
+        if ( this.currentWave.defaultPosisions === null ) { // if there aren't any default positions
+            for (let i = 0; i < numOfEnemies; i++) {
+                const zone = Math.floor((Math.random() * 5)) + 1;
+                const speed = Math.floor((Math.random() * 300) + 200);
+                let x, y;
+                let enemy;
+    
+                switch (zone) {
+                    case 1:
+                        x = Math.floor(Math.random() * (-100));
+                        y = Math.floor(Math.random() * (200)) + 200;
+                        enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
+                        this.enemies.push(enemy);
+                        break;
+                    case 2:
+                        x = Math.floor(Math.random() * (-100));
+                        y = Math.floor(Math.random() * (200));
+                        enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
+                        this.enemies.push(enemy);
+                        break;
+                    case 3:
+                        x = Math.floor(Math.random() * (this.canvas.width / 2));
+                        y = Math.floor(Math.random() * (-100)) - 100;
+                        enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
+                        this.enemies.push(enemy);
+                        break;
+                    case 4:
+                        x = Math.floor(Math.random() * (this.canvas.width / 2)) + this.canvas.width / 2;
+                        y = Math.floor(Math.random() * (-100)) - 100;
+                        enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
+                        this.enemies.push(enemy);
+                        break;
+                    case 5:
+                        x = Math.floor(Math.random() * (100)) + this.canvas.width;
+                        y = Math.floor(Math.random() * (200));
+                        enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
+                        this.enemies.push(enemy);
+                        break;
+                    case 6:
+                        x = Math.floor(Math.random() * (100) + this.canvas.width);
+                        y = Math.floor(Math.random() * (200)) + 200;
+                        enemy = new Enemy(x, y, this.chest, this.canvas, speed, this.player);
+                        this.enemies.push(enemy);
+                        break;
+                    default:
+                        break;
+                }
             }
+        } else { // if there are default positions
+            this.currentWave.defaultPositions.forEach( ({ x, y }) => {
+                const defaultEnemy = new Enemy(x, y, this.chest, this.canvas, 0, this.player);
+                defaultEnemy.dx = 0;
+                defaultEnemy.dy = 0;
+
+                this.enemies.push(defaultEnemy);
+            });
+
+            this.currentWave.loaded = true;
         }
     }
 

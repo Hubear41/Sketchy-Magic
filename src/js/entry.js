@@ -4,14 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const paperCanvas = document.getElementById('paperCanvas');
     const mainCanvas = document.getElementById('mainCanvas');
     const ctx = mainCanvas.getContext('2d');
+
     paper.setup(paperCanvas);
     const mouseTool = new Tool();
-
 
     const playPopup = document.getElementById('start');
     const startBtn = document.getElementById('start-btn');
     const restartBtn = document.getElementById('restart-btn');
     const gameEndScreen = document.getElementById('game-over');
+
+    // prevents right-click from happening over canvas
+    paperCanvas.oncontextmenu = e => e.preventDefault();
+    mainCanvas.oncontextmenu = e => e.preventDefault();
+    playPopup.oncontextmenu = e => e.preventDefault();
+    gameEndScreen.oncontextmenu = e => e.preventDefault();
 
     let game = new Game(mainCanvas, mouseTool);
     const startImage = new Image();
@@ -19,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let startAnimation;
 
+    // loads start screen image
     startImage.onload = () => {
         let dx = 1;
         let position = 0;
