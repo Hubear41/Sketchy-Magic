@@ -46,6 +46,16 @@ class Game {
         this.gameInterval = setInterval(this.draw, 20);
     }
 
+    reset() {
+        this.levelList = getLevelList();
+        this.activeSpells = [];
+        this.enemies = [];
+        this.enemyCount = 0;
+        this.chest.reset();
+        this.checkForGameover = false;
+        this.levelOver = false;
+    }
+
     clear() {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
     }
@@ -87,15 +97,7 @@ class Game {
     }
 
     win() {
-        // if ( this.enemies.length <= 0 || !this._enemiesInBounds ) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
         const level = this.levelList[this.currentLevel];
-
-        console.log(`remaining enemies: ${this.enemies.length}`);
-        console.log(`enemy count: ${this.enemyCount}`);
         
         if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
             return true;

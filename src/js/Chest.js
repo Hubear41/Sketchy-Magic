@@ -92,6 +92,22 @@ class Chest {
         this.dx = null;
         this.dy = null;
     }
+
+    reset() {
+        this.position = {
+            x: (this.canvas.width / 2) - (this.chestWidth / 2),
+            y: (3 * this.canvas.height / 4) - (3 * this.chestHeight / 4),
+        };
+
+        this.dx = 0;
+        this.dy = 0;
+        this.carringPosition = null;
+        this.beingTaken = false;
+        this.beingLifted = false;
+        this.waitingToEscape = false;
+        this.enemy = null;
+        this.currEnemy = null;
+    }
 }
 
 export default Chest;

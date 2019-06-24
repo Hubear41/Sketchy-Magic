@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameEndScreen.className = 'hidden';
 
         game.currentLevel = 0;
+        game.reset();
         game.start();
     });
 
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // game = new Game(mainCanvas, mouseTool);
         game.currentLevel = 1;
+        game.reset();
         game.start();
     });
 });
