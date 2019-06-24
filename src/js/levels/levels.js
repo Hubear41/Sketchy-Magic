@@ -37,7 +37,7 @@ const createTutorial1 = () => {
         {x: 200, y: 200 }
     ];
 
-    const Wave1 = new Wave(4, true, true, linePositions);
+    const Wave1 = new Wave(23, true, true, linePositions);
     Wave1.nextWave = new Wave(6, true, true, trianglePositions);
 
     return {
@@ -46,6 +46,26 @@ const createTutorial1 = () => {
         waveCondition: noMoreEnemies,
         totalEnemies: 4,
     };
+}
+
+const createLevel1 = () => {
+    const wave1 = new Wave(10);
+    const wave2 = new Wave(15);
+    const wave3 = new Wave(20);
+    const wave4 = new Wave(25);
+    const wave5 = new Wave(30);
+
+    wave1.nextWave = wave2;
+    wave2.nextWave = wave3;
+    wave3.nextWave = wave4;
+    wave4.nextWave = wave5;
+
+    return {
+        type: STAGE,
+        currWave: wave1,
+        waveCondition: enemiesLessThanHalf,
+        totalEnemies: 100
+    }
 }
 
 const enemiesLessThanHalf = (enemyCount, totalEnemies) => {
@@ -65,7 +85,8 @@ const noMoreEnemies = enemyCount => {
 }
 
 export const getLevelList = () => {
-    const tutorialLevel = createTutorial1(); 
+    const tutorialLevel = createTutorial1();
+    const level1 = createLevel1(); 
 
-    return [ tutorialLevel ];
+    return [ tutorialLevel, level1 ];
 }
