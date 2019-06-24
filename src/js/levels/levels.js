@@ -34,7 +34,7 @@ const createTutorial1 = () => {
     ];
 
     const trianglePositions = [
-        {x: 200, y: 200 }
+        {x: 200, y: 200 },
     ];
 
     const Wave1 = new Wave(23, true, true, linePositions);

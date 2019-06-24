@@ -69,6 +69,10 @@ body {
     background-color: darkgreen;
 }
 
+#retry-tutorial-btn {
+    background-color: lightblue;
+}
+
 .game-over-content {
     display: flex;
     flex-direction: column;
@@ -89,13 +93,12 @@ body {
 }
 
 .button {
-    /* position: relative; */
     padding: 10px 5px;
     border-radius: 5px;
     outline: none;
     border: none;
     color: white;
-    font-size: 16pt;
+    font-size: 12pt;
     padding: 20px;
     text-shadow: 1px 2px black;
     box-shadow: 1px 2px 2px black;

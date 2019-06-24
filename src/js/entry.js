@@ -12,12 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('start-btn');
     const restartBtn = document.getElementById('restart-btn');
     const gameEndScreen = document.getElementById('game-over');
+    const tutorialBtn = document.getElementById('retry-tutorial-btn');
 
     // prevents right-click from happening over canvas
     paperCanvas.oncontextmenu = e => e.preventDefault();
     mainCanvas.oncontextmenu = e => e.preventDefault();
     playPopup.oncontextmenu = e => e.preventDefault();
     gameEndScreen.oncontextmenu = e => e.preventDefault();
+    tutorialBtn.oncontextmenu = e => e.preventDefault();
 
     let game = new Game(mainCanvas, mouseTool);
     const startImage = new Image();
@@ -56,10 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
         game.start();
     });
 
+    tutorialBtn.addEventListener('click', e => {
+        gameEndScreen.className = 'hidden';
+
+        game.currentLevel = 0;
+        game.start();
+    });
+
     restartBtn.addEventListener('click', e => {
         gameEndScreen.className = 'hidden';
 
-        game = new Game(mainCanvas, mouseTool);
+        // game = new Game(mainCanvas, mouseTool);
+        game.currentLevel = 1;
         game.start();
     });
 });

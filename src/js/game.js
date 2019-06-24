@@ -27,9 +27,8 @@ class Game {
         this.levelType = null;
 
         // enemy attributes
-        this.enemyCount = 1000;
+        this.enemyCount = 0;
         this.enemies = [];
-        // this.createEnemies(this.enemyCount);
         
         // level/game end flags
         this.checkForGameover = false;
@@ -45,10 +44,6 @@ class Game {
         this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
 
         this.gameInterval = setInterval(this.draw, 20);
-
-        setTimeout( () => {
-            this.checkForGameover = true;
-        }, 5000);
     }
 
     clear() {
@@ -99,13 +94,17 @@ class Game {
         // }
         const level = this.levelList[this.currentLevel];
 
+        console.log(`remaining enemies: ${this.enemies.length}`);
+        console.log(`enemy count: ${this.enemyCount}`);
+        
         if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
-            return true
+            return true;
         } else if ( this.currentLevel < this.levelList.length ) {
             // debugger
             if ( level.currWave.nextWave === null) {
                 this.updateLevelSettings();
             } else if ( level.waveCondition( this.enemies.length, this.enemyCount ) ) { //need condition for current wave
+                // debugger;
                 this.updateWave();
             }
         }
@@ -131,19 +130,30 @@ class Game {
         // debugger
         this.currentWave = nextLevel ? nextLevel.currWave : null;
         this.enemies = [];
-        this.levelType = nextLevel.type;
+        this.enemyCount = 0;
+        this.levelType = nextLevel ? nextLevel.type : '';
         this.createEnemies(this.currentWave.enemyCount);
+
+        console.log('updating level');
+
+        clearTimeout(this.gameOverTimeout);
+        this.gameOverTimeout = setTimeout(() => {
+            this.checkForGameover = true;
+        }, 5000);
     }
 
     updateWave() {
         const nextWave = this.currentWave.nextWave;
-        // debugger
-        if ( nextWave === null ) {
+        
+        console.log('updating wave');
+
+        if ( nextWave === null && this.enemies.length <= 0 ) {
             this.currentLevel++;
             this.updateLevelSettings()
-        } else {
+        } else if ( nextWave !== null) {
             this.currentWave = nextWave;
             this.enemyCount += this.currentWave.enemyCount;
+            // debugger
             this.createEnemies(this.currentWave.enemyCount);
         }
     }
