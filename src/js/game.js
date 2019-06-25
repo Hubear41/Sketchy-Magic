@@ -16,7 +16,6 @@ class Game {
     constructor(canvas, mouseTool) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
-        this.gameState = null;
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
         this.background = new Background(canvas);
@@ -39,6 +38,11 @@ class Game {
         this.checkForGameover = false;
         this.levelOver = false;
 
+        // transition values 
+        this.state = null;
+        this.startFrame = 0;
+        this.endFrame = 0;
+
         this.draw = this.draw.bind(this);
         this.drawEnemies = this.drawEnemies.bind(this);
         this.clear = this.clear.bind(this);
@@ -59,6 +63,7 @@ class Game {
         this.chest.reset();
         this.checkForGameover = false;
         this.levelOver = false;
+        clearTimeout(this.gameOverTimeout);
     }
 
     clear() {
@@ -111,7 +116,7 @@ class Game {
             // if ( level.currWave.nextWave === null ) {
             //     this.updateLevelSettings();
             // } else 
-            if ( level.waveCondition( this.enemies.length, this.enemyCount ) ) { //need condition for current wave
+            if ( level.waveCondition( this.enemies.length, this.enemyCount ) && this.state === STARTED ) { //need condition for current wave
                 // debugger;
                 this.updateWave();
             }
@@ -137,6 +142,9 @@ class Game {
     }
 
     updateLevelSettings() {
+        this.chest.reset();
+        this.activeSpells = [];
+        
         const nextLevel = this.levelList[this.currentLevel];
         
         this.currentWave = nextLevel ? nextLevel.currWave : null;
@@ -145,6 +153,7 @@ class Game {
         this.levelType = nextLevel ? nextLevel.type : '';
 
         this.state = STARTING;
+        this.startFrame = 0;
         setTimeout( () => {
             this.state = STARTED
             this.createEnemies(this.currentWave.enemyCount);
@@ -298,8 +307,16 @@ class Game {
 
     drawStarting() {
         const level = this.levelList[this.currentLevel];
+        let bgOpacity = 0.4;
+        let fontOpacity = 1;
 
-        this.ctx.fillStyle = "hsla(0, 0%, 0%, 0.4)";
+        if ( this.startFrame > 1600 ) {
+            const multiplier = (2000 - this.startFrame) / 400; 
+            bgOpacity = multiplier <= 0 ? 0 : bgOpacity * multiplier;
+            fontOpacity *= multiplier <= 0 ? 0 : fontOpacity * multiplier;
+        }
+
+        this.ctx.fillStyle = `hsla(0, 0%, 0%, ${bgOpacity})`;
         this.ctx.fillRect(0,0,1280,600);
         
         this.ctx.strokeStyle = "hsla(360, 100%, 100%, 1)";
@@ -312,14 +329,16 @@ class Game {
         this.ctx.stroke();
 
         this.ctx.textAlign = 'center';
-        this.ctx.font = 'normal bold 300pt Press Start 2P';
+        this.ctx.font = 'normal bold 18pt "Press Start 2P"';
         
-        this.ctx.fillStyle = "hsla(360, 100%, 100%, 1)";
+        this.ctx.fillStyle = `hsla(360, 100%, 100%, ${fontOpacity})`;
         this.ctx.fillText(level.name, 640, 250);
 
-        this.ctx.font = 'normal normal 50pt Press Start 2P';
-        this.ctx.fillStyle = "hsla(0, 0%, 10%, 1)";
+        this.ctx.font = 'normal normal 10pt "Press Start 2P"';
+        this.ctx.fillStyle = `hsla(0, 0%, 10%, ${fontOpacity})`;
         this.ctx.fillText(level.description, 640, 350);
+
+        this.startFrame += 20;
     }
 
     drawSpells() {

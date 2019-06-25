@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const playPopup = document.getElementById('start');
     const startBtn = document.getElementById('start-btn');
-    const restartBtn = document.getElementById('restart-btn');
+    const retryBtn = document.getElementById('retry-btn');
     const gameEndScreen = document.getElementById('game-over');
     const tutorialBtn = document.getElementById('retry-tutorial-btn');
 
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if ( position > 590 && dx > 0 ) {
                 dx = 0.5;
             }
-
             position += dx;
         }, 50);
     }
@@ -66,11 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         game.start();
     });
 
-    restartBtn.addEventListener('click', e => {
+    retryBtn.addEventListener('click', e => {
         gameEndScreen.className = 'hidden';
 
         // game = new Game(mainCanvas, mouseTool);
-        game.currentLevel = 1;
         game.reset();
         game.start();
     });

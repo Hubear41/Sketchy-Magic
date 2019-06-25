@@ -37,7 +37,7 @@ const createLineTutorial = () => {
 
     return {
         type: TUTORIAL,
-        name: 'Tutorial: Lines',
+        name: 'Practice: Line Spell',
         description: 'Practice drawing lines to hit enemies',
         currWave: wave1,
         waveCondition: noMoreEnemies,
@@ -73,7 +73,7 @@ const createTriangeTutorial = () => {
     const wave = new Wave(23, true, true, trianglePositions);
     return {
         type: TUTORIAL,
-        name: 'Tutorial: Triangles',
+        name: 'Practice: Triangle Spell',
         description: 'Practice drawing triangles to hit enemies',
         currWave: wave,
         waveCondition: noMoreEnemies,
@@ -82,7 +82,7 @@ const createTriangeTutorial = () => {
 }
 
 const createLevel1 = () => {
-    const wave1 = new Wave(5);
+    const wave1 = new Wave(6);
     const wave2 = new Wave(9);
     const wave3 = new Wave(9);
     const wave4 = new Wave(12);
@@ -99,7 +99,95 @@ const createLevel1 = () => {
         description: 'Protect your treasure at all costs',
         currWave: wave1,
         waveCondition: enemiesLessThanHalf,
-        totalEnemies: 100
+        totalEnemies: 48
+    }
+}
+
+const createLevel2 = () => {
+    const wave1 = new Wave(10);
+    const wave2 = new Wave(10);
+    const wave3 = new Wave(12);
+    const wave4 = new Wave(12);
+    const wave5 = new Wave(14);
+    const wave6 = new Wave(14);
+
+    wave1.nextWave = wave2;
+    wave2.nextWave = wave3;
+    wave3.nextWave = wave4;
+    wave4.nextWave = wave5;
+    wave5.nextWave = wave6;
+
+    return {
+        type: STAGE,
+        name: 'Level 2',
+        description: 'Protect your treasure at all costs',
+        currWave: wave1,
+        waveCondition: enemiesLessThanHalf,
+        totalEnemies: 72
+    }
+}
+
+const createLevel3 = () => {
+    const wave1 = new Wave(14);
+    const wave2 = new Wave(16);
+    const wave3 = new Wave(22);
+    const wave4 = new Wave(25);
+    const wave5 = new Wave(28);
+    const wave6 = new Wave(30);
+
+    wave1.nextWave = wave2;
+    wave2.nextWave = wave3;
+    wave3.nextWave = wave4;
+    wave4.nextWave = wave5;
+    wave5.nextWave = wave6;
+
+    return {
+        type: STAGE,
+        name: 'Level 3',
+        description: 'Becareful, their numbers are increasing',
+        currWave: wave1,
+        waveCondition: enemiesLessThanHalf,
+        totalEnemies: 108
+    }
+}
+
+const createLevel4 = () => {
+    const wave1 = new Wave(20);
+    const wave2 = new Wave(120);
+
+    wave1.nextWave = wave2;
+
+    return {
+        type: STAGE,
+        name: 'Level 4',
+        description: 'Something\'s different. Stay Sharp!',
+        currWave: wave1,
+        waveCondition: enemiesLessThanHalf,
+        totalEnemies: 144
+    }
+}
+
+const createLevel5 = () => {
+    const wave1 = new Wave(50);
+    const wave2 = new Wave(78);
+    const wave3 = new Wave(90);
+    const wave4 = new Wave(102);
+    const wave5 = new Wave(119);
+    const wave6 = new Wave(130);
+
+    wave1.nextWave = wave2;
+    wave2.nextWave = wave3;
+    wave3.nextWave = wave4;
+    wave4.nextWave = wave5;
+    wave5.nextWave = wave6;
+
+    return {
+        type: STAGE,
+        name: 'Level 5',
+        description: 'Watchout! They\'re sending everything that they\'ve got',
+        currWave: wave1,
+        waveCondition: enemiesLessThanHalf,
+        totalEnemies: 219
     }
 }
 
@@ -120,13 +208,27 @@ const noMoreEnemies = enemyCount => {
 }
 
 export const getLevelList = () => {
-    const tutorial1 = createLineTutorial();
-    const tutorial2 = createTriangeTutorial();
     const level1 = createLevel1(); 
+    const level2 = createLevel2();
+    const level3 = createLevel3();
+    const level4 = createLevel4();
+    const level5 = createLevel5();
 
     return [ 
-        tutorial1, 
+        level1,
+        level2,
+        level3,
+        level4,
+        level5
+    ];
+}
+
+export const getPracticeList = () => {
+    const tutorial1 = createLineTutorial();
+    const tutorial2 = createTriangeTutorial(); 
+
+    return [
+        tutorial1,
         tutorial2,
-        level1 
     ];
 }
