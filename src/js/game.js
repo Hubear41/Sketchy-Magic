@@ -118,14 +118,17 @@ class Game {
     isGameover() {
         if ( !this.win() && !this.lose() ) {
             return false;
-        } 
+        }
 
-        clearTimeout(this.gameInterval);
-        const gameEndScreen = document.getElementById('game-over');
-        const messageEl = document.getElementById('game-over-msg');
+        setTimeout( () => {
+            clearTimeout(this.gameInterval);
 
-        gameEndScreen.className = 'visible';
-        messageEl.innerHTML = this.lose() ? 'You Lose' : 'You Win';
+            const gameEndScreen = document.getElementById('game-over');
+            const messageEl = document.getElementById('game-over-msg');
+    
+            gameEndScreen.className = 'visible';
+            messageEl.innerHTML = this.lose() ? 'You Lose' : 'You Win';
+        }, 2000);
     }
 
     updateLevelSettings() {
