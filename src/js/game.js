@@ -7,11 +7,16 @@ import { TUTORIAL, STAGE, getLevelList } from './levels/levels';
 import * as VectorUtil from './vector_util';
 
 const DONE = 'DONE';
+const STARTING = 'STARTING';
+const STARTED = 'STARTED';
+const ENDING = 'ENDING';
+const ENDED = 'ENDED';
 
 class Game {
     constructor(canvas, mouseTool) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
+        this.gameState = null;
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
         this.background = new Background(canvas);
@@ -133,14 +138,17 @@ class Game {
 
     updateLevelSettings() {
         const nextLevel = this.levelList[this.currentLevel];
-        debugger
+        
         this.currentWave = nextLevel ? nextLevel.currWave : null;
         this.enemies = [];
         this.enemyCount = this.currentWave.enemyCount;
         this.levelType = nextLevel ? nextLevel.type : '';
-        this.createEnemies(this.currentWave.enemyCount);
 
-        console.log('updating level');
+        this.state = STARTING;
+        setTimeout( () => {
+            this.state = STARTED
+            this.createEnemies(this.currentWave.enemyCount);
+        }, 2000);
 
         clearTimeout(this.gameOverTimeout);
         this.gameOverTimeout = setTimeout(() => {
@@ -275,9 +283,44 @@ class Game {
         this.ctx.stroke();
     }
 
-    // drawTutorial() {
+    drawTransitions() {
+        switch(this.state) {
+            case STARTING:
+                this.drawStarting();
+                break;
+            case ENDING:
+                this.drawEnding();
+                break;
+            default:
+                break;
+        }
+    }
 
-    // }
+    drawStarting() {
+        const level = this.levelList[this.currentLevel];
+
+        this.ctx.fillStyle = "hsla(0, 0%, 0%, 0.4)";
+        this.ctx.fillRect(0,0,1280,600);
+        
+        this.ctx.strokeStyle = "hsla(360, 100%, 100%, 1)";
+        this.ctx.lineWidth = 1;
+        // debugger
+        this.ctx.beginPath();
+        this.ctx.moveTo(0,300);
+        this.ctx.lineTo(1280,300);
+        this.ctx.closePath();
+        this.ctx.stroke();
+
+        this.ctx.textAlign = 'center';
+        this.ctx.font = 'normal bold 300pt Press Start 2P';
+        
+        this.ctx.fillStyle = "hsla(360, 100%, 100%, 1)";
+        this.ctx.fillText(level.name, 640, 250);
+
+        this.ctx.font = 'normal normal 50pt Press Start 2P';
+        this.ctx.fillStyle = "hsla(0, 0%, 10%, 1)";
+        this.ctx.fillText(level.description, 640, 350);
+    }
 
     drawSpells() {
         let remainingSpells = [];
@@ -296,7 +339,6 @@ class Game {
 
     drawEnemies() {
         const remainingEnemies = [];
-        // debugger
         for (let idx = 0; idx < this.enemies.length; idx++) {
             const enemy = this.enemies[idx];
             enemy.draw();
@@ -353,6 +395,7 @@ class Game {
         this.player.draw();
         this.background.drawFG();
         this.drawSpellCooldown();
+        this.drawTransitions();
         // this.createEnemies();
 
         if ( this.checkForGameover ) {

@@ -38,7 +38,7 @@ const createLineTutorial = () => {
     return {
         type: TUTORIAL,
         name: 'Tutorial: Lines',
-        Objective: 'Practice drawing lines to hit enemies',
+        description: 'Practice drawing lines to hit enemies',
         currWave: wave1,
         waveCondition: noMoreEnemies,
         totalEnemies: 23,
