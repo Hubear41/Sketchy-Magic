@@ -65,12 +65,16 @@ body {
     left: 0;
 }
 
+#game-over-msg {
+    font-size: 20pt;
+}
+
 #restart-btn {
     background-color: darkgreen;
 }
 
 #retry-tutorial-btn {
-    background-color: lightblue;
+    background-color: steelblue;
 }
 
 .game-over-content {
