@@ -3,7 +3,7 @@ import Wave from './Wave';
 export const TUTORIAL = 'TUTORIAL';
 export const STAGE = 'STAGE';
 
-const createTutorial1 = () => {
+const createLineTutorial = () => {
     const linePositions = [
         // far left group
         { x: 100, y: 200 },
@@ -33,27 +33,50 @@ const createTutorial1 = () => {
         { x: 610, y: 542 }
     ];
 
-    const trianglePositions = [
-        {x: 200, y: 200 },
-    ];
-
-    const Wave1 = new Wave(23, true, true, linePositions);
-    Wave1.nextWave = new Wave(6, true, true, trianglePositions);
+    const wave1 = new Wave(23, true, true, linePositions);
 
     return {
         type: TUTORIAL,
-        currWave: Wave1,
+        currWave: wave1,
         waveCondition: noMoreEnemies,
-        totalEnemies: 4,
+        totalEnemies: 23,
     };
+}
+
+const createTriangeTutorial = () => {
+    const trianglePositions = [
+        // left triangle
+        { x: 200, y: 200 },
+        { x: 184, y: 211 },
+        { x: 110, y: 187 },
+        { x: 300, y: 259 },
+        { x: 290, y: 117 },
+        { x: 265, y: 138 },
+        // center triangle
+        { x: 700, y: 524 },
+        { x: 700, y: 524 },
+        { x: 700, y: 524 },
+        { x: 700, y: 524 },
+        { x: 700, y: 524 },
+        { x: 700, y: 524 },
+
+    ];
+
+    const wave = new Wave(23, true, true, trianglePositions);
+    return {
+        type: TUTORIAL,
+        currWave: wave,
+        waveCondition: noMoreEnemies,
+        totalEnemies: 23
+    }
 }
 
 const createLevel1 = () => {
     const wave1 = new Wave(10);
-    const wave2 = new Wave(15);
-    const wave3 = new Wave(20);
-    const wave4 = new Wave(25);
-    const wave5 = new Wave(30);
+    const wave2 = new Wave(12);
+    const wave3 = new Wave(14);
+    const wave4 = new Wave(16);
+    const wave5 = new Wave(20);
 
     wave1.nextWave = wave2;
     wave2.nextWave = wave3;
@@ -85,8 +108,13 @@ const noMoreEnemies = enemyCount => {
 }
 
 export const getLevelList = () => {
-    const tutorialLevel = createTutorial1();
+    const tutorial1 = createLineTutorial();
+    const tutorial2 = createTriangeTutorial();
     const level1 = createLevel1(); 
 
-    return [ tutorialLevel, level1 ];
+    return [ 
+        tutorial1, 
+        tutorial2,
+        level1 
+    ];
 }

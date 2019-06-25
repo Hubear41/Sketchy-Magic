@@ -103,9 +103,10 @@ class Game {
             return true;
         } else if ( this.currentLevel < this.levelList.length ) {
             // debugger
-            if ( level.currWave.nextWave === null) {
-                this.updateLevelSettings();
-            } else if ( level.waveCondition( this.enemies.length, this.enemyCount ) ) { //need condition for current wave
+            // if ( level.currWave.nextWave === null ) {
+            //     this.updateLevelSettings();
+            // } else 
+            if ( level.waveCondition( this.enemies.length, this.enemyCount ) ) { //need condition for current wave
                 // debugger;
                 this.updateWave();
             }
@@ -129,10 +130,10 @@ class Game {
 
     updateLevelSettings() {
         const nextLevel = this.levelList[this.currentLevel];
-        // debugger
+        debugger
         this.currentWave = nextLevel ? nextLevel.currWave : null;
         this.enemies = [];
-        this.enemyCount = 0;
+        this.enemyCount = this.currentWave.enemyCount;
         this.levelType = nextLevel ? nextLevel.type : '';
         this.createEnemies(this.currentWave.enemyCount);
 
