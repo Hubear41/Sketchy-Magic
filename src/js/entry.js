@@ -11,8 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const playPopup = document.getElementById('start');
     const startBtn = document.getElementById('start-btn');
     const retryBtn = document.getElementById('retry-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const practiceBtn = document.getElementById('practice-btn');
+    const lineBtn = document.getElementById('line-btn');
+    const triangleBtn = document.getElementById('triangle-btn');
+    const practiceBack = document.getElementById('practice-back-btn');
     const gameEndScreen = document.getElementById('game-over');
-    const tutorialBtn = document.getElementById('retry-tutorial-btn');
+    const practiceScreen = document.getElementById('practice');
 
     // prevents right-click from happening over canvas
     paperCanvas.oncontextmenu = e => e.preventDefault();
@@ -54,15 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(startAnimation);
 
         game.clear();
-        game.start();
-    });
-
-    tutorialBtn.addEventListener('click', e => {
-        gameEndScreen.className = 'hidden';
-
-        game.currentLevel = 0;
-        game.reset();
-        game.start();
+        game.startLevels();
     });
 
     retryBtn.addEventListener('click', e => {
@@ -71,5 +68,50 @@ document.addEventListener('DOMContentLoaded', () => {
         // game = new Game(mainCanvas, mouseTool);
         game.reset();
         game.start();
+    });
+
+    restartBtn.addEventListener('click', e => {
+        gameEndScreen.className = 'hidden';
+        playPopup.className = 'visible no-select';
+
+        // restarts the background animation
+        startAnimation = setInterval(() => {
+            ctx.drawImage(startImage, position, 200, 1280, 800, 0, 0, 1280, 600);
+
+            if (position === 640 && dx > 0) {
+                dx = -1;
+            } else if (position === 0 && dx < 0) {
+                dx = 1;
+            } else if (position < 50 && dx < 0) {
+                dx = -0.5;
+            } else if (position > 590 && dx > 0) {
+                dx = 0.5;
+            }
+            position += dx;
+        }, 50);
+    });
+
+    practiceBtn.addEventListener('click', e => {
+        playPopup.className = 'hidden';
+        practiceScreen.className = 'visible no-select'
+    });
+
+    lineBtn.addEventListener('click', e => {
+        clearInterval(startAnimation);
+
+        practiceScreen.className = 'hidden';
+        game.startPractice(0);
+    });
+
+    triangleBtn.addEventListener('click', e => {
+        clearInterval(startAnimation);
+
+        practiceScreen.className = 'hidden';
+        game.startPractice(1);
+    });
+
+    practiceBack.addEventListener('click', () => {
+        practiceScreen.className = 'hidden';
+        playPopup.className = 'visible no-select';
     });
 });

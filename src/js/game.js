@@ -3,7 +3,7 @@ import Chest from './Chest';
 import Player from './Player';
 import Enemy from './Enemies';
 import Background from './Background';
-import { TUTORIAL, STAGE, getLevelList } from './levels/levels';
+import { TUTORIAL, STAGE, getLevels, getPractice } from './levels/levels';
 import * as VectorUtil from './vector_util';
 
 const DONE = 'DONE';
@@ -25,7 +25,7 @@ class Game {
         this.activeSpells = [];
 
         // level/wave attributes
-        this.levelList = getLevelList();
+        this.levelList = null;
         this.currentLevel = 0;
         this.currentWave = null;
         this.levelType = null;
@@ -46,6 +46,17 @@ class Game {
         this.draw = this.draw.bind(this);
         this.drawEnemies = this.drawEnemies.bind(this);
         this.clear = this.clear.bind(this);
+    }
+    
+    startPractice(levelNum) {
+        this.levelList = getPractice();
+        this.currentLevel = levelNum;
+        this.start();
+    }
+
+    startLevels() {
+        this.levelList = getLevels();
+        this.start();
     }
 
     start() {
@@ -137,7 +148,7 @@ class Game {
             const messageEl = document.getElementById('game-over-msg');
     
             gameEndScreen.className = 'visible';
-            messageEl.innerHTML = this.lose() ? 'You Lose' : 'You Win';
+            messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header>You Win<p>';
         }, 2000);
     }
 

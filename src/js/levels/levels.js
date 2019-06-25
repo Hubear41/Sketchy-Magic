@@ -207,7 +207,7 @@ const noMoreEnemies = enemyCount => {
     }
 }
 
-export const getLevelList = () => {
+export const getLevels = () => {
     const level1 = createLevel1(); 
     const level2 = createLevel2();
     const level3 = createLevel3();
@@ -223,7 +223,7 @@ export const getLevelList = () => {
     ];
 }
 
-export const getPracticeList = () => {
+export const getPractice = () => {
     const tutorial1 = createLineTutorial();
     const tutorial2 = createTriangeTutorial(); 
 

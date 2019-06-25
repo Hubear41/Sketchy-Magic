@@ -24,14 +24,22 @@
         <canvas id="paperCanvas" width="1280px" height="600px"></canvas>
         <div id='start' class='visible no-select'>
             <span id='welcome-message' class='visible'>Welcome To Sketchy Magic</span>
-            <button id='start-btn' class='button'>Click to Start</button>
+            <button id='start-btn' class='button'>Play</button>
+            <button id='practice-btn' class='button'>Practice Levels</button>
         </div>
+
+        <div id='practice' class='hidden'>
+            <h2 class='game-header'>Choose a Level</h2>
+            <button id='line-btn' class='button'>Lines</button>
+            <button id='triangle-btn' class='button'>Triangles</button>
+            <button id='practice-back-btn' class='button'>Back</button>
+        </div>
+
         <div id='game-over' class='hidden no-select'>
             <section class='game-over-content'>
                 <span id='game-over-msg'></span>
                 <div className='end-game-btns'>
                     <button id='retry-btn' class='button'>Retry Level</button>
-                    <button id='retry-tutorial-btn' class='button'>Retry Tutorial</button>
                     <button id='restart-btn' class='button'>Back to Main Menu</button>
                 </div>
             </section>
