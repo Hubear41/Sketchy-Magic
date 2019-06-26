@@ -24,7 +24,7 @@
         <canvas id="paperCanvas" width="1280px" height="600px"></canvas>
         <div id='start' class='visible no-select'>
             <span id='welcome-message' class='visible'>Welcome To Sketchy Magic</span>
-            <button id='start-btn' class='button'>Play</button>
+            <button id='start-btn' class='button'>Start Playing</button>
             <button id='practice-btn' class='button'>Practice Levels</button>
         </div>
 
@@ -35,13 +35,34 @@
             <button id='practice-back-btn' class='button'>Back</button>
         </div>
 
+        <div id='instructions' class='visible'>
+            <h2 class='game-header'>How to Play</h2>
+            <section class='instructions-content'>
+                <div class='instructions-row drawing-row'>
+                    <img src="" alt="">
+                    <p></p>
+                </div>
+                <div class='instructions-row enemies-row'>
+                    <img src="" alt="">
+                    <p></p>
+                </div>
+                <div class='instructions-row cooldown-row'>
+                    <img src="" alt="">
+                    <p></p>
+                </div>
+                <div class='instructions-row treasure-row'>
+                    <img src="" alt="">
+                    <p></p>
+                </div>
+            </section>
+            <button id='continue' class='button'>Continue</button>
+        </div>
+
         <div id='game-over' class='hidden no-select'>
             <section class='game-over-content'>
                 <span id='game-over-msg'></span>
-                <div className='end-game-btns'>
-                    <button id='retry-btn' class='button'>Retry Level</button>
-                    <button id='restart-btn' class='button'>Back to Main Menu</button>
-                </div>
+                <button id='retry-btn' class='button'>Retry Level</button>
+                <button id='restart-btn' class='button'>Back to Main Menu</button>
             </section>
         </div>
     </figure>

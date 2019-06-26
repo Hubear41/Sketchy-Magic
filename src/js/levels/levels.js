@@ -223,12 +223,13 @@ export const getLevels = () => {
     ];
 }
 
-export const getPractice = () => {
-    const tutorial1 = createLineTutorial();
-    const tutorial2 = createTriangeTutorial(); 
+export const getPractice = num => {
+    const line = createLineTutorial();
+    const triangle = createTriangeTutorial(); 
 
-    return [
-        tutorial1,
-        tutorial2,
-    ];
+    if ( num === 0 ) {
+        return [ line ];
+    } else {
+        return [ triangle ];
+    }
 }

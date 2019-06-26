@@ -49,13 +49,14 @@ class Game {
     }
     
     startPractice(levelNum) {
-        this.levelList = getPractice();
-        this.currentLevel = levelNum;
-        this.start();
+        this.levelList = getPractice(levelNum);
+        this.currentLevel = 0;
+        this.start();   
     }
 
     startLevels() {
         this.levelList = getLevels();
+        this.currentLevel = 0;
         this.start();
     }
 
@@ -67,12 +68,13 @@ class Game {
     }
 
     reset() {
-        this.levelList = getLevelList();
+        // this.levelList = null;
         this.activeSpells = [];
         this.enemies = [];
         this.enemyCount = 0;
         this.chest.reset();
         this.checkForGameover = false;
+        this.currentWave = null;
         this.levelOver = false;
         clearTimeout(this.gameOverTimeout);
     }
@@ -143,32 +145,36 @@ class Game {
 
         setTimeout( () => {
             clearTimeout(this.gameInterval);
+            this.checkForGameover = false;
 
             const gameEndScreen = document.getElementById('game-over');
             const messageEl = document.getElementById('game-over-msg');
     
             gameEndScreen.className = 'visible';
             messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header>You Win<p>';
-        }, 2000);
+        }, 1000);
     }
 
     updateLevelSettings() {
         this.chest.reset();
         this.activeSpells = [];
         
-        const nextLevel = this.levelList[this.currentLevel];
+        const newLevel = this.levelList[this.currentLevel];
         
-        this.currentWave = nextLevel ? nextLevel.currWave : null;
+        this.currentWave = newLevel ? newLevel.currWave : null;
         this.enemies = [];
-        this.enemyCount = this.currentWave.enemyCount;
-        this.levelType = nextLevel ? nextLevel.type : '';
-
-        this.state = STARTING;
-        this.startFrame = 0;
-        setTimeout( () => {
-            this.state = STARTED
-            this.createEnemies(this.currentWave.enemyCount);
-        }, 2000);
+        
+        if ( this.currentWave !== null ) {
+            this.enemyCount = this.currentWave.enemyCount;
+            this.levelType = newLevel.type;
+            
+            this.state = STARTING;
+            this.startFrame = 0;
+            setTimeout( () => {
+                this.state = STARTED
+                this.createEnemies(this.currentWave.enemyCount);
+            }, 2000);
+        }
 
         clearTimeout(this.gameOverTimeout);
         this.gameOverTimeout = setTimeout(() => {

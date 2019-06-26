@@ -1,4 +1,5 @@
 import Game from './game';
+import { TUTORIAL, STAGE } from './levels/levels';
 
 document.addEventListener('DOMContentLoaded', () => {
     const paperCanvas = document.getElementById('paperCanvas');
@@ -24,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     mainCanvas.oncontextmenu = e => e.preventDefault();
     playPopup.oncontextmenu = e => e.preventDefault();
     gameEndScreen.oncontextmenu = e => e.preventDefault();
-    tutorialBtn.oncontextmenu = e => e.preventDefault();
 
     let game = new Game(mainCanvas, mouseTool);
     const startImage = new Image();
@@ -55,27 +55,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startBtn.addEventListener('click', e => {
         playPopup.className = "hidden";
-        startBtn.className = 'hidden';
         clearInterval(startAnimation);
 
         game.clear();
+        game.reset();
         game.startLevels();
     });
 
     retryBtn.addEventListener('click', e => {
         gameEndScreen.className = 'hidden';
 
-        // game = new Game(mainCanvas, mouseTool);
-        game.reset();
-        game.start();
+        if ( game.levelType === TUTORIAL ) {
+            game.reset();
+            game.start();
+        } else {
+            game.reset();
+            game.startLevels();
+        }
+
+        
     });
 
     restartBtn.addEventListener('click', e => {
         gameEndScreen.className = 'hidden';
         playPopup.className = 'visible no-select';
 
+        clearInterval(game.gameInterval);
+        game.reset();
+        game.clear();
+
         // restarts the background animation
         startAnimation = setInterval(() => {
+            let dx = 1;
+            let position = 0;   
+
             ctx.drawImage(startImage, position, 200, 1280, 800, 0, 0, 1280, 600);
 
             if (position === 640 && dx > 0) {
@@ -87,19 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (position > 590 && dx > 0) {
                 dx = 0.5;
             }
+
             position += dx;
         }, 50);
     });
 
     practiceBtn.addEventListener('click', e => {
         playPopup.className = 'hidden';
-        practiceScreen.className = 'visible no-select'
+        practiceScreen.className = 'visible no-select';
     });
 
     lineBtn.addEventListener('click', e => {
         clearInterval(startAnimation);
 
         practiceScreen.className = 'hidden';
+        ctx.clearRect(0,0, 1280, 600);
+        game.reset();
         game.startPractice(0);
     });
 
@@ -107,6 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(startAnimation);
 
         practiceScreen.className = 'hidden';
+        ctx.clearRect(0, 0, 1280, 600);
+        game.reset();
         game.startPractice(1);
     });
 
