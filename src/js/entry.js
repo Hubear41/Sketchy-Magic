@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const practiceBack = document.getElementById('practice-back-btn');
     const gameEndScreen = document.getElementById('game-over');
     const practiceScreen = document.getElementById('practice');
+    const continueBtn = document.getElementById('continue-btn');
+    const instructionScreen = document.getElementById('instructions')
 
     // prevents right-click from happening over canvas
     paperCanvas.oncontextmenu = e => e.preventDefault();
@@ -55,11 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startBtn.addEventListener('click', e => {
         playPopup.className = "hidden";
-        clearInterval(startAnimation);
+        instructionScreen.className = "visible no-select";
 
-        game.clear();
-        game.reset();
-        game.startLevels();
+        continueBtn.addEventListener('click', e => {
+            instructionScreen.className = 'hidden';
+            clearInterval(startAnimation);
+            clearInterval(game.gameInterval);
+
+            game.clear();
+            game.reset();
+            game.startLevels();
+        });
     });
 
     retryBtn.addEventListener('click', e => {
@@ -72,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
             game.reset();
             game.startLevels();
         }
-
-        
     });
 
     restartBtn.addEventListener('click', e => {
@@ -111,21 +117,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     lineBtn.addEventListener('click', e => {
-        clearInterval(startAnimation);
-
         practiceScreen.className = 'hidden';
-        ctx.clearRect(0,0, 1280, 600);
-        game.reset();
-        game.startPractice(0);
+        instructionScreen.className = 'visible no-select';
+        
+        continueBtn.addEventListener('click', e => {
+            instructionScreen.className = 'hidden';
+            clearInterval(startAnimation);
+            clearInterval(game.gameInterval);
+
+            ctx.clearRect(0,0, 1280, 600);
+            game.reset();
+            game.startPractice(0);
+        });
     });
 
     triangleBtn.addEventListener('click', e => {
-        clearInterval(startAnimation);
-
         practiceScreen.className = 'hidden';
-        ctx.clearRect(0, 0, 1280, 600);
-        game.reset();
-        game.startPractice(1);
+        instructionScreen.className = 'visible no-select';
+        
+        continueBtn.addEventListener('click', e => {
+            instructionScreen.className = 'hidden';
+            clearInterval(startAnimation);
+            clearInterval(game.gameInterval);
+
+            ctx.clearRect(0, 0, 1280, 600);
+            game.reset();
+            game.startPractice(1);
+        });
     });
 
     practiceBack.addEventListener('click', () => {

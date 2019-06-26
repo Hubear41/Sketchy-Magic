@@ -35,28 +35,58 @@
             <button id='practice-back-btn' class='button'>Back</button>
         </div>
 
-        <div id='instructions' class='visible'>
+        <div id='instructions' class='hidden'>
             <section class='instructions-content'>
                 <h2 class='game-header'>How to Play</h2>
-
-                <div class='instructions-row drawing-row'>
-                    <img class="instruction-image" src="assets/instructions/drawing_demo_pic.png" alt="">
-                    <p>Drawing Instructions</p>
+                
+                <div class='instructions-row treasure-row'>
+                    <figure class='image-wrapper'>
+                        <img class="instruction-image" src="assets/instructions/treasure_stump_pic.png" alt="">
+                    </figure>
+                    <p class='instruction-detail'>
+                        <strong>Treasure</strong>
+                        <br>
+                        <span>This is your stash of magical items seated on a stump. The goblins in the nearby area trying to steal it. Protect it at all costs!</span>
+                    </p>
                 </div>
                 <div class='instructions-row enemies-row'>
-                    <img class="instruction-image" src="assets/instructions/enemy_pic.png" alt="">
-                    <p>Enemy Instructions</p>
+                    <figure class='image-wrapper'>
+                        <img class="instruction-image" src="assets/instructions/enemy_pic.png" alt="">
+                    </figure>
+                    <p class='instruction-detail'>
+                        <strong>Goblins</strong>
+                        <br>
+                        <span>
+                            Little goblins desparate for power. You'll lose if you let them escape with your treasure. They may or may not be wearing clothes...?
+                        </span>
+                    </p>
+                </div>
+                <div class='instructions-row drawing-row'>
+                    <figure class='image-wrapper'>
+                        <img class="instruction-image" src="assets/instructions/drawing_demo_pic.png" alt="">
+                    </figure>
+                    <p class='instruction-detail'>
+                        <strong>Casting Spells</strong>
+                        <br>
+                        <span>
+                            Use your mouse to cast a line or triangle shaped spell. Click and drag to draw. Release to cast. Have fun!
+                        </span>
+                    </p>
                 </div>
                 <div class='instructions-row cooldown-row'>
-                    <img class="instruction-image" src="assets/instructions/cooldown_pic.png" alt="">
-                    <p>Cooldown Instructions</p>
+                    <figure class='image-wrapper'>
+                        <img class="instruction-image" src="assets/instructions/cooldown_pic.png" alt="">
+                    </figure>
+                    <p class='instruction-detail'>
+                        <strong>Spell Cooldown</strong>
+                        <br>
+                        <span>
+                            Each spell can't be cast repeatedly. You'll have to wait until the box is no longer grayed out to cast it again. Be careful of your energy!
+                        </span>
+                    </p>
                 </div>
-                <div class='instructions-row treasure-row'>
-                    <img class="instruction-image" src="assets/instructions/treasure_stump_pic.png" alt="">
-                    <p>Treasure Instructions</p>
-                </div>
-                
-                <button id='continue' class='button'>Continue</button>
+
+                <button id='continue-btn' class='button'>Continue ></button>
             </section>
         </div>
 
