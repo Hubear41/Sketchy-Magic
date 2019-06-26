@@ -24,7 +24,7 @@ Sketchy Magic is inspired by [Magicka](https://en.wikipedia.org/wiki/Magicka) wh
 - [x] Player cast spells by drawing shapes.
 - [x] Enemies will go after the crystal and try to leave the screen if the crystal has been captured.
 - [x] Enemies that succeed in leaving causes a 'Game Over'.
-- [ ] A Tutorial is available for players to practice drawing with a mouse or touchpad.
+- [x] A Tutorial is available for players to practice drawing with a mouse or touchpad.
 
 ## Architecture and Technologies
 
@@ -58,14 +58,14 @@ The main files in the project will be:
 
 - [x] Allow enemies to pick up and move with treasure.
 - [x] Each spell has a bar that corresponds to the next time it can be used
-- [ ] Have the game run several rounds with increasing enemies.
+- [x] Have the game run several rounds with increasing enemies.
 
 **Day 4** 
 
 - [x] Add flair to magic that is cast.
 - [ ] Add Music and Sound Effects.
-- [ ] Finish styling page.
-- [ ] Finish any outstanding MVPS.
+- [x] Finish styling page.
+- [x] Finish any outstanding MVPS.
 
 ## Bonus Features
 
