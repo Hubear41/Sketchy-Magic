@@ -28,7 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
     mainCanvas.oncontextmenu = e => e.preventDefault();
     playPopup.oncontextmenu = e => e.preventDefault();
     gameEndScreen.oncontextmenu = e => e.preventDefault();
-
+    practiceScreen.oncontextmenu = e => e.preventDefault();
+    instructionScreen.oncontextmenu = e => e.preventDefault();
+    startBtn.oncontextmenu = e => e.preventDefault();
+    restartBtn.oncontextmenu = e => e.preventDefault();
+    retryBtn.oncontextmenu = e => e.preventDefault();
+    practiceBtn.oncontextmenu = e => e.preventDefault();
+    instructionBackBtn.oncontextmenu = e => e.preventDefault();
+    practiceBackBtn.oncontextmenu = e => e.preventDefault();
+    continueBtn.oncontextmenu = e => e.preventDefault();
 
     // loads start screen image
     let game = new Game(mainCanvas, mouseTool);
