@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const practiceBtn = document.getElementById('practice-btn');
     const lineBtn = document.getElementById('line-btn');
     const triangleBtn = document.getElementById('triangle-btn');
-    const practiceBack = document.getElementById('practice-back-btn');
     const gameEndScreen = document.getElementById('game-over');
     const practiceScreen = document.getElementById('practice');
     const continueBtn = document.getElementById('continue-btn');
     const instructionScreen = document.getElementById('instructions')
+    const practiceBackBtn = document.getElementById('practice-back-btn');
+    const instructionBackBtn = document.getElementById('instruction-back-btn');
 
     // prevents right-click from happening over canvas
     paperCanvas.oncontextmenu = e => e.preventDefault();
@@ -28,13 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
     playPopup.oncontextmenu = e => e.preventDefault();
     gameEndScreen.oncontextmenu = e => e.preventDefault();
 
+
+    // loads start screen image
     let game = new Game(mainCanvas, mouseTool);
+    let startAnimation;
     const startImage = new Image();
     startImage.src = 'assets/Backgrounds/field_with_trees.jpg';
 
-    let startAnimation;
-
-    // loads start screen image
     startImage.onload = () => {
         let dx = 1;
         let position = 0;
@@ -67,6 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
             game.clear();
             game.reset();
             game.startLevels();
+        });
+
+        instructionBackBtn.addEventListener('click', e => {
+            instructionScreen.className = 'hidden';
+            playPopup.className = 'visible no-select';
+            console.log('hi');
         });
     });
 
@@ -114,6 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
     practiceBtn.addEventListener('click', e => {
         playPopup.className = 'hidden';
         practiceScreen.className = 'visible no-select';
+
+        practiceBackBtn.addEventListener('click', () => {
+            practiceScreen.className = 'hidden';
+            playPopup.className = 'visible no-select';
+        });
     });
 
     lineBtn.addEventListener('click', e => {
@@ -128,6 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.clearRect(0,0, 1280, 600);
             game.reset();
             game.startPractice(0);
+        });
+
+        instructionBackBtn.addEventListener('click', e => {
+            instructionScreen.className = 'hidden';
+            practiceScreen.className = 'visible no-select';
         });
     });
 
@@ -144,10 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
             game.reset();
             game.startPractice(1);
         });
-    });
 
-    practiceBack.addEventListener('click', () => {
-        practiceScreen.className = 'hidden';
-        playPopup.className = 'visible no-select';
+        instructionBackBtn.addEventListener('click', e => {
+            instructionScreen.className = 'hidden';
+            practiceScreen.className = 'visible no-select';
+        });
     });
 });

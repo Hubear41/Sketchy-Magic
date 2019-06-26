@@ -141,16 +141,14 @@ body {
     font-size: 20pt;
 }
 
-#restart-btn {
+#practice-btn, #practice-back-btn, #instruction-back-btn, #restart-btn {
     background-color: darkgreen;
 }
 
-#retry-tutorial-btn {
-    background-color: steelblue;
-}
-
-#practice-btn, #line-btn, #triangle-btn {
-    background-color: darkgreen;
+.instruction-btns {
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
 }
 
 .game-header {
