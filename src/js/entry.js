@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     instructionBackBtn.oncontextmenu = e => e.preventDefault();
     practiceBackBtn.oncontextmenu = e => e.preventDefault();
     continueBtn.oncontextmenu = e => e.preventDefault();
+    lineBtn.oncontextmenu = e => e.preventDefault();
+    triangleBtn.oncontextmenu = e => e.preventDefault();
 
     // loads start screen image
     let game = new Game(mainCanvas, mouseTool);
