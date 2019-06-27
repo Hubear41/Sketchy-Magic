@@ -66,6 +66,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 50);
     }
 
+    document.addEventListener('keydown', e => {
+        if ( (e.code === 'Space' || e.code === 'Enter' || e.keyCode === 32 || e.keyCode === 13) && game.playing) {
+            e.preventDefault();
+            if ( !game.paused ) {
+                game.pause();
+            } else {
+                game.continue();
+            }
+        } else if ( (e.code === 'Escape' || e.keyCode === 27) && game.paused ) {
+            e.preventDefault();
+            game.continue();
+        }
+    });
+
+
     startBtn.addEventListener('click', e => {
         playPopup.className = "hidden";
         instructionScreen.className = "visible no-select";
@@ -108,10 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         game.clear();
 
         // restarts the background animation
+        let dx = 1;
+        let position = 0;   
         startAnimation = setInterval(() => {
-            let dx = 1;
-            let position = 0;   
-
             ctx.drawImage(startImage, position, 200, 1280, 800, 0, 0, 1280, 600);
 
             if (position === 640 && dx > 0) {

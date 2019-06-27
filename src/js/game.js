@@ -19,6 +19,8 @@ class Game {
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
         this.background = new Background(canvas);
+        this.playing = false;
+        this.paused = false;
 
         // player/spells attributes
         this.player = new Player(canvas);
@@ -61,6 +63,7 @@ class Game {
     }
 
     start() {
+        this.playing = true;
         this.setupSpellFinder();
         this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
 
@@ -76,11 +79,33 @@ class Game {
         this.checkForGameover = false;
         this.currentWave = null;
         this.levelOver = false;
+        this.playing = false;
+        this.paused = false;
         clearTimeout(this.gameOverTimeout);
     }
 
     clear() {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    }
+
+    pause() {
+        clearInterval(this.gameInterval);
+        this.paused = true;
+        this.checkForGameover = false;
+
+        const gameEndScreen = document.getElementById('game-over');
+        const messageEl = document.getElementById('game-over-msg');
+
+        messageEl.innerHTML = 'Paused';
+        gameEndScreen.className = 'visible';
+    }
+
+    continue() {
+        const gameEndScreen = document.getElementById('game-over');
+        gameEndScreen.className = 'hidden';
+
+        this.paused = false;
+        this.gameInterval = setInterval(this.draw, 20);
     }
 
     setupSpellFinder() {
@@ -145,6 +170,7 @@ class Game {
 
         setTimeout( () => {
             clearTimeout(this.gameInterval);
+            this.playing = false;
             this.checkForGameover = false;
 
             const gameEndScreen = document.getElementById('game-over');
@@ -202,7 +228,7 @@ class Game {
         if ( this.currentWave.defaultPositions === null ) { // if there aren't any default positions
             for (let i = 0; i < numOfEnemies; i++) {
                 const zone = Math.floor((Math.random() * 5)) + 1;
-                const speed = Math.floor((Math.random() * 300) + 200);
+                const speed = Math.floor((Math.random() * 300) + 300);
                 let x, y;
                 let enemy;
     
