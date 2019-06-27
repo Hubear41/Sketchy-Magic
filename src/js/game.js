@@ -19,6 +19,8 @@ class Game {
         this.mouseTool = mouseTool; 
         this.chest = new Chest(canvas);
         this.background = new Background(canvas);
+        this.playing = false;
+        this.paused = false;
 
         // player/spells attributes
         this.player = new Player(canvas);
@@ -49,6 +51,7 @@ class Game {
     }
     
     startPractice(levelNum) {
+        this.tutorialLevelNum = levelNum;
         this.levelList = getPractice(levelNum);
         this.currentLevel = 0;
         this.start();   
@@ -61,6 +64,7 @@ class Game {
     }
 
     start() {
+        this.playing = true;
         this.setupSpellFinder();
         this.updateLevelSettings(); // should be tutorial 1 wave 1 on initial load
 
@@ -75,12 +79,36 @@ class Game {
         this.chest.reset();
         this.checkForGameover = false;
         this.currentWave = null;
+        // this.currentLevel = 0;
         this.levelOver = false;
+        this.playing = false;
+        this.paused = false;
         clearTimeout(this.gameOverTimeout);
+        clearInterval(this.gameInterval);
     }
 
     clear() {
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    }
+
+    pause() {
+        clearInterval(this.gameInterval);
+        this.paused = true;
+        this.checkForGameover = false;
+
+        const gameEndScreen = document.getElementById('game-over');
+        const messageEl = document.getElementById('game-over-msg');
+
+        messageEl.innerHTML = 'Paused';
+        gameEndScreen.className = 'visible';
+    }
+
+    continue() {
+        const gameEndScreen = document.getElementById('game-over');
+        gameEndScreen.className = 'hidden';
+
+        this.paused = false;
+        this.gameInterval = setInterval(this.draw, 20);
     }
 
     setupSpellFinder() {
@@ -122,15 +150,10 @@ class Game {
     win() {
         const level = this.levelList[this.currentLevel];
         
-        if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
+        if ( this.levelList.length === this.currentLevel && (this.enemies.length <= 0 || this._enemiesOutBounds())) {
             return true;
         } else if ( this.currentLevel < this.levelList.length ) {
-            // debugger
-            // if ( level.currWave.nextWave === null ) {
-            //     this.updateLevelSettings();
-            // } else 
             if ( level.waveCondition( this.enemies.length, this.enemyCount ) && this.state === STARTED ) { //need condition for current wave
-                // debugger;
                 this.updateWave();
             }
         }
@@ -143,16 +166,21 @@ class Game {
             return false;
         }
 
-        setTimeout( () => {
-            clearTimeout(this.gameInterval);
-            this.checkForGameover = false;
+        if ( this.state !== ENDED ){
+            this.state = ENDED;
 
-            const gameEndScreen = document.getElementById('game-over');
-            const messageEl = document.getElementById('game-over-msg');
+            setTimeout( () => {
+                clearTimeout(this.gameInterval);
+                this.playing = false;
+                this.checkForGameover = false;
     
-            gameEndScreen.className = 'visible';
-            messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header>You Win<p>';
-        }, 1000);
+                const gameEndScreen = document.getElementById('game-over');
+                const messageEl = document.getElementById('game-over-msg');
+        
+                gameEndScreen.className = 'visible';
+                messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header">Congratulations! You Win!<p>';
+            }, 1000);
+        }
     }
 
     updateLevelSettings() {
@@ -185,15 +213,12 @@ class Game {
     updateWave() {
         const nextWave = this.currentWave.nextWave;
         
-        console.log('updating wave');
-
         if ( nextWave === null && this.enemies.length <= 0 ) {
             this.currentLevel++;
             this.updateLevelSettings()
         } else if ( nextWave !== null) {
             this.currentWave = nextWave;
             this.enemyCount += this.currentWave.enemyCount;
-            // debugger
             this.createEnemies(this.currentWave.enemyCount);
         }
     }
@@ -202,7 +227,7 @@ class Game {
         if ( this.currentWave.defaultPositions === null ) { // if there aren't any default positions
             for (let i = 0; i < numOfEnemies; i++) {
                 const zone = Math.floor((Math.random() * 5)) + 1;
-                const speed = Math.floor((Math.random() * 300) + 200);
+                const speed = Math.floor((Math.random() * 300) + 300);
                 let x, y;
                 let enemy;
     
@@ -338,7 +363,6 @@ class Game {
         
         this.ctx.strokeStyle = "hsla(360, 100%, 100%, 1)";
         this.ctx.lineWidth = 1;
-        // debugger
         this.ctx.beginPath();
         this.ctx.moveTo(0,300);
         this.ctx.lineTo(1280,300);
@@ -439,17 +463,16 @@ class Game {
         }
     }
 
-    _enemiesInBounds() {
+    _enemiesOutBounds() {
         this.enemies.forEach(enemy => {
             const { x, y } = enemy.position;
-            debugger
             if (x >= 0 && x + enemy.length <= this.canvas.width &&
                 y >= 0 && y + enemy.length <= this.canvas.height) {
-                return true;
+                return false;
             }
         });
 
-        return false
+        return true;
     }
 }
 

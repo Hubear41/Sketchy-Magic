@@ -7,8 +7,8 @@ class Player {
         this.dx = 20;
         this.dy = 20;
         this.direction = 0;
-        this.triangleEnergy = 150;
-        this.triangleMax = 150;
+        this.triangleEnergy = 100;
+        this.triangleMax = 100;
         this.triangleCooldown = 1;
         this.lineEnergy = 60;
         this.lineMax = 60;
@@ -19,26 +19,26 @@ class Player {
             y: canvas.height - 100,
         };
 
-        document.addEventListener('keydown', e => {
-            switch(e.code) {
-                case 'KeyD':
-                    this.position.x += this.dx;
-                    break;
-                case 'KeyA':
-                    this.position.x -= this.dx;
-                    break;
-                case 'KeyW':
-                    this.position.y -= this.dy;
-                    break;
-                case 'KeyS':
-                    this.position.y += this.dy;
-                    break;
-                default:
-                    break;
-            }
+        // document.addEventListener('keydown', e => {
+        //     switch(e.code) {
+        //         case 'KeyD':
+        //             this.position.x += this.dx;
+        //             break;
+        //         case 'KeyA':
+        //             this.position.x -= this.dx;
+        //             break;
+        //         case 'KeyW':
+        //             this.position.y -= this.dy;
+        //             break;
+        //         case 'KeyS':
+        //             this.position.y += this.dy;
+        //             break;
+        //         default:
+        //             break;
+        //     }
 
-            this.checkBounds();
-        });
+        //     this.checkBounds();
+        // });
     }
 
     checkBounds() {

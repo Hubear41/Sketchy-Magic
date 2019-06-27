@@ -9,7 +9,6 @@ class Chest {
         this.beingTaken = false;
         this.beingLifted = false;
         this.waitingToEscape = false;
-        this.enemy = null;
         this.currEnemy = null;
         this.chestHeight = 30;
         this.chestWidth = 30;
@@ -84,10 +83,10 @@ class Chest {
         // const dx = currPosition.x - this.position.x;
         // const dy = currPosition.y - this.position.y;
 
-        this.carrying = false;
         this.beingTaken = false;
         this.beingLifted = false;
         this.waitingToEscape = false;
+        this.currEnemy = null;
         this.position = currPosition;
         this.dx = null;
         this.dy = null;
@@ -105,7 +104,6 @@ class Chest {
         this.beingTaken = false;
         this.beingLifted = false;
         this.waitingToEscape = false;
-        this.enemy = null;
         this.currEnemy = null;
     }
 }

@@ -138,7 +138,10 @@ body {
 }
 
 #game-over-msg {
+    color: white;
     font-size: 20pt;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16pt;
 }
 
 #practice-btn, #practice-back-btn, #instruction-back-btn, #restart-btn {
