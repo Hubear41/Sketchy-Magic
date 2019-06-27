@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if ( game.levelType === TUTORIAL ) {
             game.reset();
-            game.startPractice(game.currentLevel - 1);
+            game.startPractice(game.tutorialLevelNum);
         } else {
             game.reset();
             game.startLevels();

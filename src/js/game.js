@@ -51,6 +51,7 @@ class Game {
     }
     
     startPractice(levelNum) {
+        this.tutorialLevelNum = levelNum;
         this.levelList = getPractice(levelNum);
         this.currentLevel = 0;
         this.start();   
@@ -78,6 +79,7 @@ class Game {
         this.chest.reset();
         this.checkForGameover = false;
         this.currentWave = null;
+        this.currentLevel = 0;
         this.levelOver = false;
         this.playing = false;
         this.paused = false;
@@ -147,15 +149,10 @@ class Game {
     win() {
         const level = this.levelList[this.currentLevel];
         
-        if ( this.levelList.length === this.currentLevel && this.enemies.length <= 0) {
+        if ( this.levelList.length === this.currentLevel && (this.enemies.length <= 0 || this._enemiesOutBounds())) {
             return true;
         } else if ( this.currentLevel < this.levelList.length ) {
-            // debugger
-            // if ( level.currWave.nextWave === null ) {
-            //     this.updateLevelSettings();
-            // } else 
             if ( level.waveCondition( this.enemies.length, this.enemyCount ) && this.state === STARTED ) { //need condition for current wave
-                // debugger;
                 this.updateWave();
             }
         }
@@ -170,7 +167,7 @@ class Game {
 
         if ( this.state !== ENDED ){
             this.state = ENDED;
-            
+
             setTimeout( () => {
                 clearTimeout(this.gameInterval);
                 this.playing = false;
@@ -215,15 +212,12 @@ class Game {
     updateWave() {
         const nextWave = this.currentWave.nextWave;
         
-        console.log('updating wave');
-
-        if ( nextWave === null && this.enemies.length <= 0 ) {
+        if ( nextWave === null && (this.enemies.length <= 0 || this._enemiesOutBounds()) ) {
             this.currentLevel++;
             this.updateLevelSettings()
         } else if ( nextWave !== null) {
             this.currentWave = nextWave;
             this.enemyCount += this.currentWave.enemyCount;
-            // debugger
             this.createEnemies(this.currentWave.enemyCount);
         }
     }
@@ -368,7 +362,6 @@ class Game {
         
         this.ctx.strokeStyle = "hsla(360, 100%, 100%, 1)";
         this.ctx.lineWidth = 1;
-        // debugger
         this.ctx.beginPath();
         this.ctx.moveTo(0,300);
         this.ctx.lineTo(1280,300);
@@ -469,17 +462,16 @@ class Game {
         }
     }
 
-    _enemiesInBounds() {
+    _enemiesOutBounds() {
         this.enemies.forEach(enemy => {
             const { x, y } = enemy.position;
-            debugger
             if (x >= 0 && x + enemy.length <= this.canvas.width &&
                 y >= 0 && y + enemy.length <= this.canvas.height) {
-                return true;
+                return false;
             }
         });
 
-        return false
+        return true;
     }
 }
 
