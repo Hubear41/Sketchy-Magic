@@ -152,8 +152,8 @@ const createLevel3 = () => {
 }
 
 const createLevel4 = () => {
-    const wave1 = new Wave(20);
-    const wave2 = new Wave(120);
+    const wave1 = new Wave(90);
+    const wave2 = new Wave(220);
 
     wave1.nextWave = wave2;
 
@@ -170,10 +170,10 @@ const createLevel4 = () => {
 const createLevel5 = () => {
     const wave1 = new Wave(50);
     const wave2 = new Wave(78);
-    const wave3 = new Wave(90);
-    const wave4 = new Wave(102);
-    const wave5 = new Wave(119);
-    const wave6 = new Wave(130);
+    const wave3 = new Wave(125);
+    const wave4 = new Wave(256);
+    const wave5 = new Wave(519);
+    const wave6 = new Wave(900);
 
     wave1.nextWave = wave2;
     wave2.nextWave = wave3;

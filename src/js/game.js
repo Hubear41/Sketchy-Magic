@@ -168,17 +168,21 @@ class Game {
             return false;
         }
 
-        setTimeout( () => {
-            clearTimeout(this.gameInterval);
-            this.playing = false;
-            this.checkForGameover = false;
-
-            const gameEndScreen = document.getElementById('game-over');
-            const messageEl = document.getElementById('game-over-msg');
+        if ( this.state !== ENDED ){
+            this.state = ENDED;
+            
+            setTimeout( () => {
+                clearTimeout(this.gameInterval);
+                this.playing = false;
+                this.checkForGameover = false;
     
-            gameEndScreen.className = 'visible';
-            messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header>You Win<p>';
-        }, 1000);
+                const gameEndScreen = document.getElementById('game-over');
+                const messageEl = document.getElementById('game-over-msg');
+        
+                gameEndScreen.className = 'visible';
+                messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header>You Win<p>';
+            }, 1000);
+        }
     }
 
     updateLevelSettings() {
