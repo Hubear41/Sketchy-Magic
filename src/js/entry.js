@@ -179,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         continueBtn.addEventListener('click', e => {
             instructionScreen.className = 'hidden';
             clearInterval(startAnimation);
-            clearInterval(game.gameInterval);
 
             ctx.clearRect(0, 0, 1280, 600);
             game.reset();

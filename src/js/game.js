@@ -79,11 +79,12 @@ class Game {
         this.chest.reset();
         this.checkForGameover = false;
         this.currentWave = null;
-        this.currentLevel = 0;
+        // this.currentLevel = 0;
         this.levelOver = false;
         this.playing = false;
         this.paused = false;
         clearTimeout(this.gameOverTimeout);
+        clearInterval(this.gameInterval);
     }
 
     clear() {
@@ -177,7 +178,7 @@ class Game {
                 const messageEl = document.getElementById('game-over-msg');
         
                 gameEndScreen.className = 'visible';
-                messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header>You Win<p>';
+                messageEl.innerHTML = this.lose() ? '<p class="game-header">You Lose</p>' : '<p class="game-header">Congratulations! You Win!<p>';
             }, 1000);
         }
     }
@@ -212,7 +213,7 @@ class Game {
     updateWave() {
         const nextWave = this.currentWave.nextWave;
         
-        if ( nextWave === null && (this.enemies.length <= 0 || this._enemiesOutBounds()) ) {
+        if ( nextWave === null && this.enemies.length <= 0 ) {
             this.currentLevel++;
             this.updateLevelSettings()
         } else if ( nextWave !== null) {
