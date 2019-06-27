@@ -71,7 +71,7 @@ class Enemy {
                 this.newObjective();
             } else if ( this.state === 'STEAL') {
                 this.isNextToChest();
-            } else if ( !this.chest.beingTaken && this.state !== 'FROZEN' ) {
+            } else if ( !this.chest.beingTaken && !this.chest.beingLifted && !this.chest.waitingToEscape && this.state !== 'FROZEN' ) {
                 this.updateSpeed();
                 this.locateChest();
             } else if (this.state === 'FROZEN') {
@@ -181,6 +181,7 @@ class Enemy {
         if ( this.carrying || this.escaping || this.grabbing ) {
             this.carrying = false;
             this.escaping = false;
+            this.grabbing = false;
             
             this.chest.droppedChest(this.position);
         }

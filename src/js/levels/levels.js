@@ -82,11 +82,11 @@ const createTriangeTutorial = () => {
 }
 
 const createLevel1 = () => {
-    const wave1 = new Wave(6);
-    const wave2 = new Wave(9);
-    const wave3 = new Wave(9);
-    const wave4 = new Wave(12);
-    const wave5 = new Wave(12);
+    const wave1 = new Wave(4);
+    const wave2 = new Wave(4);
+    const wave3 = new Wave(5);
+    const wave4 = new Wave(6);
+    const wave5 = new Wave(10);
 
     wave1.nextWave = wave2;
     wave2.nextWave = wave3;
