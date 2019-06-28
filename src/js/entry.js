@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         instructionBackBtn.addEventListener('click', e => {
             instructionScreen.className = 'hidden';
             playPopup.className = 'visible no-select';
-            console.log('hi');
         });
     });
 

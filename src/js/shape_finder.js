@@ -70,9 +70,10 @@ class ShapeFinder {
                 this.currentSpell = new LineSpell(spellAttr);
             } else if (this.shape === 'TRIANGLE') {
                 this.currentSpell = new TriangleSpell(spellAttr);
-            } else {
-                this.currentSpell = new Spell(spellAttr);
-            }
+            } 
+            // else {
+            //     this.currentSpell = new Spell(spellAttr);
+            // }
         }
     }
 
@@ -96,8 +97,6 @@ class ShapeFinder {
             default:
                 this.shape = null
         }
-
-        console.log(this.shape);
     }
 
     resetPath() {
@@ -115,7 +114,6 @@ class ShapeFinder {
         const margin = 40;
 
         if ( this.finalPoint && firstToFinalPosition.length > margin ) {
-            console.log(this.finalPoint);
             this.shape = 'LINE';
             this.pointsArr.push(this.finalPoint);
         }
@@ -254,35 +252,6 @@ class ShapeFinder {
         ctx.stroke();
     }
 
-    // _movingSlowly(vector) {
-    //     const speedMargin = 0.4;
-    //     const speed = vector.length / this.numPoints;
-    //     // console.log(`Speed: ${speed} length/points`);
-    //     this.speed = speed;
-    //     if ( speed <= speedMargin ) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // _isLargeChange(oldVector, newVector) {
-    //     const avgDy = (newVector.dy + oldVector.dy) / 2;
-    //     const avgDx = (newVector.dx + oldVector.dx) / 2;
-    //     const dyDiff = Math.abs(newVector.dy - avgDy);
-    //     const dxDiff = Math.abs(newVector.dx - avgDx);
-    //     const totalDiff = dxDiff + dyDiff;
-    //     const changeMargin = dxDiff === 0 || dyDiff === 0 ? 1 : 1.5;
-
-
-    //     console.log( totalDiff );
-    //     if (totalDiff > changeMargin) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
     compareVectors(vectorA, vectorB) {
         const ratioA = vectorA.dx / vectorA.dy
         const ratioB = vectorB.dx / vectorB.dy
@@ -305,33 +274,6 @@ class ShapeFinder {
             return false;
         }
     }
-
-    // compareDirections(directionA, directionB) {
-    //     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-
-    //     if ( directionA === directionB) {
-    //         return true;
-    //     }
-
-    //     let prevDirection, nextDirection;
-    //     const currIndex = directions.indexOf(directionA); 
-    //     if ( currIndex === 0 ) {
-    //         prevDirection = 'NW';
-    //         nextDirection = 'NE';
-    //     } else if ( currIndex === directions.length - 1) {
-    //         prevDirection = 'W';
-    //         nextDirection = 'N';
-    //     } else {
-    //         prevDirection = directions[currIndex - 1];
-    //         nextDirection = directions[currIndex + 1];
-    //     }
-
-    //     if ( directionB === prevDirection || directionB === nextDirection ) {
-    //         return true;
-    //     } else {
-    //         return false
-    //     }
-    // }
 
     _inDifferentDirection(vectorA, vectorB) {
         let different = false;
