@@ -357,10 +357,11 @@ class Game {
             bgOpacity = multiplier <= 0 ? 0 : bgOpacity * multiplier;
             fontOpacity *= multiplier <= 0 ? 0 : fontOpacity * multiplier;
         }
-
+        // sets loading screen bg to darken the screen
         this.ctx.fillStyle = `hsla(0, 0%, 0%, ${bgOpacity})`;
         this.ctx.fillRect(0,0,1280,600);
         
+        // draws the white line that separates the level name and description
         this.ctx.strokeStyle = "hsla(360, 100%, 100%, 1)";
         this.ctx.lineWidth = 1;
         this.ctx.beginPath();
@@ -370,14 +371,21 @@ class Game {
         this.ctx.stroke();
 
         this.ctx.textAlign = 'center';
-        this.ctx.font = 'normal bold 18pt "Press Start 2P"';
         
+        // loading screen level name
+        this.ctx.font = 'normal bold 18pt "Press Start 2P"';
         this.ctx.fillStyle = `hsla(360, 100%, 100%, ${fontOpacity})`;
         this.ctx.fillText(level.name, 640, 250);
 
+        // loading screen level description
         this.ctx.font = 'normal normal 10pt "Press Start 2P"';
         this.ctx.fillStyle = `hsla(0, 0%, 10%, ${fontOpacity})`;
         this.ctx.fillText(level.description, 640, 350);
+
+        // loading screen hint
+        this.ctx.font = 'normal normal 10pt "Press Start 2P"';
+        this.ctx.fillStyle = `hsla(0, 0%, 10%, ${fontOpacity})`;
+        this.ctx.fillText("Hint: Press the SpaceBar to pause the game", 640, 400);
 
         this.startFrame += 20;
     }
