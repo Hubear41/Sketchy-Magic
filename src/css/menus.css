@@ -1,0 +1,75 @@
+.game-title {
+    color: white;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16pt;
+    padding: 20px;
+}
+
+#start, #practice {
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#game-over {
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(1, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#start * {
+    margin: 20px 0;
+}
+
+#practice * {
+    margin: 20px 0;
+}
+
+#game-over-msg {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16pt;
+}
+
+.game-header {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    font-size: 20pt;
+    height: 20%;
+}
+
+.game-over-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#welcome-message {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+    font-size: 20pt;
+    height: 20%;
+    text-shadow: 2px 2px black;
+}
+
+.game-over-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-over-content * {
+    margin: 10px 0;
+}

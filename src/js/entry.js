@@ -173,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         backToTutorialBtn.addEventListener('click', e => {
+            backToTutorialBtn.className = 'button hidden';
             instructionScreen.className = 'hidden';
             practiceScreen.className = 'visible no-select';
         });
@@ -194,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         backToTutorialBtn.addEventListener('click', e => {
+            backToTutorialBtn.className = 'button hidden';
             instructionScreen.className = 'hidden';
             practiceScreen.className = 'visible no-select';
         });

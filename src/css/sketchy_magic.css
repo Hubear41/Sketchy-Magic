@@ -1,0 +1,70 @@
+@import 'reset.css';
+@import 'personal-links.css';
+@import '_buttons.css';
+@import 'instructions.css';
+@import 'menus.css';
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    overflow-x: hidden;
+}
+
+.canvas-wrapper {
+    width: 1280px;
+    height: 600px;
+    position: relative;
+    margin: 0 auto;
+}
+
+#mainCanvas {
+    background: none;
+}
+
+#paperCanvas {
+    background: none; 
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    cursor: crosshair;
+}
+
+.visible {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    z-index: 20;
+}
+
+.hidden {
+    z-index: -1;
+    opacity: 0;
+    display: none;
+}
+
+/* disables text highlighting */
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+/* scroll side bar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    border: none;
+    background: none;
+}
