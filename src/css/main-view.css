@@ -144,7 +144,8 @@ body {
     font-size: 16pt;
 }
 
-#practice-btn, #practice-back-btn, #instruction-back-btn, #restart-btn {
+#practice-btn, #practice-back-btn, #back-to-start-btn, 
+#back-to-tutorial-btn, #restart-btn {
     background-color: darkgreen;
 }
 

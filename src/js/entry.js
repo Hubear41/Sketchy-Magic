@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const continueBtn = document.getElementById('continue-btn');
     const instructionScreen = document.getElementById('instructions')
     const practiceBackBtn = document.getElementById('practice-back-btn');
-    const instructionBackBtn = document.getElementById('instruction-back-btn');
+    const backToTutorialBtn = document.getElementById('back-to-tutorial-btn');
+    const backToStartBtn = document.getElementById('back-to-start-btn');
 
     // prevents right-click from happening over canvas
     paperCanvas.oncontextmenu = e => e.preventDefault();
@@ -34,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     restartBtn.oncontextmenu = e => e.preventDefault();
     retryBtn.oncontextmenu = e => e.preventDefault();
     practiceBtn.oncontextmenu = e => e.preventDefault();
-    instructionBackBtn.oncontextmenu = e => e.preventDefault();
+    backToTutorialBtn.oncontextmenu = e => e.preventDefault();
+    backToStartBtn.oncontextmenu = e => e.preventDefault();
     practiceBackBtn.oncontextmenu = e => e.preventDefault();
     continueBtn.oncontextmenu = e => e.preventDefault();
     lineBtn.oncontextmenu = e => e.preventDefault();
@@ -84,8 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
     startBtn.addEventListener('click', e => {
         playPopup.className = "hidden";
         instructionScreen.className = "visible no-select";
+        backToStartBtn.className = "button visible no-select";
 
         continueBtn.addEventListener('click', e => {
+            backToStartBtn.className = 'button hidden';
             instructionScreen.className = 'hidden';
             clearInterval(startAnimation);
             clearInterval(game.gameInterval);
@@ -95,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
             game.startLevels();
         });
 
-        instructionBackBtn.addEventListener('click', e => {
+        backToStartBtn.addEventListener('click', e => {
+            backToStartBtn.className = 'button hidden';
             instructionScreen.className = 'hidden';
             playPopup.className = 'visible no-select';
         });
@@ -154,8 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
     lineBtn.addEventListener('click', e => {
         practiceScreen.className = 'hidden';
         instructionScreen.className = 'visible no-select';
+        backToTutorialBtn.className = 'button visible no-select';
         
         continueBtn.addEventListener('click', e => {
+            backToTutorialBtn.className = 'button hidden';
             instructionScreen.className = 'hidden';
             clearInterval(startAnimation);
             clearInterval(game.gameInterval);
@@ -165,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             game.startPractice(0);
         });
 
-        instructionBackBtn.addEventListener('click', e => {
+        backToTutorialBtn.addEventListener('click', e => {
             instructionScreen.className = 'hidden';
             practiceScreen.className = 'visible no-select';
         });
@@ -174,8 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
     triangleBtn.addEventListener('click', e => {
         practiceScreen.className = 'hidden';
         instructionScreen.className = 'visible no-select';
+        backToTutorialBtn.className = 'button visible no-select';
         
         continueBtn.addEventListener('click', e => {
+            backToTutorialBtn.className = 'button hidden';
             instructionScreen.className = 'hidden';
             clearInterval(startAnimation);
 
@@ -184,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             game.startPractice(1);
         });
 
-        instructionBackBtn.addEventListener('click', e => {
+        backToTutorialBtn.addEventListener('click', e => {
             instructionScreen.className = 'hidden';
             practiceScreen.className = 'visible no-select';
         });
